@@ -1,0 +1,426 @@
+[
+    {
+        "material_id": 800179,
+        "title": "OSTEREIER - Malvorlagen für die Osterzeit",
+        "description": "Kreative Malvorlagen mit Ostereiern in verschiedenen Schwierigkeitsgraden. Enthält 15 detaillierte Zeichnungen mit unterschiedlichen Mustern für die Osterzeit. Ideal für Kunstunterricht im Frühling.",
+        "class_grade": "3. Klasse",
+        "category": "Kunst",
+        "subcategory": "Zeichnen und Malen",
+        "topics": [
+            "Ostern",
+            "Feiertage",
+            "Kreatives Gestalten",
+            "Frühlingsthemen",
+            "Feinmotorik"
+        ],
+        "format": "PDF",
+        "page_count": 18,
+        "complexity_level": "mittel",
+        "teaching_approach": "handlungsorientiert",
+        "bestseller_rating": 3946.6817,
+        "price": 2.99,
+        "is_bundle": false,
+        "author_segment": "dragon",
+        "author_slug": "unterrichtmitspass",
+        "seasonal_relevance": [
+            "Frühling",
+            "Ostern"
+        ],
+        "language_level": "einfach",
+        "activity_type": [
+            "Einzelarbeit",
+            "Gruppenarbeit"
+        ],
+        "competencies": [
+            "Kreativität",
+            "Feinmotorik"
+        ]
+    },
+    {
+        "material_id": 800180,
+        "title": "Mathematik Übungen - Bruchrechnen Grundlagen",
+        "description": "Umfassende Übungssammlung zu den Grundlagen des Bruchrechnens für die 5. Klasse. Enthält Aufgaben zu Brüchen kürzen und erweitern, Brüche vergleichen, und einfache Bruchoperationen mit detaillierten Lösungen.",
+        "class_grade": "5. Klasse",
+        "category": "Mathematik",
+        "subcategory": "Bruchrechnen",
+        "topics": [
+            "Bruchrechnen",
+            "Kürzen",
+            "Erweitern",
+            "Vergleichen von Brüchen",
+            "Grundrechenarten mit Brüchen"
+        ],
+        "format": "PDF",
+        "page_count": 32,
+        "complexity_level": "mittel",
+        "teaching_approach": "strukturiert",
+        "bestseller_rating": 4321.5429,
+        "price": 4.99,
+        "is_bundle": false,
+        "author_segment": "whale",
+        "author_slug": "matheprofis",
+        "seasonal_relevance": [
+            "ganzjährig"
+        ],
+        "language_level": "mittel",
+        "activity_type": [
+            "Einzelarbeit",
+            "Hausaufgaben",
+            "Übung"
+        ],
+        "competencies": [
+            "Rechenfähigkeit",
+            "Logisches Denken",
+            "Zahlenverständnis"
+        ]
+    },
+    {
+        "material_id": 800181,
+        "title": "Leseverständnis Komplettpaket - 20 Texte mit Aufgaben",
+        "description": "Umfangreiches Paket mit 20 differenzierten Lesetexten und dazugehörigen Verständnisfragen. Die Texte steigern sich im Schwierigkeitsgrad und behandeln verschiedene Themen aus dem Alltag von Grundschulkindern. Mit Lösungsblättern für Selbstkontrolle.",
+        "class_grade": "2. Klasse",
+        "category": "Deutsch",
+        "subcategory": "Leseverständnis",
+        "topics": [
+            "Lesen",
+            "Textverständnis",
+            "Fragen zum Text",
+            "Alltag",
+            "Geschichten"
+        ],
+        "format": "PDF",
+        "page_count": 45,
+        "complexity_level": "differenziert",
+        "teaching_approach": "progressiv",
+        "bestseller_rating": 3003.3609,
+        "price": 12.99,
+        "is_bundle": true,
+        "author_segment": "dragon",
+        "author_slug": "grundschulwelt",
+        "seasonal_relevance": [
+            "ganzjährig"
+        ],
+        "language_level": "einfach bis mittel",
+        "activity_type": [
+            "Einzelarbeit",
+            "Stationsarbeit",
+            "Lesestunde",
+            "Freiarbeit"
+        ],
+        "competencies": [
+            "Lesekompetenz",
+            "Textverständnis",
+            "Konzentration"
+        ]
+    },
+    {
+        "material_id": 800182,
+        "title": "Buchstaben lernen - Arbeitsblätter zum Alphabet",
+        "description": "Grundlegende Arbeitsblätter zum Erlernen aller Buchstaben des Alphabets. Jeder Buchstabe wird mit Nachspurübungen, Erkennungsübungen und ersten Schreibversuchen begleitet. Mit farbigen Illustrationen zur Motivation der Erstklässler.",
+        "class_grade": "1. Klasse",
+        "category": "Deutsch",
+        "subcategory": "Erstlesen und -schreiben",
+        "topics": [
+            "Alphabet",
+            "Buchstaben",
+            "Schreiben lernen",
+            "Erstlesen",
+            "Schriftspracherwerb"
+        ],
+        "format": "PDF",
+        "page_count": 29,
+        "complexity_level": "einfach",
+        "teaching_approach": "spielerisch",
+        "bestseller_rating": 2145.7712,
+        "price": 0.00,
+        "is_bundle": false,
+        "author_segment": "newbie",
+        "author_slug": "ersteklasse",
+        "seasonal_relevance": [
+            "Schuljahresbeginn"
+        ],
+        "language_level": "einfach",
+        "activity_type": [
+            "Einzelarbeit",
+            "Stationsarbeit",
+            "Hausaufgaben"
+        ],
+        "competencies": [
+            "Feinmotorik",
+            "Buchstabenkenntnis",
+            "Schreibfähigkeit"
+        ]
+    },
+    {
+        "material_id": 800183,
+        "title": "Sachkunde - Der menschliche Körper",
+        "description": "Lehrmaterial zum Thema menschlicher Körper für die 4. Klasse. Umfasst Arbeitsblätter zu den wichtigsten Organsystemen, Skelett, Muskeln, Sinnesorganen und gesunder Ernährung. Mit beschriftbaren Abbildungen und Selbsttests.",
+        "class_grade": "4. Klasse",
+        "category": "Sachkunde",
+        "subcategory": "Körper und Gesundheit",
+        "topics": [
+            "Menschlicher Körper",
+            "Organe",
+            "Skelett",
+            "Sinnesorgane",
+            "Gesunde Ernährung"
+        ],
+        "format": "PDF",
+        "page_count": 26,
+        "complexity_level": "mittel",
+        "teaching_approach": "forschend-entdeckend",
+        "bestseller_rating": 1876.3325,
+        "price": 3.49,
+        "is_bundle": false,
+        "author_segment": "whale",
+        "author_slug": "wissenswerkstatt",
+        "seasonal_relevance": [
+            "ganzjährig"
+        ],
+        "language_level": "mittel",
+        "activity_type": [
+            "Einzelarbeit",
+            "Partnerarbeit",
+            "Stationsarbeit",
+            "Experiment"
+        ],
+        "competencies": [
+            "Sachkompetenz",
+            "Selbstwahrnehmung",
+            "Gesundheitsbewusstsein"
+        ]
+    },
+    {
+        "material_id": 800184,
+        "title": "Englischtest - Simple Present mit Lösungen",
+        "description": "Standardisierter Test zum Simple Present für die 5. Klasse. Beinhaltet verschiedene Aufgabentypen wie Lückentexte, Umformungen, Verneinungen und Fragestellungen. Mit ausführlichem Lösungsschlüssel und Bewertungsraster.",
+        "class_grade": "5. Klasse",
+        "category": "Englisch",
+        "subcategory": "Grammatik",
+        "topics": [
+            "Simple Present",
+            "Verneinung",
+            "Fragestellung",
+            "Regelmäßige Verben",
+            "Unregelmäßige Verben"
+        ],
+        "format": "PDF",
+        "page_count": 8,
+        "complexity_level": "mittel",
+        "teaching_approach": "strukturiert",
+        "bestseller_rating": 2543.9921,
+        "price": 2.99,
+        "is_bundle": false,
+        "author_segment": "dragon",
+        "author_slug": "englishteach",
+        "seasonal_relevance": [
+            "ganzjährig"
+        ],
+        "language_level": "mittel",
+        "activity_type": [
+            "Klassenarbeit",
+            "Prüfungsvorbereitung",
+            "Selbsttest"
+        ],
+        "competencies": [
+            "Grammatikverständnis",
+            "Sprachkompetenz",
+            "Englisch Grundkenntnisse"
+        ]
+    },
+    {
+        "material_id": 800185,
+        "title": "Mathe-Paket - Multiplikation und Division",
+        "description": "Komprehensives Lernpaket zu Multiplikation und Division für die 3. Klasse. Enthält Einführungsmaterialien, Übungsblätter in drei Schwierigkeitsstufen, Rechenspiele, Merkposter und Selbstlernkontrollen. Ideal für differenzierten Unterricht.",
+        "class_grade": "3. Klasse",
+        "category": "Mathematik",
+        "subcategory": "Grundrechenarten",
+        "topics": [
+            "Multiplikation",
+            "Division",
+            "Einmaleins",
+            "Teilen",
+            "Textaufgaben"
+        ],
+        "format": "PDF",
+        "page_count": 42,
+        "complexity_level": "differenziert",
+        "teaching_approach": "systematisch",
+        "bestseller_rating": 3210.4478,
+        "price": 8.99,
+        "is_bundle": true,
+        "author_segment": "whale",
+        "author_slug": "mathewelt",
+        "seasonal_relevance": [
+            "ganzjährig"
+        ],
+        "language_level": "einfach",
+        "activity_type": [
+            "Einzelarbeit",
+            "Partnerarbeit",
+            "Spiel",
+            "Übung"
+        ],
+        "competencies": [
+            "Rechenfähigkeit",
+            "Zahlverständnis",
+            "Problemlösen"
+        ]
+    },
+    {
+        "material_id": 800186,
+        "title": "Grammatik - Aktiv und Passiv Übungen",
+        "description": "Umfassendes Übungsmaterial zur Umwandlung von Aktivsätzen in Passivsätze und umgekehrt. Mit progressivem Schwierigkeitsgrad von einfachen bis zu komplexen Satzstrukturen. Inklusive Regelerklärungen und vollständigen Lösungen.",
+        "class_grade": "6. Klasse",
+        "category": "Deutsch",
+        "subcategory": "Grammatik",
+        "topics": [
+            "Aktiv",
+            "Passiv",
+            "Satzumstellung",
+            "Grammatikregeln",
+            "Zeitformen"
+        ],
+        "format": "PDF",
+        "page_count": 18,
+        "complexity_level": "anspruchsvoll",
+        "teaching_approach": "systematisch",
+        "bestseller_rating": 1723.8556,
+        "price": 3.99,
+        "is_bundle": false,
+        "author_segment": "dragon",
+        "author_slug": "deutschprofi",
+        "seasonal_relevance": [
+            "ganzjährig"
+        ],
+        "language_level": "komplex",
+        "activity_type": [
+            "Einzelarbeit",
+            "Hausaufgaben",
+            "Übung"
+        ],
+        "competencies": [
+            "Grammatikverständnis",
+            "Sprachbewusstsein",
+            "Analytisches Denken"
+        ]
+    },
+    {
+        "material_id": 800187,
+        "title": "Zahlenraum bis 100 - Arbeitsblätter",
+        "description": "Strukturierte Arbeitsblätter zur Erarbeitung des Zahlenraums bis 100. Umfasst Zahlenfolgen, Nachbarzahlen, Stellenwerte, Zahlenzerlegung und erste Additions- und Subtraktionsaufgaben im zweistelligen Bereich. Mit visuellen Hilfen.",
+        "class_grade": "2. Klasse",
+        "category": "Mathematik",
+        "subcategory": "Zahlenraum",
+        "topics": [
+            "Zahlenraum bis 100",
+            "Stellenwert",
+            "Addition",
+            "Subtraktion",
+            "Zahlenfolgen"
+        ],
+        "format": "PDF",
+        "page_count": 24,
+        "complexity_level": "grundlegend",
+        "teaching_approach": "schrittweise",
+        "bestseller_rating": 2876.2212,
+        "price": 2.49,
+        "is_bundle": false,
+        "author_segment": "dragon",
+        "author_slug": "mathefreunde",
+        "seasonal_relevance": [
+            "ganzjährig"
+        ],
+        "language_level": "einfach",
+        "activity_type": [
+            "Einzelarbeit",
+            "Stationsarbeit",
+            "Übung"
+        ],
+        "competencies": [
+            "Zahlenverständnis",
+            "Rechenfähigkeit",
+            "Strukturiertes Denken"
+        ]
+    },
+    {
+        "material_id": 800188,
+        "title": "Komplettpaket Sachkunde - Jahreszeiten und Natur",
+        "description": "Umfangreiches Materialpaket zu den vier Jahreszeiten und damit verbundenen Naturphänomenen. Enthält Sachtexte, Forscheraufträge, Beobachtungsbögen, Experimente, Lernstationen und Evaluationsbögen für einen ganzheitlichen Sachunterricht.",
+        "class_grade": "4. Klasse",
+        "category": "Sachkunde",
+        "subcategory": "Natur und Umwelt",
+        "topics": [
+            "Jahreszeiten",
+            "Wetter",
+            "Pflanzen",
+            "Tiere",
+            "Ökosysteme"
+        ],
+        "format": "PDF",
+        "page_count": 68,
+        "complexity_level": "umfassend",
+        "teaching_approach": "forschend-entdeckend",
+        "bestseller_rating": 3567.1134,
+        "price": 14.99,
+        "is_bundle": true,
+        "author_segment": "whale",
+        "author_slug": "naturwissen",
+        "seasonal_relevance": [
+            "Frühling",
+            "Sommer",
+            "Herbst",
+            "Winter"
+        ],
+        "language_level": "mittel",
+        "activity_type": [
+            "Experiment",
+            "Beobachtung",
+            "Gruppenarbeit",
+            "Exkursion",
+            "Stationsarbeit"
+        ],
+        "competencies": [
+            "Naturwissenschaftliches Denken",
+            "Beobachtungsgabe",
+            "Umweltbewusstsein"
+        ]
+    },
+    {
+        "material_id": 800189,
+        "title": "Schwungübungen für Erstklässler",
+        "description": "Sammlung von Schwungübungen zur Vorbereitung auf das Schreiben lernen. Mit zunehmenden Schwierigkeitsgraden von einfachen Linien und Bögen bis zu vorbereitenden Schwüngen für die Buchstabenformen. Ideal für die erste Schulphase.",
+        "class_grade": "1. Klasse",
+        "category": "Deutsch",
+        "subcategory": "Erstlesen und -schreiben",
+        "topics": [
+            "Schwungübungen",
+            "Schreibvorbereitung",
+            "Feinmotorik",
+            "Stifthaltung",
+            "Vorläuferfähigkeiten"
+        ],
+        "format": "PDF",
+        "page_count": 15,
+        "complexity_level": "einfach",
+        "teaching_approach": "spielerisch",
+        "bestseller_rating": 1932.5643,
+        "price": 1.99,
+        "is_bundle": false,
+        "author_segment": "newbie",
+        "author_slug": "schreibwerkstatt",
+        "seasonal_relevance": [
+            "Schuljahresbeginn"
+        ],
+        "language_level": "ohne Text",
+        "activity_type": [
+            "Einzelarbeit",
+            "Feinmotorische Übung"
+        ],
+        "competencies": [
+            "Feinmotorik",
+            "Augen-Hand-Koordination",
+            "Grafomotorik"
+        ]
+    }
+]
