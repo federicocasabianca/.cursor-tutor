@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Recommendations - {{ user_id }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">Recommendations for User: {{ user_id }}</h1>
+
+        {% if regular_recs %}
+        <h2 class="mb-3">Personalized Recommendations</h2>
+        <div class="row">
+            {% for rec in regular_recs %}
+            <div class="col-md-6 mb-4">
+                <div class="card recommendation-card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ rec.title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Author ID: {{ rec.author_id }}</h6>
+                        <p class="card-text">
+                            <strong>Price:</strong> €{{ rec.price }}<br>
+                            <strong>Categories:</strong> {{ rec.categories }}<br>
+                            <strong>Grades:</strong> {{ rec.class_grades }}<br>
+                            <strong>Score:</strong> {{ "%.2f"|format(rec.score) }}
+                        </p>
+                        <div class="card-footer bg-transparent">
+                            <h6>Match Factors:</h6>
+                            <ul class="list-unstyled">
+                                <li>Category match: {{ "%.2f"|format(rec.recommendation_factors.category_match) }}</li>
+                                <li>Grade match: {{ "%.2f"|format(rec.recommendation_factors.grade_match) }}</li>
+                                <li>Price match: {{ "%.2f"|format(rec.recommendation_factors.price_match) }}</li>
+                                <li>Freshness: {{ "%.2f"|format(rec.recommendation_factors.freshness) }}</li>
+                                <li>Popularity: {{ "%.2f"|format(rec.recommendation_factors.popularity) }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if fallback_recs %}
+        <h2 class="mb-3">Popular Recommendations (Fallback)</h2>
+        <div class="row">
+            {% for rec in fallback_recs %}
+            <div class="col-md-6 mb-4">
+                <div class="card fallback-card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ rec.title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Author ID: {{ rec.author_id }}</h6>
+                        <p class="card-text">
+                            <strong>Price:</strong> €{{ rec.price }}<br>
+                            <strong>Categories:</strong> {{ rec.categories }}<br>
+                            <strong>Grades:</strong> {{ rec.class_grades }}<br>
+                            <strong>Score:</strong> {{ "%.2f"|format(rec.score) }}
+                        </p>
+                        <div class="card-footer bg-transparent">
+                            <h6>Popularity Score:</h6>
+                            <p>{{ "%.2f"|format(rec.recommendation_factors.popularity) }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Recommendation Analysis</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Category Distribution</h6>
+                        <ul class="list-unstyled">
+                            {% for category, count in explanation.categories.items() %}
+                            <li>{{ category }}: {{ count }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Grade Distribution</h6>
+                        <ul class="list-unstyled">
+                            {% for grade, count in explanation.grades.items() %}
+                            <li>{{ grade }}: {{ count }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <h6>Price Distribution</h6>
+                        <ul class="list-unstyled">
+                            {% for price, count in explanation.price_distribution.items() %}
+                            <li>{{ price }}: {{ count }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Freshness Distribution</h6>
+                        <ul class="list-unstyled">
+                            <li>Recent: {{ explanation.freshness_distribution.recent }}</li>
+                            <li>Standard: {{ explanation.freshness_distribution.standard }}</li>
+                            <li>Older: {{ explanation.freshness_distribution.older }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

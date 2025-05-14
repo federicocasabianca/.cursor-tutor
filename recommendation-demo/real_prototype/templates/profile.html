@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}User Profile - {{ user_profile.user_id }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">User Profile: {{ user_profile.user_id }}</h1>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Preferences</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6>Preferred Categories</h6>
+                        <ul class="list-unstyled">
+                            {% for category in user_profile.preferred_categories %}
+                            <li>{{ category }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Preferred Grades</h6>
+                        <ul class="list-unstyled">
+                            {% for grade in user_profile.preferred_grades %}
+                            <li>{{ grade }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Price Preference</h6>
+                        <p>{{ user_profile.price_preference }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Event Statistics</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for event_type, count in user_profile.event_counts.items() %}
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ event_type }}</h6>
+                                <p class="card-text">{{ count }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Profile Contribution Analysis</h5>
+            </div>
+            <div class="card-body">
+                {% for event_type, data in contributions.items() %}
+                <div class="mb-4">
+                    <h6>{{ event_type.upper() }} (count: {{ data.count }})</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Grade Weight:</strong> {{ data.grade_weight }}</p>
+                            <p><strong>Subject Weight:</strong> {{ data.subject_weight }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Top Categories:</strong> {{ data.top_categories|join(', ') }}</p>
+                            <p><strong>Top Grades:</strong> {{ data.top_grades|join(', ') }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

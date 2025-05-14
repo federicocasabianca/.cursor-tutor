@@ -1,0 +1,347 @@
+[
+    {
+        "user_id": "587",
+        "explicit_preferences": {
+            "preferred_subjects": [
+                "Englisch",
+                "Mathematik"
+            ],
+            "preferred_grades": [
+                "5. Klasse"
+            ],
+            "preferred_formats": [
+                "PDF"
+            ],
+            "preferred_complexity": "mittel",
+            "preferred_teaching_approaches": [
+                "strukturiert",
+                "systematisch"
+            ],
+            "preferred_content_types": [
+                "Übungen",
+                "Tests",
+                "Arbeitsblätter"
+            ]
+        },
+        "implicit_preferences": {
+            "viewed_subjects": {
+                "Englisch": 0.45,
+                "Mathematik": 0.35,
+                "Deutsch": 0.20
+            },
+            "viewed_grades": {
+                "5. Klasse": 0.85,
+                "6. Klasse": 0.15
+            },
+            "viewed_topics": [
+                "Simple Present",
+                "Bruchrechnen",
+                "Grammatik",
+                "Grundrechenarten",
+                "Textverständnis"
+            ],
+            "activity_preferences": {
+                "Einzelarbeit": 0.6,
+                "Klassenarbeit": 0.3,
+                "Hausaufgaben": 0.1
+            },
+            "competency_focus": [
+                "Grammatikverständnis",
+                "Sprachkompetenz",
+                "Rechenfähigkeit"
+            ]
+        },
+        "teaching_context": {
+            "school_type": "Gymnasium",
+            "teaching_experience": 3,
+            "class_size": 26,
+            "digital_classroom": true,
+            "current_curriculum_topics": [
+                "Englische Grammatik",
+                "Bruchrechnung",
+                "Textanalyse"
+            ]
+        },
+        "interaction_history": {
+            "purchases": [
+                800184,
+                800180,
+                800190,
+                800196,
+                800203
+            ],
+            "favorites": [
+                800209,
+                800184,
+                800180,
+                800203
+            ],
+            "viewed_materials": [
+                800184,
+                800180,
+                800190,
+                800196,
+                800203,
+                800186,
+                800209
+            ],
+            "previewed_materials": [
+                800184,
+                800180,
+                800190,
+                800196,
+                800203
+            ],
+            "search_terms": [
+                "englisch 5 klasse übungen",
+                "englisch test simple present",
+                "mathe bruchrechnen 5 klasse",
+                "bruchrechnen übungen vertiefung",
+                "gedichtanalyse methoden"
+            ],
+            "negative_signals": {
+                "bounced_from": [
+                    800201,
+                    800193
+                ],
+                "removed_from_cart": [
+                    800207
+                ],
+                "short_views": [
+                    800194,
+                    800199
+                ]
+            },
+            "last_activity_date": "2025-04-10"
+        }
+    },
+    {
+        "user_id": "762",
+        "explicit_preferences": {
+            "preferred_subjects": [
+                "Kunst",
+                "Deutsch"
+            ],
+            "preferred_grades": [
+                "3. Klasse"
+            ],
+            "preferred_formats": [
+                "PDF"
+            ],
+            "preferred_complexity": "mittel",
+            "preferred_teaching_approaches": [
+                "handlungsorientiert",
+                "kreativ"
+            ],
+            "preferred_content_types": [
+                "Malvorlagen",
+                "Arbeitsblätter",
+                "Komplettpaket"
+            ]
+        },
+        "implicit_preferences": {
+            "viewed_subjects": {
+                "Kunst": 0.50,
+                "Deutsch": 0.35,
+                "Mathematik": 0.15
+            },
+            "viewed_grades": {
+                "3. Klasse": 0.90,
+                "4. Klasse": 0.10
+            },
+            "viewed_topics": [
+                "Ostern",
+                "Zeichnen",
+                "Rechtschreibung",
+                "Multiplikation",
+                "Lesetraining"
+            ],
+            "activity_preferences": {
+                "Einzelarbeit": 0.4,
+                "Gruppenarbeit": 0.3,
+                "Kreative Projekte": 0.3
+            },
+            "competency_focus": [
+                "Kreativität",
+                "Feinmotorik",
+                "Lesekompetenz"
+            ]
+        },
+        "teaching_context": {
+            "school_type": "Grundschule",
+            "teaching_experience": 8,
+            "class_size": 22,
+            "digital_classroom": false,
+            "current_curriculum_topics": [
+                "Kreatives Gestalten",
+                "Rechtschreibung",
+                "Grundrechenarten"
+            ]
+        },
+        "interaction_history": {
+            "purchases": [
+                800179,
+                800202,
+                800185,
+                800191,
+                800208
+            ],
+            "favorites": [
+                800179,
+                800202,
+                800197,
+                800191,
+                800208
+            ],
+            "viewed_materials": [
+                800179,
+                800202,
+                800185,
+                800191,
+                800197,
+                800208
+            ],
+            "previewed_materials": [
+                800179,
+                800202,
+                800191,
+                800208
+            ],
+            "search_terms": [
+                "ostern malvorlagen",
+                "zeichnen tiere 3 klasse",
+                "rechtschreibung ie i wörter",
+                "deutsch komplettpaket 3 klasse"
+            ],
+            "negative_signals": {
+                "bounced_from": [
+                    800183,
+                    800188
+                ],
+                "removed_from_cart": [],
+                "short_views": [
+                    800182,
+                    800189
+                ]
+            },
+            "last_activity_date": "2025-04-11"
+        }
+    },
+    {
+        "user_id": "843",
+        "explicit_preferences": {
+            "preferred_subjects": [
+                "Deutsch",
+                "Mathematik",
+                "Sachkunde"
+            ],
+            "preferred_grades": [
+                "2. Klasse"
+            ],
+            "preferred_formats": [
+                "PDF"
+            ],
+            "preferred_complexity": "differenziert",
+            "preferred_teaching_approaches": [
+                "progressiv",
+                "spielerisch"
+            ],
+            "preferred_content_types": [
+                "Komplettpaket",
+                "Arbeitsblätter",
+                "Lernspiele"
+            ]
+        },
+        "implicit_preferences": {
+            "viewed_subjects": {
+                "Deutsch": 0.45,
+                "Mathematik": 0.30,
+                "Sachkunde": 0.25
+            },
+            "viewed_grades": {
+                "2. Klasse": 0.95,
+                "1. Klasse": 0.05
+            },
+            "viewed_topics": [
+                "Leseverständnis",
+                "Zahlenraum bis 100",
+                "Jahreszeiten",
+                "Addition und Subtraktion",
+                "Leseförderung"
+            ],
+            "activity_preferences": {
+                "Stationsarbeit": 0.4,
+                "Einzelarbeit": 0.3,
+                "Gruppenarbeit": 0.3
+            },
+            "competency_focus": [
+                "Lesekompetenz",
+                "Textverständnis",
+                "Zahlenverständnis"
+            ]
+        },
+        "teaching_context": {
+            "school_type": "Grundschule",
+            "teaching_experience": 12,
+            "class_size": 18,
+            "digital_classroom": true,
+            "current_curriculum_topics": [
+                "Lesen und Textverständnis",
+                "Rechnen im Zahlenraum bis 100",
+                "Jahreszeiten und Natur"
+            ]
+        },
+        "interaction_history": {
+            "purchases": [
+                800181,
+                800187,
+                800192,
+                800198,
+                800204
+            ],
+            "favorites": [
+                800181,
+                800204,
+                800187,
+                800198,
+                800192
+            ],
+            "viewed_materials": [
+                800181,
+                800187,
+                800192,
+                800198,
+                800204,
+                800189,
+                800182
+            ],
+            "previewed_materials": [
+                800181,
+                800187,
+                800192,
+                800198
+            ],
+            "search_terms": [
+                "leseverständnis texte 2 klasse",
+                "zahlen bis 100 arbeitsblätter",
+                "jahreszeiten grundschule",
+                "addieren subtrahieren 100",
+                "leseförderung grundschule"
+            ],
+            "negative_signals": {
+                "bounced_from": [
+                    800184,
+                    800186
+                ],
+                "removed_from_cart": [
+                    800185
+                ],
+                "short_views": [
+                    800183,
+                    800190
+                ]
+            },
+            "last_activity_date": "2025-04-09"
+        }
+    }
+]
