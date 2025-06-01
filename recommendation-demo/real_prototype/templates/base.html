@@ -19,16 +19,62 @@
         .fallback-card {
             border-left: 4px solid #6c757d;
         }
+        .user-select {
+            min-width: 200px;
+        }
+        .recommendations-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        .recommendations-scroll {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            padding: 1rem 0;
+        }
+        .recommendations-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+        .recommendations-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        .recommendations-scroll::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        .recommendations-scroll::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        .recommendation-item {
+            flex: 0 0 auto;
+            width: 400px;
+            margin-right: 1rem;
+        }
+        .recommendation-item:last-child {
+            margin-right: 0;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
         <div class="container">
             <a class="navbar-brand" href="/">Recommendation System</a>
-            <div class="navbar-nav">
+            <div class="navbar-nav me-auto">
                 <a class="nav-link {% if active_page == 'profile' %}active{% endif %}" href="{{ url_for('user_profile', user_id=user_id) }}">User Profile</a>
                 <a class="nav-link {% if active_page == 'recommendations' %}active{% endif %}" href="{{ url_for('recommendations', user_id=user_id) }}">Recommendations</a>
             </div>
+            <form class="d-flex" id="userSelectForm">
+                <select name="user_id" class="form-select user-select" aria-label="Select User" onchange="updateUser(this.value)">
+                    {% for uid in user_ids %}
+                    <option value="{{ uid }}" {% if uid == user_id %}selected{% endif %}>{{ uid }}</option>
+                    {% endfor %}
+                </select>
+            </form>
         </div>
     </nav>
 
@@ -37,5 +83,21 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function updateUser(userId) {
+            const currentPath = window.location.pathname;
+            // Split the path into segments
+            const pathSegments = currentPath.split('/');
+            // Find the index of 'user' in the path
+            const userIndex = pathSegments.indexOf('user');
+            if (userIndex !== -1 && userIndex + 1 < pathSegments.length) {
+                // Replace the user ID (the segment after 'user')
+                pathSegments[userIndex + 1] = userId;
+                // Reconstruct the path
+                const newPath = pathSegments.join('/');
+                window.location.href = newPath;
+            }
+        }
+    </script>
 </body>
 </html> 

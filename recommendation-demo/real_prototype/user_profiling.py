@@ -3,6 +3,7 @@ import datetime
 from collections import defaultdict, Counter
 import math
 from typing import Dict, List, Tuple, Any, Optional
+from functools import lru_cache
 
 ##############################################
 # Data Access Layer
@@ -38,6 +39,32 @@ class DataRepository:
         self.loader = DataLoader()
         self._event_data = None
         self._materials = None
+        self._materials_by_category = None
+        self._materials_by_grade = None
+    
+    @lru_cache(maxsize=1000)
+    def get_material_by_id(self, material_id: str) -> Optional[Dict]:
+        """Get a single material by ID with caching"""
+        materials = self.get_materials()
+        return materials.get(material_id)
+    
+    def get_materials_by_category(self, category: str) -> List[Dict]:
+        """Get materials filtered by category"""
+        if self._materials_by_category is None:
+            materials = self.get_materials()
+            self._materials_by_category = defaultdict(list)
+            for material in materials.values():
+                self._materials_by_category[material['category']].append(material)
+        return self._materials_by_category.get(category, [])
+    
+    def get_materials_by_grade(self, grade: str) -> List[Dict]:
+        """Get materials filtered by grade"""
+        if self._materials_by_grade is None:
+            materials = self.get_materials()
+            self._materials_by_grade = defaultdict(list)
+            for material in materials.values():
+                self._materials_by_grade[material['class_grade']].append(material)
+        return self._materials_by_grade.get(grade, [])
     
     def get_event_data(self) -> Dict[str, List[Dict]]:
         """Get all event data (lazy loading)"""
@@ -49,7 +76,7 @@ class DataRepository:
         """Get materials inventory (lazy loading)"""
         if self._materials is None:
             materials_list = self.loader.load_material_data(f"{self.base_path}materials.json")
-            self._materials = {item["material_id"]: item for item in materials_list}
+            self._materials = {str(item["material_id"]): item for item in materials_list}
         return self._materials
     
     def _load_all_event_data(self) -> Dict[str, List[Dict]]:

@@ -30,16 +30,16 @@ def print_recommendations(recommendations):
         for i, rec in enumerate(regular_recs, 1):
             print(f"{i}. {rec['title']} - €{rec['price']} - Score: {rec['score']:.2f}")
             print(f"   Author ID: {rec['author_id']}")
-            print(f"   Categories: {rec['categories']}")
-            print(f"   Grades: {rec['class_grades']}")
-            print(f"   Match factors:")
-            factors = rec['recommendation_factors']
-            print(f"     - Category match: {factors['category_match']:.2f}")
-            print(f"     - Grade match: {factors['grade_match']:.2f}")
-            print(f"     - Price match: {factors['price_match']:.2f}")
-            print(f"     - Freshness: {factors['freshness']:.2f}")
-            print(f"     - Popularity: {factors['popularity']:.2f}")
-            print()
+        print(f"   Categories: {rec['categories']}")
+        print(f"   Grades: {rec['class_grades']}")
+        print(f"   Match factors:")
+        factors = rec['recommendation_factors']
+        print(f"     - Category match: {factors['category_match']:.2f}")
+        print(f"     - Grade match: {factors['grade_match']:.2f}")
+        print(f"     - Price match: {factors['price_match']:.2f}")
+        print(f"     - Freshness: {factors['freshness']:.2f}")
+        print(f"     - Popularity: {factors['popularity']:.2f}")
+        print()
     
     # Print fallback recommendations
     if fallback_recs:

@@ -409,6 +409,8 @@ class MaterialRecommender:
                 "categories": material.get("categories", ""),
                 "class_grades": material.get("class_grades", ""),
                 "author_id": material.get("author_id", "unknown"),
+                "author_slug": material.get("author_slug", "unknown"),
+                "bestseller_rating": material.get("bestseller_rating", 0),
                 "score": item["score"],
                 "is_fallback": is_fallback,
                 "recommendation_factors": {
