@@ -7,6 +7,9 @@ from datetime import datetime
 from typing import List, Dict, Any
 from bson import json_util
 import re
+import spacy
+from spacy.matcher import PhraseMatcher
+import csv
 
 # Load environment variables
 load_dotenv()
@@ -192,6 +195,52 @@ def insert_materials():
     finally:
         if 'client' in locals():
             client.close()
+
+# Load spaCy German model
+nlp = spacy.load('de_core_news_sm')
+
+# Taxonomy file paths
+TAXONOMY_PATHS = {
+    'category': 'search-mongodb/taxonomy/taxonomy_categories.csv',
+    'grade_level': 'search-mongodb/taxonomy/taxonomy_grade_levels.csv',
+    'material_type': 'search-mongodb/taxonomy/taxonomy_material_type.csv',
+    'school_type': 'search-mongodb/taxonomy/taxonomy_school_types.csv',
+}
+
+def load_taxonomy_terms():
+    taxonomy_terms = {}
+    for intent, path in TAXONOMY_PATHS.items():
+        terms = set()
+        try:
+            with open(path, encoding='utf-8') as f:
+                reader = csv.reader(f)
+                for row in reader:
+                    if row:
+                        terms.add(row[0].strip())
+        except Exception as e:
+            print(f"Error loading taxonomy for {intent}: {e}")
+        taxonomy_terms[intent] = list(terms)
+    return taxonomy_terms
+
+TAXONOMY_TERMS = load_taxonomy_terms()
+
+# Setup PhraseMatchers for each intent
+PHRASE_MATCHERS = {}
+for intent, terms in TAXONOMY_TERMS.items():
+    matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
+    patterns = [nlp.make_doc(term) for term in terms if term]
+    if patterns:
+        matcher.add(intent, patterns)
+    PHRASE_MATCHERS[intent] = matcher
+
+def detect_intents_spacy(query):
+    doc = nlp(query)
+    detected = set()
+    for intent, matcher in PHRASE_MATCHERS.items():
+        matches = matcher(doc)
+        if matches:
+            detected.add(intent)
+    return list(detected)
 
 if __name__ == '__main__':
     # Create indexes immediately when starting the application
