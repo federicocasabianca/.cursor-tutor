@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-05-31T18:39:50.638067",
+  "timestamp": "2025-06-13T11:00:15.305746",
   "model_config": {
     "n_estimators": 100,
     "max_depth": 6,
@@ -7,113 +7,113 @@
   },
   "performance_metrics": {
     "train": {
-      "rmse": 0.9198942052866225,
-      "mae": 0.81263626100123,
-      "r2": 0.8138342855722513,
-      "mse": 0.8462053489199067
+      "rmse": 0.9212347709670663,
+      "mae": 0.8135752427071324,
+      "r2": 0.8132912900538816,
+      "mse": 0.848673503238743
     },
     "validation": {
-      "rmse": 0.9508087104867039,
-      "mae": 0.8406530476115036,
-      "r2": 0.7991701098927448,
-      "mse": 0.9040372039373887
+      "rmse": 0.9517452241290086,
+      "mae": 0.8413431216612623,
+      "r2": 0.7987742940868917,
+      "mse": 0.9058189716523768
     },
     "test": {
-      "rmse": 0.9623770607423217,
-      "mae": 0.8457725698172474,
-      "r2": 0.7995355667581592,
-      "mse": 0.9261696070430302
+      "rmse": 0.9626494708554476,
+      "mae": 0.8458765331173419,
+      "r2": 0.7994220639121293,
+      "mse": 0.9266940037382734
     }
   },
   "ranking_metrics": {
-    "ndcg_5": 0.9155926832527214,
-    "ndcg_10": 0.9365697013481471,
-    "ndcg_20": 0.9465112258658307
+    "ndcg_5": 0.9159401607939592,
+    "ndcg_10": 0.9371530763446401,
+    "ndcg_20": 0.9468792936315709
   },
   "feature_importance": [
     {
       "feature": "position_in_results",
-      "importance": 0.5128284096717834
+      "importance": 0.5344696044921875
     },
     {
       "feature": "subject_match_primary",
-      "importance": 0.16268612444400787
+      "importance": 0.1597532331943512
     },
     {
       "feature": "subject_match_secondary",
-      "importance": 0.07733950018882751
+      "importance": 0.07024931162595749
     },
     {
       "feature": "material_author_Eggs",
-      "importance": 0.04632812738418579
+      "importance": 0.04509587958455086
     },
     {
       "feature": "material_author_Cub",
-      "importance": 0.030758462846279144
-    },
-    {
-      "feature": "material_author_Bear",
-      "importance": 0.01929611898958683
+      "importance": 0.030661754310131073
     },
     {
       "feature": "price_too_high_for_user",
-      "importance": 0.016266513615846634
+      "importance": 0.01597987860441208
+    },
+    {
+      "feature": "material_author_Bear",
+      "importance": 0.014936065301299095
     },
     {
       "feature": "material_author_Innovators",
-      "importance": 0.014183202758431435
+      "importance": 0.013097642920911312
     },
     {
       "feature": "grade_overlap_count",
-      "importance": 0.010919874534010887
+      "importance": 0.010392121970653534
     },
     {
       "feature": "material_author_Dragon",
-      "importance": 0.008879507891833782
+      "importance": 0.008697597309947014
     },
     {
       "feature": "user_engagement_browser",
-      "importance": 0.008004860021173954
+      "importance": 0.008076692931354046
     },
     {
       "feature": "subject_no_match",
-      "importance": 0.006854325532913208
+      "importance": 0.005716464947909117
     },
     {
       "feature": "material_type_preferred",
-      "importance": 0.005778389982879162
+      "importance": 0.005431191995739937
     },
     {
       "feature": "high_quality_match",
-      "importance": 0.005164310801774263
-    },
-    {
-      "feature": "user_engagement_power_user",
-      "importance": 0.002370921429246664
-    },
-    {
-      "feature": "user_price_sensitivity_low",
-      "importance": 0.002144432859495282
-    },
-    {
-      "feature": "material_type_Spiele",
-      "importance": 0.0019902721978724003
-    },
-    {
-      "feature": "price_premium_match",
-      "importance": 0.0019609632436186075
+      "importance": 0.00496897054836154
     },
     {
       "feature": "beginner_friendly",
-      "importance": 0.0019184027332812548
+      "importance": 0.0025837302673608065
     },
     {
-      "feature": "grade_perfect_match",
-      "importance": 0.0017812224105000496
+      "feature": "material_subject_Englisch",
+      "importance": 0.0023501040413975716
+    },
+    {
+      "feature": "user_engagement_power_user",
+      "importance": 0.0021236231550574303
+    },
+    {
+      "feature": "price_premium_match",
+      "importance": 0.0019127217819914222
+    },
+    {
+      "feature": "price_affordable_for_user",
+      "importance": 0.001895747147500515
+    },
+    {
+      "feature": "user_price_sensitivity_low",
+      "importance": 0.0018430521013215184
     }
   ],
   "model_summary": {
     "total_features": 92,
-    "best_iteration": 49
+    "best_iteration": 48
   }
 }

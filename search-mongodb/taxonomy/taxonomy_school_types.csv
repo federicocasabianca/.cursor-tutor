@@ -1,0 +1,51 @@
+id,title,position,tooltip,world,is_interdisciplinary
+1,Kita / Vorschule,23,,de,true
+2,Grundschule,26,,de,false
+3,Sek I Mittlere Schulform,29,,de,false
+4,Sek I Gymnasium,32,,de,false
+5,Sek II,35,,de,false
+6,Berufsschule,38,,de,false
+7,Förderunterricht,41,,de,false
+8,Erwachsenenbildung,44,,de,true
+9,"Material ist unabhängig von Schultyp & Klassenstufen, z.B. Agenda für Elternabend",46,,de,true
+11,Educación Infantil,24,Preschool,es,false
+14,Educación Primaria,27,Primary education,es,false
+17,Educación Secundaria,30,Secondary School,es,false
+20,Bachillerato,33,Secondary School,es,false
+23,Ciclos formativos de grado medio,36,Middle grade training cycle,es,false
+26,Formación Profesional,42,Professional Training,es,false
+29,Refuerzo,45,Reinforcement classes,es,false
+32,Educación de adultos (EPA),47,Adult education,es,false
+35,Recursos interdisciplinarios,48,Interdisciplinary,es,false
+38,Ciclos formativos de grado superior,39,Superior grade training cycle,es,false
+41,Recursos sin tipo de escuela ni curso,49,Resources for teachers,es,false
+43,Ecole Maternelle,22,,fr,false
+46,Ecole Elementaire,25,,fr,false
+49,Collège,28,,fr,false
+52,Lycée Général et Technologique,31,,fr,false
+55,Lycée Professionnel,34,,fr,false
+58,Soutien scolaire,37,,fr,false
+61,Le matériel ne dépend pas d'un type d'école/de classe (par exemple: planning réunion parents),40,,fr,false
+64,Enseignement adultes,43,,fr,false
+65,Test,22,Test,nl,false
+66,Scuola dell'Infanzia,8,Scuola dell'Infanzia,it,false
+67,Παιδικός Σταθμός - Νηπιαγωγείο,0,Παιδικός Σταθμός - Νηπιαγωγείο,gr,false
+68,Δημοτικό ,1,Δημοτικό ,gr,false
+69,Γυμνάσιο,2,Γυμνάσιο,gr,false
+70,Λύκειο,3,Λύκειο,gr,false
+71,Ενιαίο Λύκειο,4,Ενιαίο Λύκειο,gr,false
+72,Επαγγελματικό Λύκειο,5,Επαγγελματικό Λύκειο,gr,false
+73,Ειδικό Σχολείο,18,Ειδικό Σχολείο,gr,false
+74,Εκπαίδευση Ενηλίκων,19,Εκπαίδευση Ενηλίκων,gr,false
+75,Το υλικό μπορεί να χρησιμοποιηθεί ανεξάρτητα από τον τύπο του σχολείου και το επίπεδο της τάξης,20,Το υλικό μπορεί να χρησιμοποιηθεί ανεξάρτητα από τον τύπο του σχολείου και το επίπεδο της τάξης,gr,false
+76,Primaria,9,Primaria,it,false
+77,Secondaria I grado,10,Secondaria I grado,it,false
+78,Secondaria II grado,11,Secondaria II grado,it,false
+79,Liceo,12,Liceo,it,false
+80,Istituto tecnico,13,Istituto tecnico,it,false
+81,Istituto professionale,14,Istituto professionale,it,false
+84,Lezioni di sostegno,15,Lezioni di sostegno,it,false
+85,Formazione per adulti,16,Formazione per adulti,it,false
+86,Il materiale è utilizzabile indipendentemente dal tipo di scuola e dal livello di classe.,17,Il materiale è utilizzabile indipendentemente dal tipo di scuola e dal livello di classe.,it,false
+87,Nido d'infanzia,6,Nido d'infanzia,it,false
+88,International Baccalaureate (IB),7,International Baccalaureate (IB),gr,false

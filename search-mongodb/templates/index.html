@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materials Search</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .search-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .result-card {
+            transition: all 0.3s ease;
+        }
+        .result-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .score-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 1000;
+        }
+        .loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Loading Overlay -->
+    <div id="loading" class="loading">
+        <div class="loading-spinner">
+            <svg class="animate-spin h-10 w-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Materials Search</h1>
+            <p class="text-gray-600">Search through our collection of educational materials</p>
+        </div>
+
+        <!-- Search Form -->
+        <div class="max-w-2xl mx-auto mb-8">
+            <form id="searchForm" class="flex gap-2">
+                <input type="text" 
+                       id="searchInput" 
+                       class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                       placeholder="Search materials by title, description, type, or author...">
+                <button type="submit" 
+                        class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Search
+                </button>
+            </form>
+        </div>
+
+        <!-- Insert Button -->
+        <div class="text-center mb-8">
+            <button id="insertButton" 
+                    class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                Insert Materials from JSON
+            </button>
+        </div>
+
+        <!-- Results Container -->
+        <div id="results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Results will be inserted here -->
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="hidden text-center text-gray-600 mt-8">
+            No materials found matching your search criteria.
+        </div>
+    </div>
+
+    <script>
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        const resultsContainer = document.getElementById('results');
+        const noResultsMessage = document.getElementById('noResults');
+        const insertButton = document.getElementById('insertButton');
+        const loading = document.getElementById('loading');
+
+        function showLoading() {
+            loading.style.display = 'block';
+        }
+
+        function hideLoading() {
+            loading.style.display = 'none';
+        }
+
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString();
+        }
+
+        let currentPage = 1;
+        let currentQuery = '';
+        let totalResults = 0;
+        let loadedResults = [];
+        const RESULTS_PER_PAGE = 12;
+
+        function stripHTML(html) {
+            let div = document.createElement('div');
+            div.innerHTML = html;
+            return div.textContent || div.innerText || '';
+        }
+
+        function createResultCard(material, index) {
+            // Ensure category and grade_level are arrays
+            const categories = Array.isArray(material.category) ? material.category : 
+                             (typeof material.category === 'string' ? material.category.split(',').map(c => c.trim()) : []);
+            const gradeLevels = Array.isArray(material.grade_level) ? material.grade_level : 
+                              (typeof material.grade_level === 'string' ? material.grade_level.split(',').map(g => g.trim()) : []);
+            const desc = stripHTML(material.description || 'No description available');
+            const shortDesc = desc.length > 200 ? desc.slice(0, 200) + '...' : desc;
+            const isLong = desc.length > 200;
+            return `
+                <div class="result-card bg-white rounded-lg shadow-md p-6 relative" data-index="${index}">
+                    <div class="score-badge bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
+                        Score: ${material.score || 0}
+                    </div>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-2">${material.title || 'No Title'}</h2>
+                    <p class="text-gray-600 mb-4 line-clamp-3" id="desc-${index}">
+                        ${shortDesc}
+                        ${isLong ? `<button class="text-blue-500 ml-2 underline text-xs" onclick="toggleDescription(${index})" id="toggle-btn-${index}">Show more</button>` : ''}
+                    </p>
+                    <div class="space-y-2">
+                        <div class="flex items-center text-sm text-gray-500">
+                            <span class="font-medium">Type:</span>
+                            <span class="ml-2">${material.material_type || 'Not specified'}</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <span class="font-medium">Author:</span>
+                            <span class="ml-2">${material.author_slug || 'Unknown'}</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <span class="font-medium">Price:</span>
+                            <span class="ml-2">${material.is_free ? 'Free' : `$${(material.price || 0).toFixed(2)}`}</span>
+                        </div>
+                        ${categories.length > 0 ? `
+                            <div class="flex flex-wrap gap-2 mt-3">
+                                ${categories.map(cat => `
+                                    <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs">
+                                        ${cat}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                        ${gradeLevels.length > 0 ? `
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                ${gradeLevels.map(grade => `
+                                    <span class="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-xs">
+                                        ${grade}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        window.toggleDescription = function(index) {
+            const material = loadedResults[index];
+            const descElem = document.getElementById(`desc-${index}`);
+            const btn = document.getElementById(`toggle-btn-${index}`);
+            const desc = stripHTML(material.description || 'No description available');
+            if (btn.innerText === 'Show more') {
+                descElem.innerHTML = desc + ` <button class="text-blue-500 ml-2 underline text-xs" onclick="toggleDescription(${index})" id="toggle-btn-${index}">Show less</button>`;
+            } else {
+                const shortDesc = desc.length > 200 ? desc.slice(0, 200) + '...' : desc;
+                descElem.innerHTML = shortDesc + ` <button class="text-blue-500 ml-2 underline text-xs" onclick="toggleDescription(${index})" id="toggle-btn-${index}">Show more</button>`;
+            }
+        }
+
+        async function performSearch(query, page = 1, append = false) {
+            showLoading();
+            try {
+                const response = await fetch(`/search?q=${encodeURIComponent(query)}&page=${page}&limit=${RESULTS_PER_PAGE}`);
+                const data = await response.json();
+                const results = data.results || [];
+                totalResults = data.total || 0;
+                currentPage = data.page || 1;
+                if (!append) {
+                    loadedResults = [];
+                    resultsContainer.innerHTML = '';
+                }
+                loadedResults = loadedResults.concat(results);
+                noResultsMessage.classList.add('hidden');
+                if (!Array.isArray(results) || loadedResults.length === 0) {
+                    noResultsMessage.classList.remove('hidden');
+                } else {
+                    results.forEach((material, idx) => {
+                        try {
+                            resultsContainer.innerHTML += createResultCard(material, loadedResults.length - results.length + idx);
+                        } catch (error) {
+                            console.error('Error creating card for material:', material, error);
+                        }
+                    });
+                }
+                // Show or hide the Show More button
+                if (loadedResults.length < totalResults) {
+                    showMoreButton.classList.remove('hidden');
+                } else {
+                    showMoreButton.classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Search error:', error);
+                alert('An error occurred while searching. Please try again.');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function insertMaterials() {
+            showLoading();
+            try {
+                const response = await fetch('/insert', {
+                    method: 'POST'
+                });
+                const result = await response.json();
+                alert(result.message || 'Materials inserted successfully!');
+            } catch (error) {
+                console.error('Insert error:', error);
+                alert('An error occurred while inserting materials. Please try again.');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const query = searchInput.value.trim();
+            if (query) {
+                currentQuery = query;
+                currentPage = 1;
+                performSearch(query, 1, false);
+            }
+        });
+
+        insertButton.addEventListener('click', insertMaterials);
+
+        // Show More button
+        const showMoreButton = document.createElement('button');
+        showMoreButton.textContent = 'Show more';
+        showMoreButton.className = 'block mx-auto my-8 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2';
+        showMoreButton.onclick = function() {
+            currentPage += 1;
+            performSearch(currentQuery, currentPage, true);
+        };
+        showMoreButton.classList.add('hidden');
+        document.body.appendChild(showMoreButton);
+
+        // Initial search if there's a query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialQuery = urlParams.get('q');
+        if (initialQuery) {
+            searchInput.value = initialQuery;
+            currentQuery = initialQuery;
+            performSearch(initialQuery, 1, false);
+        }
+    </script>
+</body>
+</html> 

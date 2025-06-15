@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Categories</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .search-form {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: 300px;
+            font-size: 16px;
+        }
+        button {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .error {
+            color: red;
+        }
+        .category-path {
+            margin: 5px 0;
+            padding: 5px;
+            background-color: #f5f5f5;
+            border-radius: 3px;
+        }
+        .confidence {
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Search Categories</h1>
+    
+    <form class="search-form" method="POST">
+        <input type="text" name="query" placeholder="Enter your search term..." required>
+        <button type="submit">Search</button>
+    </form>
+
+    {% if result %}
+        {% if result.error %}
+            <div class="error">
+                Error: {{ result.error }}
+            </div>
+        {% else %}
+            <div class="result">
+                <h2>Results:</h2>
+                {% if result.tags and result.tags.category %}
+                    <h3>Categories:</h3>
+                    {% for category in result.tags.category %}
+                        <div class="category-path">
+                            <div>{{ category[0] }}</div>
+                            <div class="confidence">Confidence: {{ "%.2f"|format(category[1] * 100) }}%</div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                {% if result.tags and result.tags.grade %}
+                    <h3>Grade Levels:</h3>
+                    <ul>
+                    {% for grade in result.tags.grade %}
+                        <li>{{ grade[0] }} <span class="confidence">({{ "%.2f"|format(grade[1] * 100) }}%)</span></li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endif %}
+</body>
+</html> 
