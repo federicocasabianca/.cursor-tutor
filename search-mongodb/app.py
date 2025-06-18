@@ -239,13 +239,17 @@ def search():
                     }
                 })
                 
+                # Dynamic minimumShouldMatch for must+should
+                num_should = len(should_clauses)
+                minimum_should = 1 if num_should > 0 else 0
+
                 # Build the search stage with must and should clauses
                 search_stage = {
                     "$search": {
                         "compound": {
                             "must": must_clauses,
                             "should": should_clauses,
-                            "minimumShouldMatch": 1
+                            "minimumShouldMatch": minimum_should
                         }
                     }
                 }
@@ -343,11 +347,15 @@ def search():
                         }
                     })
 
+            # Dynamic minimumShouldMatch for should-only queries
+            num_should = len(should_clauses)
+            minimum_should = max(1, num_should // 2)
+
             search_stage = {
                 "$search": {
                     "compound": {
                         "should": should_clauses,
-                        "minimumShouldMatch": 2
+                        "minimumShouldMatch": minimum_should
                     }
                 }
             }
