@@ -10,6 +10,7 @@ import re
 import spacy
 from spacy.matcher import PhraseMatcher
 import csv
+import requests
 
 # Load environment variables
 load_dotenv()
@@ -69,22 +70,31 @@ def ensure_indexes(client):
         raise
 
 def load_materials_from_json(file_path: str) -> List[Dict[str, Any]]:
-    """Load and transform materials from JSON file"""
+    """Load and transform materials from JSON file with proper field mapping and array conversion."""
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             raw_data = json.load(file)
-            
         materials = []
         for item in raw_data:
-            # Convert categories and grade_levels to arrays if they're strings
+            # Always convert to arrays
             categories = item.get("categories", "")
             if isinstance(categories, str):
-                categories = [cat.strip() for cat in categories.split(",")] if categories else []
-            
+                categories = [cat.strip() for cat in categories.split(",") if cat.strip()]
+            elif not isinstance(categories, list):
+                categories = []
+
             grade_levels = item.get("class_grades", "")
             if isinstance(grade_levels, str):
-                grade_levels = [grade.strip() for grade in grade_levels.split(",")] if grade_levels else []
-            
+                grade_levels = [grade.strip() for grade in grade_levels.split(",") if grade.strip()]
+            elif not isinstance(grade_levels, list):
+                grade_levels = []
+
+            material_types = item.get("material_types", "")
+            if isinstance(material_types, str):
+                material_types = [typ.strip() for typ in material_types.split(",") if typ.strip()]
+            elif not isinstance(material_types, list):
+                material_types = []
+
             material = {
                 "material_id": int(item.get("material_id", 0)),
                 "title": str(item.get("material_title", "")),
@@ -93,7 +103,7 @@ def load_materials_from_json(file_path: str) -> List[Dict[str, Any]]:
                 "grade_level": grade_levels,
                 "price": float(item.get("price", 0.0)),
                 "is_free": bool(item.get("is_free", False)),
-                "material_type": str(item.get("material_types", "")),
+                "material_type": material_types,
                 "bestseller_rating": float(item.get("bestseller_rating", 0.0)),
                 "is_bundle": bool(item.get("is_bundle", False)),
                 "author_slug": str(item.get("author_slug", "")),
@@ -101,7 +111,6 @@ def load_materials_from_json(file_path: str) -> List[Dict[str, Any]]:
                 "updated_at": datetime.utcnow()
             }
             materials.append(material)
-        
         print(f"Successfully loaded {len(materials)} materials from JSON")
         return materials
     except Exception as e:
@@ -130,47 +139,263 @@ def insert_documents(client, database_name: str, collection_name: str, documents
 def home():
     return render_template('index.html')
 
+def call_intent_api(query: str):
+    """Call the external intent detection API and return detected categories and grade levels with confidence."""
+    url = "https://srch-main.api.eduki.info/api/v3/query-intent/predict"
+    headers = {"Content-Type": "application/json"}
+    payload = {"text": query}
+    try:
+        response = requests.post(url, headers=headers, json=payload, timeout=3)
+        response.raise_for_status()
+        result = response.json()
+        # result['tags'] should have 'category' and 'grade' as lists of (name, confidence)
+        return result.get('tags', {})
+    except Exception as e:
+        print(f"Intent API error: {e}")
+        return {}
+
 @app.route('/search')
 def search():
     query = request.args.get('q', '')
     page = int(request.args.get('page', 1))
     limit = int(request.args.get('limit', 12))
+    # New parameters for filtered search
+    apply_filters = request.args.get('apply_filters', 'false').lower() == 'true'
+    filter_categories = request.args.getlist('filter_categories')
+    filter_grades = request.args.getlist('filter_grades')
+    
     if not query:
         return jsonify([])
-    
+
     try:
         client = get_mongodb_connection()
         db = client[os.getenv('DATABASE_NAME', 'materials_db')]
         collection = db[os.getenv('COLLECTION_NAME', 'materials')]
-        
-        # Create text search query
+
+        # Use external API for intent detection
+        tags = call_intent_api(query)
+        detected_categories = tags.get('category', [])
+        detected_grades = tags.get('grade', [])
+        detected_intents = []
+        if detected_categories:
+            detected_intents.append('category')
+        if detected_grades:
+            detected_intents.append('grade_level')
+        if not detected_intents:
+            detected_intents = ['unknown']
+
+        # If filters are being applied, use must filters instead of should
+        if apply_filters and (filter_categories or filter_grades):
+            try:
+                # Build must filters for confirmed categories and grades
+                must_clauses = []
+                should_clauses = []
+                
+                # Add must filters for confirmed categories
+                if filter_categories:
+                    must_clauses.append({
+                        "text": {
+                            "query": " ".join(filter_categories),
+                            "path": "category"
+                        }
+                    })
+                
+                # Add must filters for confirmed grades
+                if filter_grades:
+                    must_clauses.append({
+                        "text": {
+                            "query": " ".join(filter_grades),
+                            "path": "grade_level"
+                        }
+                    })
+                
+                # Add should clauses for the original query on other fields
+                should_clauses.append({
+                    "text": {
+                        "query": query,
+                        "path": "title",
+                        "score": {"boost": {"value": 7}}
+                    }
+                })
+                should_clauses.append({
+                    "text": {
+                        "query": query,
+                        "path": "description",
+                        "score": {"boost": {"value": 2}}
+                    }
+                })
+                should_clauses.append({
+                    "text": {
+                        "query": query,
+                        "path": "material_type",
+                        "score": {"boost": {"value": 3}}
+                    }
+                })
+                should_clauses.append({
+                    "text": {
+                        "query": query,
+                        "path": "author_slug",
+                        "score": {"boost": {"value": 1}}
+                    }
+                })
+                
+                # Build the search stage with must and should clauses
+                search_stage = {
+                    "$search": {
+                        "compound": {
+                            "must": must_clauses,
+                            "should": should_clauses,
+                            "minimumShouldMatch": 1
+                        }
+                    }
+                }
+                
+                pipeline = [
+                    search_stage,
+                    {"$addFields": {"score": {"$meta": "searchScore"}}},
+                    {"$sort": {"score": -1}},
+                    {"$skip": (page - 1) * limit},
+                    {"$limit": limit}
+                ]
+                results = list(collection.aggregate(pipeline))
+                if results:
+                    total_count = collection.count_documents({})
+                    for result in results:
+                        result['_id'] = str(result['_id'])
+                        result['score'] = round(result.get('score', 0), 2)
+                    return jsonify({
+                        "results": results,
+                        "total": total_count,
+                        "page": page,
+                        "limit": limit,
+                        "intents": tags,
+                        "applied_filters": {
+                            "categories": filter_categories,
+                            "grades": filter_grades
+                        }
+                    })
+            except Exception as atlas_error:
+                print(f"Atlas Search with filters failed, falling back to text search: {atlas_error}")
+
+        # Regular search logic (existing code)
+        try:
+            # Try Atlas Search first
+            fallback_boosts = {
+                "title": 7,
+                "description": 2,
+                "category": 3,
+                "grade_level": 3,
+                "material_type": 3,
+                "author_slug": 1,
+            }
+            intent_boost = 6
+            title_boost = 7 if 'unknown' not in detected_intents else fallback_boosts["title"]
+
+            # Map intent names to document fields
+            intent_field_map = {
+                "category": "category",
+                "grade_level": "grade_level",
+            }
+
+            should_clauses = []
+            should_clauses.append({
+                "text": {
+                    "query": query,
+                    "path": "title",
+                    "score": {"boost": {"value": title_boost}}
+                }
+            })
+            should_clauses.append({
+                "text": {
+                    "query": query,
+                    "path": "description",
+                    "score": {"boost": {"value": fallback_boosts["description"]}}
+                }
+            })
+
+            # Add detected categories and grades with intent boost
+            if detected_categories:
+                for cat, conf in detected_categories:
+                    should_clauses.append({
+                        "text": {
+                            "query": cat,
+                            "path": "category",
+                            "score": {"boost": {"value": intent_boost}}
+                        }
+                    })
+            if detected_grades:
+                for grade, conf in detected_grades:
+                    should_clauses.append({
+                        "text": {
+                            "query": grade,
+                            "path": "grade_level",
+                            "score": {"boost": {"value": intent_boost}}
+                        }
+                    })
+            # Add fallback fields (except title, description, category, grade_level)
+            for field, boost in fallback_boosts.items():
+                if field not in ["title", "description", "category", "grade_level"]:
+                    should_clauses.append({
+                        "text": {
+                            "query": query,
+                            "path": field,
+                            "score": {"boost": {"value": boost}}
+                        }
+                    })
+
+            search_stage = {
+                "$search": {
+                    "compound": {
+                        "should": should_clauses,
+                        "minimumShouldMatch": 2
+                    }
+                }
+            }
+            pipeline = [
+                search_stage,
+                {"$addFields": {"score": {"$meta": "searchScore"}}},
+                {"$sort": {"score": -1}},
+                {"$skip": (page - 1) * limit},
+                {"$limit": limit}
+            ]
+            results = list(collection.aggregate(pipeline))
+            if results:
+                total_count = collection.count_documents({})
+                for result in results:
+                    result['_id'] = str(result['_id'])
+                    result['score'] = round(result.get('score', 0), 2)
+                return jsonify({
+                    "results": results,
+                    "total": total_count,
+                    "page": page,
+                    "limit": limit,
+                    "intents": tags
+                })
+        except Exception as atlas_error:
+            print(f"Atlas Search failed, falling back to text search: {atlas_error}")
+
+        # Fallback to text search if Atlas Search fails or returns no results
         search_query = {
             "$text": {
                 "$search": query
             }
         }
-        
-        # Pagination
         skip = (page - 1) * limit
         cursor = collection.find(
             search_query,
             {"score": {"$meta": "textScore"}}
         ).sort([("score", {"$meta": "textScore"})]).skip(skip).limit(limit)
         results = list(cursor)
-        
-        # Get total count for this query
         total_count = collection.count_documents(search_query)
-        
-        # Convert ObjectId to string for JSON serialization
         for result in results:
             result['_id'] = str(result['_id'])
-            result['score'] = round(result['score'], 2)
-        
+            result['score'] = round(result.get('score', 0), 2)
         return jsonify({
             "results": results,
             "total": total_count,
             "page": page,
-            "limit": limit
+            "limit": limit,
+            "intents": tags
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -201,10 +426,10 @@ nlp = spacy.load('de_core_news_sm')
 
 # Taxonomy file paths
 TAXONOMY_PATHS = {
-    'category': 'search-mongodb/taxonomy/taxonomy_categories.csv',
-    'grade_level': 'search-mongodb/taxonomy/taxonomy_grade_levels.csv',
-    'material_type': 'search-mongodb/taxonomy/taxonomy_material_type.csv',
-    'school_type': 'search-mongodb/taxonomy/taxonomy_school_types.csv',
+    'category': './taxonomy/taxonomy_categories.csv',
+    'grade_level': './taxonomy/taxonomy_grade_levels.csv',
+    'material_type': './taxonomy/taxonomy_material_type.csv',
+    'school_type': './taxonomy/taxonomy_school_types.csv',
 }
 
 def load_taxonomy_terms():

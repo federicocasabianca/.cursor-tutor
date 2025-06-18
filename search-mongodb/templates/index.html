@@ -39,6 +39,107 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+        /* Text wrapping improvements */
+        .result-card h2 {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+        .result-card p {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.5;
+        }
+        /* Suggestions styling */
+        .suggestions-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .suggestions-container h3 {
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .filter-item {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+        .filter-item:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-1px);
+        }
+        .filter-checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: #667eea;
+        }
+        /* Applied filters styling */
+        .applied-filters {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .applied-filters h3 {
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .filter-tag {
+            background: rgba(255, 255, 255, 0.9);
+            color: #059669;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin: 0.25rem;
+            display: inline-block;
+        }
+        /* Search query info */
+        .search-info {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-size: 0.875rem;
+        }
+        .search-info h4 {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        .search-info ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .search-info li {
+            padding: 0.25rem 0;
+            color: #6b7280;
+        }
+        .must-clause {
+            color: #dc2626;
+            font-weight: 500;
+        }
+        .should-clause {
+            color: #2563eb;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -192,6 +293,196 @@
             }
         }
 
+        const intentContainer = document.createElement('div');
+        intentContainer.className = 'text-center my-4';
+        document.body.insertBefore(intentContainer, resultsContainer.parentElement);
+
+        function showIntents(intents) {
+            if (!intents || (typeof intents === 'object' && Object.keys(intents).length === 0)) {
+                intentContainer.innerHTML = '';
+                return;
+            }
+            
+            let html = '';
+            let hasSuggestions = false;
+            
+            if (intents.category && intents.category.length > 0) {
+                hasSuggestions = true;
+                html += `<div class="text-left max-w-xl mx-auto mb-4">
+                    <div class="font-bold text-lg mb-2">Detected Categories:</div>
+                    ${intents.category.map(([cat, conf]) => `
+                        <div class="bg-gray-100 rounded px-3 py-2 mb-1 flex items-center justify-between">
+                            <div>
+                                <span class="font-medium">${cat}</span><br>
+                                <span class="text-xs text-gray-600">Confidence: ${(conf * 100).toFixed(2)}%</span>
+                            </div>
+                            <input type="checkbox" class="filter-checkbox category-filter" value="${cat}" data-confidence="${conf}">
+                        </div>
+                    `).join('')}
+                </div>`;
+            }
+            
+            if (intents.grade && intents.grade.length > 0) {
+                hasSuggestions = true;
+                html += `<div class="text-left max-w-xl mx-auto mb-4">
+                    <div class="font-bold text-lg mb-2">Detected Grade Levels:</div>
+                    ${intents.grade.map(([grade, conf]) => `
+                        <div class="bg-gray-100 rounded px-3 py-2 mb-1 flex items-center justify-between">
+                            <div>
+                                <span class="font-medium">${grade}</span><br>
+                                <span class="text-xs text-gray-600">Confidence: ${(conf * 100).toFixed(2)}%</span>
+                            </div>
+                            <input type="checkbox" class="filter-checkbox grade-filter" value="${grade}" data-confidence="${conf}">
+                        </div>
+                    `).join('')}
+                </div>`;
+            }
+            
+            if (hasSuggestions) {
+                html += `
+                    <div class="text-center mb-4">
+                        <p class="text-sm text-gray-600 mb-2">Would you like to apply these filters to refine your search?</p>
+                        <button id="applyFiltersBtn" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 mr-2">
+                            Apply Selected Filters
+                        </button>
+                        <button id="clearFiltersBtn" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                            Clear All
+                        </button>
+                    </div>
+                `;
+            }
+            
+            intentContainer.innerHTML = html;
+            
+            // Add event listeners for filter buttons
+            if (hasSuggestions) {
+                const applyFiltersBtn = document.getElementById('applyFiltersBtn');
+                const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+                
+                if (applyFiltersBtn) {
+                    applyFiltersBtn.addEventListener('click', applySelectedFilters);
+                }
+                if (clearFiltersBtn) {
+                    clearFiltersBtn.addEventListener('click', clearAllFilters);
+                }
+            }
+        }
+
+        function applySelectedFilters() {
+            const selectedCategories = Array.from(document.querySelectorAll('.category-filter:checked')).map(cb => cb.value);
+            const selectedGrades = Array.from(document.querySelectorAll('.grade-filter:checked')).map(cb => cb.value);
+            
+            if (selectedCategories.length === 0 && selectedGrades.length === 0) {
+                alert('Please select at least one filter to apply.');
+                return;
+            }
+            
+            // Perform filtered search
+            performFilteredSearch(currentQuery, selectedCategories, selectedGrades);
+        }
+
+        function clearAllFilters() {
+            document.querySelectorAll('.filter-checkbox').forEach(cb => cb.checked = false);
+        }
+
+        async function performFilteredSearch(query, categories, grades) {
+            showLoading();
+            try {
+                const params = new URLSearchParams({
+                    q: query,
+                    page: 1,
+                    limit: RESULTS_PER_PAGE,
+                    apply_filters: 'true'
+                });
+                
+                // Add filter parameters
+                categories.forEach(cat => params.append('filter_categories', cat));
+                grades.forEach(grade => params.append('filter_grades', grade));
+                
+                const response = await fetch(`/search?${params.toString()}`);
+                const data = await response.json();
+                const results = data.results || [];
+                totalResults = data.total || 0;
+                currentPage = data.page || 1;
+                
+                // Show applied filters
+                showAppliedFilters(data.applied_filters || {});
+                
+                // Reset results
+                loadedResults = [];
+                resultsContainer.innerHTML = '';
+                loadedResults = results;
+                
+                noResultsMessage.classList.add('hidden');
+                if (!Array.isArray(results) || loadedResults.length === 0) {
+                    noResultsMessage.classList.remove('hidden');
+                } else {
+                    results.forEach((material, idx) => {
+                        try {
+                            resultsContainer.innerHTML += createResultCard(material, idx);
+                        } catch (error) {
+                            console.error('Error creating card for material:', material, error);
+                        }
+                    });
+                }
+                
+                // Show or hide the Show More button
+                if (loadedResults.length < totalResults) {
+                    showMoreButton.classList.remove('hidden');
+                } else {
+                    showMoreButton.classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Filtered search error:', error);
+                alert('An error occurred while searching with filters. Please try again.');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function showAppliedFilters(appliedFilters) {
+            let html = '';
+            if (appliedFilters.categories && appliedFilters.categories.length > 0) {
+                html += `<div class="text-left max-w-xl mx-auto mb-4">
+                    <div class="font-bold text-lg mb-2 text-green-700">Applied Category Filters:</div>
+                    ${appliedFilters.categories.map(cat => `
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm mr-2 mb-2 inline-block">
+                            ${cat}
+                        </span>
+                    `).join('')}
+                </div>`;
+            }
+            if (appliedFilters.grades && appliedFilters.grades.length > 0) {
+                html += `<div class="text-left max-w-xl mx-auto mb-4">
+                    <div class="font-bold text-lg mb-2 text-green-700">Applied Grade Filters:</div>
+                    ${appliedFilters.grades.map(grade => `
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm mr-2 mb-2 inline-block">
+                            ${grade}
+                        </span>
+                    `).join('')}
+                </div>`;
+            }
+            if (html) {
+                html += `
+                    <div class="text-center mb-4">
+                        <button id="removeFiltersBtn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                            Remove All Filters
+                        </button>
+                    </div>
+                `;
+                intentContainer.innerHTML = html;
+                
+                // Add event listener for remove filters button
+                const removeFiltersBtn = document.getElementById('removeFiltersBtn');
+                if (removeFiltersBtn) {
+                    removeFiltersBtn.addEventListener('click', () => {
+                        // Perform regular search without filters
+                        performSearch(currentQuery, 1, false);
+                    });
+                }
+            }
+        }
+
         async function performSearch(query, page = 1, append = false) {
             showLoading();
             try {
@@ -200,6 +491,10 @@
                 const results = data.results || [];
                 totalResults = data.total || 0;
                 currentPage = data.page || 1;
+                
+                // Show intents (this will show filter suggestions if intents are detected)
+                showIntents(data.intents || {});
+                
                 if (!append) {
                     loadedResults = [];
                     resultsContainer.innerHTML = '';
