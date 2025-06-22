@@ -7,9 +7,13 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         .search-container {
-            max-width: 1200px;
+            max-width: 1600px;
             margin: 0 auto;
             padding: 2rem;
+            display: block;
+        }
+        .main-content {
+            width: 100%;
         }
         .result-card {
             transition: all 0.3s ease;
@@ -39,16 +43,17 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
-        /* Text wrapping improvements */
-        .result-card h2 {
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            hyphens: auto;
+        .material-type-list {
+            display: inline;
         }
-        .result-card p {
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            line-height: 1.5;
+        .material-type-list .hidden {
+            display: none;
+        }
+        .material-type-toggle {
+            color: #2563eb;
+            cursor: pointer;
+            font-size: 0.85em;
+            margin-left: 0.5em;
         }
         /* Suggestions styling */
         .suggestions-container {
@@ -109,28 +114,44 @@
             margin: 0.25rem;
             display: inline-block;
         }
-        /* Search query info */
-        .search-info {
+        /* Tooltip for search info */
+        .search-info-tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        .search-info-tooltip .search-info-content {
+            visibility: hidden;
+            width: 320px;
             background: #f8fafc;
+            color: #374151;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
             padding: 1rem;
-            margin: 1rem 0;
             font-size: 0.875rem;
+            position: absolute;
+            z-index: 100;
+            top: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
-        .search-info h4 {
+        .search-info-tooltip:hover .search-info-content,
+        .search-info-tooltip:focus-within .search-info-content {
+            visibility: visible;
+            opacity: 1;
+        }
+        .search-info-tooltip .search-info-type {
+            background: #e0e7ff;
+            color: #3730a3;
+            border-radius: 6px;
+            padding: 0.2em 0.7em;
+            font-size: 0.95em;
             font-weight: 600;
-            color: #374151;
-            margin-bottom: 0.5rem;
-        }
-        .search-info ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .search-info li {
-            padding: 0.25rem 0;
-            color: #6b7280;
+            margin-left: 0.5em;
+            cursor: pointer;
+            display: inline-block;
         }
         .must-clause {
             color: #dc2626;
@@ -139,6 +160,26 @@
         .should-clause {
             color: #2563eb;
             font-weight: 500;
+        }
+        /* Insert Materials Button - floating bottom right */
+        #insertButton {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 50;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        #insertButton:hover {
+            opacity: 1;
+        }
+        @media (max-width: 1024px) {
+            #insertButton {
+                position: static;
+                margin: 1rem auto 0 auto;
+                display: block;
+                width: fit-content;
+            }
         }
     </style>
 </head>
@@ -154,50 +195,50 @@
     </div>
 
     <div class="search-container">
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">Materials Search</h1>
-            <p class="text-gray-600">Search through our collection of educational materials</p>
-        </div>
+        <div class="main-content">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">Materials Search</h1>
+                <p class="text-gray-600">Search through our collection of educational materials</p>
+            </div>
 
-        <!-- Search Form -->
-        <div class="max-w-2xl mx-auto mb-4">
-            <form id="searchForm" class="flex gap-2">
-                <input type="text" 
-                       id="searchInput" 
-                       class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                       placeholder="Search materials by title, description, type, or author...">
-                <button type="submit" 
-                        class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                    Search
-                </button>
-            </form>
-        </div>
+            <!-- Search Form -->
+            <div class="max-w-2xl mx-auto mb-4 flex items-center gap-2">
+                <form id="searchForm" class="flex gap-2 flex-1">
+                    <input type="text" 
+                           id="searchInput" 
+                           class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           placeholder="Search materials by title, description, type, or author...">
+                    <button type="submit" 
+                            class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        Search
+                    </button>
+                </form>
+                <button id="clearSearchButton" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2 ml-2">Clear Search</button>
+                <span id="searchInfoTooltip" class="search-info-tooltip ml-2" tabindex="0" style="outline: none;"></span>
+            </div>
 
-        <!-- Suggestions Container (will be populated by JavaScript) -->
-        <div id="suggestionsContainer" class="max-w-4xl mx-auto mb-6"></div>
+            <!-- Suggestions Container (will be populated by JavaScript) -->
+            <div id="suggestionsContainer" class="max-w-4xl mx-auto mb-6"></div>
 
-        <!-- Search Info Container (will show must/should values) -->
-        <div id="searchInfoContainer" class="max-w-4xl mx-auto mb-6"></div>
+            <!-- Results Count -->
+            <div id="resultsCount" class="max-w-4xl mx-auto mb-4 text-gray-700 text-lg font-medium"></div>
 
-        <!-- Insert Button -->
-        <div class="text-center mb-8">
-            <button id="insertButton" 
-                    class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                Insert Materials from JSON
-            </button>
-        </div>
+            <!-- Results Container -->
+            <div id="results" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6"></div>
 
-        <!-- Results Container -->
-        <div id="results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Results will be inserted here -->
-        </div>
-
-        <!-- No Results Message -->
-        <div id="noResults" class="hidden text-center text-gray-600 mt-8">
-            No materials found matching your search criteria.
+            <!-- No Results Message -->
+            <div id="noResults" class="hidden text-center text-gray-600 mt-8">
+                No materials found matching your search criteria.
+            </div>
         </div>
     </div>
+
+    <!-- Insert Button (floating) -->
+    <button id="insertButton" 
+            class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+        Insert Materials from JSON
+    </button>
 
     <script>
         const searchForm = document.getElementById('searchForm');
@@ -208,6 +249,9 @@
         const loading = document.getElementById('loading');
         const suggestionsContainer = document.getElementById('suggestionsContainer');
         const searchInfoContainer = document.getElementById('searchInfoContainer');
+        const resultsCount = document.getElementById('resultsCount');
+        const clearSearchButton = document.getElementById('clearSearchButton');
+        const searchInfoTooltip = document.getElementById('searchInfoTooltip');
 
         function showLoading() {
             loading.style.display = 'block';
@@ -234,6 +278,59 @@
             return div.textContent || div.innerText || '';
         }
 
+        // Utility: Generate regex patterns for fuzzy matching (hyphens, case, simple variants)
+        function getFuzzyPatterns(query) {
+            const tokens = query.split(/\s+/).filter(Boolean);
+            return tokens.map(token => {
+                const base = token.replace(/-/g, '');
+                // Regex: match base, base with hyphen/space, case-insensitive
+                return new RegExp(
+                    base.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '|' +
+                    base.split('').join('[\\s-]?'),
+                    'gi'
+                );
+            });
+        }
+
+        // Highlight function
+        function highlightMatches(text, query) {
+            if (!text || !query) return text;
+            let result = text;
+            const patterns = getFuzzyPatterns(query);
+            patterns.forEach(pattern => {
+                result = result.replace(pattern, match => `<mark class="bg-yellow-200">${match}</mark>`);
+            });
+            return result;
+        }
+
+        // Progressive disclosure for material type
+        function renderMaterialType(materialType) {
+            if (!materialType) return 'Not specified';
+            if (Array.isArray(materialType)) {
+                if (materialType.length <= 2) {
+                    return materialType.join(', ');
+                } else {
+                    const first = materialType.slice(0, 2).join(', ');
+                    const rest = materialType.slice(2).join(', ');
+                    return `<span class="material-type-list">${first}<span class="hidden">, ${rest}</span><span class="material-type-toggle" onclick="toggleMaterialType(this)">Show more</span></span>`;
+                }
+            }
+            return materialType;
+        }
+        function toggleMaterialType(el) {
+            const list = el.parentElement;
+            const hidden = list.querySelector('.hidden');
+            if (hidden.style.display === 'inline') {
+                hidden.style.display = 'none';
+                el.textContent = 'Show more';
+            } else {
+                hidden.style.display = 'inline';
+                el.textContent = 'Show less';
+            }
+        }
+        window.toggleMaterialType = toggleMaterialType;
+
+        // Update createResultCard to use renderMaterialType
         function createResultCard(material, index) {
             // Ensure category and grade_level are arrays
             const categories = Array.isArray(material.category) ? material.category : 
@@ -243,20 +340,25 @@
             const desc = stripHTML(material.description || 'No description available');
             const shortDesc = desc.length > 200 ? desc.slice(0, 200) + '...' : desc;
             const isLong = desc.length > 200;
+            // Highlight matches
+            const highlightedTitle = highlightMatches(material.title || 'No Title', currentQuery);
+            const highlightedDesc = highlightMatches(shortDesc, currentQuery);
+            const highlightedCategories = categories.map(cat => highlightMatches(cat, currentQuery));
+            const highlightedGrades = gradeLevels.map(grade => highlightMatches(grade, currentQuery));
             return `
                 <div class="result-card bg-white rounded-lg shadow-md p-6 relative" data-index="${index}">
                     <div class="score-badge bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
                         Score: ${material.score || 0}
                     </div>
-                    <h2 class="text-xl font-semibold text-gray-800 mb-2 break-words leading-tight">${material.title || 'No Title'}</h2>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-2 break-words leading-tight">${highlightedTitle}</h2>
                     <p class="text-gray-600 mb-4 break-words leading-relaxed" id="desc-${index}">
-                        ${shortDesc}
+                        ${highlightedDesc}
                         ${isLong ? `<button class="text-blue-500 ml-2 underline text-xs" onclick="toggleDescription(${index})" id="toggle-btn-${index}">Show more</button>` : ''}
                     </p>
                     <div class="space-y-2">
                         <div class="flex items-center text-sm text-gray-500">
                             <span class="font-medium">Type:</span>
-                            <span class="ml-2 break-words">${material.material_type || 'Not specified'}</span>
+                            <span class="ml-2 break-words">${renderMaterialType(material.material_type)}</span>
                         </div>
                         <div class="flex items-center text-sm text-gray-500">
                             <span class="font-medium">Author:</span>
@@ -268,7 +370,7 @@
                         </div>
                         ${categories.length > 0 ? `
                             <div class="flex flex-wrap gap-2 mt-3">
-                                ${categories.map(cat => `
+                                ${highlightedCategories.map(cat => `
                                     <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs break-words">
                                         ${cat}
                                     </span>
@@ -277,7 +379,7 @@
                         ` : ''}
                         ${gradeLevels.length > 0 ? `
                             <div class="flex flex-wrap gap-2 mt-2">
-                                ${gradeLevels.map(grade => `
+                                ${highlightedGrades.map(grade => `
                                     <span class="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-xs break-words">
                                         ${grade}
                                     </span>
@@ -394,6 +496,14 @@
             document.querySelectorAll('.filter-checkbox').forEach(cb => cb.checked = false);
         }
 
+        function updateResultsCount() {
+            if (totalResults > 0) {
+                resultsCount.textContent = `${totalResults} result${totalResults === 1 ? '' : 's'} found.`;
+            } else {
+                resultsCount.textContent = '';
+            }
+        }
+
         async function performFilteredSearch(query, categories, grades) {
             showLoading();
             try {
@@ -446,6 +556,8 @@
                 } else {
                     showMoreButton.classList.add('hidden');
                 }
+                
+                updateResultsCount();
             } catch (error) {
                 console.error('Filtered search error:', error);
                 alert('An error occurred while searching with filters. Please try again.');
@@ -499,11 +611,11 @@
 
         function showSearchInfo(query, isFiltered = false, appliedFilters = null) {
             let html = '';
-            
+            let typeLabel = '';
             if (isFiltered && appliedFilters) {
-                // Show must/should information for filtered search
+                typeLabel = '<span class="search-info-type">Filtered</span>';
                 html = `
-                    <div class="search-info">
+                    <div class="search-info-content">
                         <h4>🔍 Search Query Analysis</h4>
                         <ul>
                             <li><strong>Query:</strong> "${query}"</li>
@@ -523,9 +635,9 @@
                     </div>
                 `;
             } else {
-                // Show regular search information
+                typeLabel = '<span class="search-info-type">Regular</span>';
                 html = `
-                    <div class="search-info">
+                    <div class="search-info-content">
                         <h4>🔍 Search Query Analysis</h4>
                         <ul>
                             <li><strong>Query:</strong> "${query}"</li>
@@ -542,8 +654,8 @@
                     </div>
                 `;
             }
-            
-            searchInfoContainer.innerHTML = html;
+            const tooltip = document.getElementById('searchInfoTooltip');
+            tooltip.innerHTML = typeLabel + html;
         }
 
         async function performSearch(query, page = 1, append = false) {
@@ -584,6 +696,8 @@
                 } else {
                     showMoreButton.classList.add('hidden');
                 }
+                
+                updateResultsCount();
             } catch (error) {
                 console.error('Search error:', error);
                 alert('An error occurred while searching. Please try again.');
@@ -639,6 +753,36 @@
             currentQuery = initialQuery;
             performSearch(initialQuery, 1, false);
         }
+
+        function updateClearButtonVisibility() {
+            if (searchInput.value.trim()) {
+                clearSearchButton.style.display = '';
+                clearSearchButton.disabled = false;
+            } else {
+                clearSearchButton.style.display = 'none';
+                clearSearchButton.disabled = true;
+            }
+        }
+        // Initial state
+        updateClearButtonVisibility();
+        searchInput.addEventListener('input', updateClearButtonVisibility);
+
+        function clearSearch() {
+            searchInput.value = '';
+            currentQuery = '';
+            currentPage = 1;
+            totalResults = 0;
+            loadedResults = [];
+            resultsContainer.innerHTML = '';
+            resultsCount.textContent = '';
+            suggestionsContainer.innerHTML = '';
+            noResultsMessage.classList.add('hidden');
+            showMoreButton.classList.add('hidden');
+            searchInfoTooltip.innerHTML = '';
+            updateClearButtonVisibility();
+            // Optionally, reset filters UI if needed
+        }
+        clearSearchButton.addEventListener('click', clearSearch);
     </script>
 </body>
 </html> 

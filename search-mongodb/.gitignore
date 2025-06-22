@@ -25,4 +25,6 @@ Thumbs.db
 
 # Project specific
 dataset.json
+taxonomy/
+searches/
 *.log 

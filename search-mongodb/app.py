@@ -158,12 +158,7 @@ def call_intent_api(query: str):
 def search():
     query = request.args.get('q', '')
     page = int(request.args.get('page', 1))
-    limit = int(request.args.get('limit', 12))
-    # New parameters for filtered search
-    apply_filters = request.args.get('apply_filters', 'false').lower() == 'true'
-    filter_categories = request.args.getlist('filter_categories')
-    filter_grades = request.args.getlist('filter_grades')
-    
+    limit = int(request.args.get('limit', 14))
     if not query:
         return jsonify([])
 
@@ -172,229 +167,62 @@ def search():
         db = client[os.getenv('DATABASE_NAME', 'materials_db')]
         collection = db[os.getenv('COLLECTION_NAME', 'materials')]
 
-        # Use external API for intent detection
-        tags = call_intent_api(query)
-        detected_categories = tags.get('category', [])
-        detected_grades = tags.get('grade', [])
-        detected_intents = []
-        if detected_categories:
-            detected_intents.append('category')
-        if detected_grades:
-            detected_intents.append('grade_level')
-        if not detected_intents:
-            detected_intents = ['unknown']
-
-        # If filters are being applied, use must filters instead of should
-        if apply_filters and (filter_categories or filter_grades):
-            try:
-                # Build must filters for confirmed categories and grades
-                must_clauses = []
-                should_clauses = []
-                
-                # Add must filters for confirmed categories
-                if filter_categories:
-                    must_clauses.append({
-                        "text": {
-                            "query": " ".join(filter_categories),
-                            "path": "category"
-                        }
-                    })
-                
-                # Add must filters for confirmed grades
-                if filter_grades:
-                    must_clauses.append({
-                        "text": {
-                            "query": " ".join(filter_grades),
-                            "path": "grade_level"
-                        }
-                    })
-                
-                # Add should clauses for the original query on other fields
-                should_clauses.append({
-                    "text": {
-                        "query": query,
-                        "path": "title",
-                        "score": {"boost": {"value": 7}}
-                    }
-                })
-                should_clauses.append({
-                    "text": {
-                        "query": query,
-                        "path": "description",
-                        "score": {"boost": {"value": 2}}
-                    }
-                })
-                should_clauses.append({
-                    "text": {
-                        "query": query,
-                        "path": "material_type",
-                        "score": {"boost": {"value": 3}}
-                    }
-                })
-                should_clauses.append({
-                    "text": {
-                        "query": query,
-                        "path": "author_slug",
-                        "score": {"boost": {"value": 1}}
-                    }
-                })
-                
-                # Dynamic minimumShouldMatch for must+should
-                num_should = len(should_clauses)
-                minimum_should = 1 if num_should > 0 else 0
-
-                # Build the search stage with must and should clauses
-                search_stage = {
-                    "$search": {
-                        "compound": {
-                            "must": must_clauses,
-                            "should": should_clauses,
-                            "minimumShouldMatch": minimum_should
-                        }
-                    }
+        # Add must clauses for category and grade_level
+        must_clauses = [
+            {
+                "text": {
+                    "query": query,
+                    "path": "category",
+                    "score": {"boost": {"value": 5}}
                 }
-                
-                pipeline = [
-                    search_stage,
-                    {"$addFields": {"score": {"$meta": "searchScore"}}},
-                    {"$sort": {"score": -1}},
-                    {"$skip": (page - 1) * limit},
-                    {"$limit": limit}
-                ]
-                results = list(collection.aggregate(pipeline))
-                if results:
-                    total_count = collection.count_documents({})
-                    for result in results:
-                        result['_id'] = str(result['_id'])
-                        result['score'] = round(result.get('score', 0), 2)
-                    return jsonify({
-                        "results": results,
-                        "total": total_count,
-                        "page": page,
-                        "limit": limit,
-                        "intents": tags,
-                        "applied_filters": {
-                            "categories": filter_categories,
-                            "grades": filter_grades
-                        }
-                    })
-            except Exception as atlas_error:
-                print(f"Atlas Search with filters failed, falling back to text search: {atlas_error}")
-
-        # Regular search logic (existing code)
-        try:
-            # Try Atlas Search first
-            fallback_boosts = {
-                "title": 7,
-                "description": 2,
-                "category": 3,
-                "grade_level": 3,
-                "material_type": 3,
-                "author_slug": 1,
+            },
+            {
+                "text": {
+                    "query": query,
+                    "path": "grade_level",
+                    "score": {"boost": {"value": 2}}
+                }
             }
-            intent_boost = 6
-            title_boost = 7 if 'unknown' not in detected_intents else fallback_boosts["title"]
-
-            # Map intent names to document fields
-            intent_field_map = {
-                "category": "category",
-                "grade_level": "grade_level",
-            }
-
-            should_clauses = []
-            should_clauses.append({
+        ]
+        should_clauses = [
+            {
                 "text": {
                     "query": query,
                     "path": "title",
-                    "score": {"boost": {"value": title_boost}}
+                    "score": {"boost": {"value": 7}}
                 }
-            })
-            should_clauses.append({
+            },
+            {
                 "text": {
                     "query": query,
                     "path": "description",
-                    "score": {"boost": {"value": fallback_boosts["description"]}}
-                }
-            })
-
-            # Add detected categories and grades with intent boost
-            if detected_categories:
-                for cat, conf in detected_categories:
-                    should_clauses.append({
-                        "text": {
-                            "query": cat,
-                            "path": "category",
-                            "score": {"boost": {"value": intent_boost}}
-                        }
-                    })
-            if detected_grades:
-                for grade, conf in detected_grades:
-                    should_clauses.append({
-                        "text": {
-                            "query": grade,
-                            "path": "grade_level",
-                            "score": {"boost": {"value": intent_boost}}
-                        }
-                    })
-            # Add fallback fields (except title, description, category, grade_level)
-            for field, boost in fallback_boosts.items():
-                if field not in ["title", "description", "category", "grade_level"]:
-                    should_clauses.append({
-                        "text": {
-                            "query": query,
-                            "path": field,
-                            "score": {"boost": {"value": boost}}
-                        }
-                    })
-
-            # Dynamic minimumShouldMatch for should-only queries
-            num_should = len(should_clauses)
-            minimum_should = max(1, num_should // 2)
-
-            search_stage = {
-                "$search": {
-                    "compound": {
-                        "should": should_clauses,
-                        "minimumShouldMatch": minimum_should
-                    }
+                    "score": {"boost": {"value": 2}}
                 }
             }
-            pipeline = [
-                search_stage,
-                {"$addFields": {"score": {"$meta": "searchScore"}}},
-                {"$sort": {"score": -1}},
-                {"$skip": (page - 1) * limit},
-                {"$limit": limit}
-            ]
-            results = list(collection.aggregate(pipeline))
-            if results:
-                total_count = collection.count_documents({})
-                for result in results:
-                    result['_id'] = str(result['_id'])
-                    result['score'] = round(result.get('score', 0), 2)
-                return jsonify({
-                    "results": results,
-                    "total": total_count,
-                    "page": page,
-                    "limit": limit,
-                    "intents": tags
-                })
-        except Exception as atlas_error:
-            print(f"Atlas Search failed, falling back to text search: {atlas_error}")
+        ]
+        minimum_should = 2
 
-        # Fallback to text search if Atlas Search fails or returns no results
-        search_query = {
-            "$text": {
-                "$search": query
+        search_stage = {
+            "$search": {
+                "index": "search_index",
+                "compound": {
+                    "must": must_clauses,
+                    "should": should_clauses,
+                    "minimumShouldMatch": minimum_should
+                }
             }
         }
-        skip = (page - 1) * limit
-        cursor = collection.find(
-            search_query,
-            {"score": {"$meta": "textScore"}}
-        ).sort([("score", {"$meta": "textScore"})]).skip(skip).limit(limit)
-        results = list(cursor)
-        total_count = collection.count_documents(search_query)
+        pipeline = [
+            search_stage,
+            {"$addFields": {"score": {"$meta": "searchScore"}}},
+            {"$sort": {"score": -1}},
+            {"$skip": (page - 1) * limit},
+            {"$limit": limit}
+        ]
+        results = list(collection.aggregate(pipeline))
+        total_count_pipeline = [search_stage, {"$count": "count"}]
+        count_result = list(collection.aggregate(total_count_pipeline))
+        total_count = count_result[0]["count"] if count_result else 0
         for result in results:
             result['_id'] = str(result['_id'])
             result['score'] = round(result.get('score', 0), 2)
@@ -402,8 +230,7 @@ def search():
             "results": results,
             "total": total_count,
             "page": page,
-            "limit": limit,
-            "intents": tags
+            "limit": limit
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
