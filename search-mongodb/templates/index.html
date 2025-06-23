@@ -221,6 +221,9 @@
             <!-- Suggestions Container (will be populated by JavaScript) -->
             <div id="suggestionsContainer" class="max-w-4xl mx-auto mb-6"></div>
 
+            <!-- Detected Intents Visualization -->
+            <div id="intentsSummary" class="max-w-4xl mx-auto mb-4"></div>
+
             <!-- Results Count -->
             <div id="resultsCount" class="max-w-4xl mx-auto mb-4 text-gray-700 text-lg font-medium"></div>
 
@@ -252,6 +255,7 @@
         const resultsCount = document.getElementById('resultsCount');
         const clearSearchButton = document.getElementById('clearSearchButton');
         const searchInfoTooltip = document.getElementById('searchInfoTooltip');
+        const intentsSummary = document.getElementById('intentsSummary');
 
         function showLoading() {
             loading.style.display = 'block';
@@ -405,95 +409,28 @@
         }
 
         function showIntents(intents) {
+            // Only show detected intents, no filter checkboxes or buttons
             if (!intents || (typeof intents === 'object' && Object.keys(intents).length === 0)) {
                 suggestionsContainer.innerHTML = '';
                 return;
             }
-            
             let html = '';
-            let hasSuggestions = false;
-            
             if (intents.category && intents.category.length > 0) {
-                hasSuggestions = true;
-                html += `<div class="mb-4">
-                    <div class="font-bold text-lg mb-2 text-white">Detected Categories:</div>
-                    ${intents.category.map(([cat, conf]) => `
-                        <div class="filter-item">
-                            <div>
-                                <span class="font-medium text-gray-800">${cat}</span><br>
-                                <span class="text-xs text-gray-600">Confidence: ${(conf * 100).toFixed(2)}%</span>
-                            </div>
-                            <input type="checkbox" class="filter-checkbox category-filter" value="${cat}" data-confidence="${conf}">
-                        </div>
-                    `).join('')}
-                </div>`;
+                html += `<div class="mb-2"><span class="font-bold text-lg text-white">Detected Categories:</span> ` +
+                    intents.category.map(([cat, conf]) =>
+                        `<span class="inline-block bg-purple-100 text-purple-800 rounded-full px-3 py-1 text-sm mr-2 mb-1">${cat} <span class='text-xs text-gray-200'>(${(conf*100).toFixed(1)}%)</span></span>`
+                    ).join('') + '</div>';
             }
-            
             if (intents.grade && intents.grade.length > 0) {
-                hasSuggestions = true;
-                html += `<div class="mb-4">
-                    <div class="font-bold text-lg mb-2 text-white">Detected Grade Levels:</div>
-                    ${intents.grade.map(([grade, conf]) => `
-                        <div class="filter-item">
-                            <div>
-                                <span class="font-medium text-gray-800">${grade}</span><br>
-                                <span class="text-xs text-gray-600">Confidence: ${(conf * 100).toFixed(2)}%</span>
-                            </div>
-                            <input type="checkbox" class="filter-checkbox grade-filter" value="${grade}" data-confidence="${conf}">
-                        </div>
-                    `).join('')}
-                </div>`;
+                html += `<div class="mb-2"><span class="font-bold text-lg text-white">Detected Grades:</span> ` +
+                    intents.grade.map(([grade, conf]) =>
+                        `<span class="inline-block bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-sm mr-2 mb-1">${grade} <span class='text-xs text-gray-200'>(${(conf*100).toFixed(1)}%)</span></span>`
+                    ).join('') + '</div>';
             }
-            
-            if (hasSuggestions) {
-                html = `
-                    <div class="suggestions-container">
-                        <h3>🎯 Filter Suggestions</h3>
-                        <p class="text-white text-center mb-4 text-sm">We detected these categories and grade levels in your search. Would you like to apply them as filters to refine your results?</p>
-                        ${html}
-                        <div class="text-center mt-4">
-                            <button id="applyFiltersBtn" class="px-6 py-2 bg-white text-purple-600 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 mr-3 font-semibold">
-                                ✅ Apply Selected Filters
-                            </button>
-                            <button id="clearFiltersBtn" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2 font-semibold">
-                                ❌ Clear All
-                            </button>
-                        </div>
-                    </div>
-                `;
+            if (html) {
+                html = `<div class="suggestions-container">${html}</div>`;
             }
-            
             suggestionsContainer.innerHTML = html;
-            
-            // Add event listeners for filter buttons
-            if (hasSuggestions) {
-                const applyFiltersBtn = document.getElementById('applyFiltersBtn');
-                const clearFiltersBtn = document.getElementById('clearFiltersBtn');
-                
-                if (applyFiltersBtn) {
-                    applyFiltersBtn.addEventListener('click', applySelectedFilters);
-                }
-                if (clearFiltersBtn) {
-                    clearFiltersBtn.addEventListener('click', clearAllFilters);
-                }
-            }
-        }
-
-        function applySelectedFilters() {
-            const selectedCategories = Array.from(document.querySelectorAll('.category-filter:checked')).map(cb => cb.value);
-            const selectedGrades = Array.from(document.querySelectorAll('.grade-filter:checked')).map(cb => cb.value);
-            
-            if (selectedCategories.length === 0 && selectedGrades.length === 0) {
-                alert('Please select at least one filter to apply.');
-                return;
-            }
-            
-            // Perform filtered search
-            performFilteredSearch(currentQuery, selectedCategories, selectedGrades);
-        }
-
-        function clearAllFilters() {
-            document.querySelectorAll('.filter-checkbox').forEach(cb => cb.checked = false);
         }
 
         function updateResultsCount() {
@@ -502,160 +439,6 @@
             } else {
                 resultsCount.textContent = '';
             }
-        }
-
-        async function performFilteredSearch(query, categories, grades) {
-            showLoading();
-            try {
-                const params = new URLSearchParams({
-                    q: query,
-                    page: 1,
-                    limit: RESULTS_PER_PAGE,
-                    apply_filters: 'true'
-                });
-                
-                // Add filter parameters
-                categories.forEach(cat => params.append('filter_categories', cat));
-                grades.forEach(grade => params.append('filter_grades', grade));
-                
-                const response = await fetch(`/search?${params.toString()}`);
-                const data = await response.json();
-                const results = data.results || [];
-                totalResults = data.total || 0;
-                currentPage = data.page || 1;
-                
-                const appliedFilters = data.applied_filters || {};
-                
-                // Show applied filters
-                showAppliedFilters(appliedFilters);
-                
-                // Show search information with must/should details
-                showSearchInfo(query, true, appliedFilters);
-                
-                // Reset results
-                loadedResults = [];
-                resultsContainer.innerHTML = '';
-                loadedResults = results;
-                
-                noResultsMessage.classList.add('hidden');
-                if (!Array.isArray(results) || loadedResults.length === 0) {
-                    noResultsMessage.classList.remove('hidden');
-                } else {
-                    results.forEach((material, idx) => {
-                        try {
-                            resultsContainer.innerHTML += createResultCard(material, idx);
-                        } catch (error) {
-                            console.error('Error creating card for material:', material, error);
-                        }
-                    });
-                }
-                
-                // Show or hide the Show More button
-                if (loadedResults.length < totalResults) {
-                    showMoreButton.classList.remove('hidden');
-                } else {
-                    showMoreButton.classList.add('hidden');
-                }
-                
-                updateResultsCount();
-            } catch (error) {
-                console.error('Filtered search error:', error);
-                alert('An error occurred while searching with filters. Please try again.');
-            } finally {
-                hideLoading();
-            }
-        }
-
-        function showAppliedFilters(appliedFilters) {
-            let html = '';
-            if (appliedFilters.categories && appliedFilters.categories.length > 0) {
-                html += `<div class="mb-4">
-                    <div class="font-bold text-lg mb-2 text-white">Applied Category Filters:</div>
-                    ${appliedFilters.categories.map(cat => `
-                        <span class="filter-tag">${cat}</span>
-                    `).join('')}
-                </div>`;
-            }
-            if (appliedFilters.grades && appliedFilters.grades.length > 0) {
-                html += `<div class="mb-4">
-                    <div class="font-bold text-lg mb-2 text-white">Applied Grade Filters:</div>
-                    ${appliedFilters.grades.map(grade => `
-                        <span class="filter-tag">${grade}</span>
-                    `).join('')}
-                </div>`;
-            }
-            if (html) {
-                html = `
-                    <div class="applied-filters">
-                        <h3>✅ Active Filters</h3>
-                        ${html}
-                        <div class="text-center mt-4">
-                            <button id="removeFiltersBtn" class="px-6 py-2 bg-white text-green-600 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 font-semibold">
-                                🗑️ Remove All Filters
-                            </button>
-                        </div>
-                    </div>
-                `;
-                suggestionsContainer.innerHTML = html;
-                
-                // Add event listener for remove filters button
-                const removeFiltersBtn = document.getElementById('removeFiltersBtn');
-                if (removeFiltersBtn) {
-                    removeFiltersBtn.addEventListener('click', () => {
-                        // Perform regular search without filters
-                        performSearch(currentQuery, 1, false);
-                    });
-                }
-            }
-        }
-
-        function showSearchInfo(query, isFiltered = false, appliedFilters = null) {
-            let html = '';
-            let typeLabel = '';
-            if (isFiltered && appliedFilters) {
-                typeLabel = '<span class="search-info-type">Filtered</span>';
-                html = `
-                    <div class="search-info-content">
-                        <h4>🔍 Search Query Analysis</h4>
-                        <ul>
-                            <li><strong>Query:</strong> "${query}"</li>
-                            <li><strong>Search Type:</strong> <span class="must-clause">Filtered Search (Must + Should)</span></li>
-                            <li><strong>Must Clauses:</strong></li>
-                            ${appliedFilters.categories && appliedFilters.categories.length > 0 ? 
-                                `<li class="ml-4">• Categories: <span class="must-clause">${appliedFilters.categories.join(', ')}</span></li>` : ''}
-                            ${appliedFilters.grades && appliedFilters.grades.length > 0 ? 
-                                `<li class="ml-4">• Grade Levels: <span class="must-clause">${appliedFilters.grades.join(', ')}</span></li>` : ''}
-                            <li><strong>Should Clauses:</strong></li>
-                            <li class="ml-4">• Title (boost: 7)</li>
-                            <li class="ml-4">• Description (boost: 2)</li>
-                            <li class="ml-4">• Material Type (boost: 3)</li>
-                            <li class="ml-4">• Author (boost: 1)</li>
-                            <li><strong>Minimum Should Match:</strong> 2 clauses</li>
-                        </ul>
-                    </div>
-                `;
-            } else {
-                typeLabel = '<span class="search-info-type">Regular</span>';
-                html = `
-                    <div class="search-info-content">
-                        <h4>🔍 Search Query Analysis</h4>
-                        <ul>
-                            <li><strong>Query:</strong> "${query}"</li>
-                            <li><strong>Search Type:</strong> <span class="should-clause">Regular Search (Should Only)</span></li>
-                            <li><strong>Should Clauses:</strong></li>
-                            <li class="ml-4">• Title (boost: 7)</li>
-                            <li class="ml-4">• Description (boost: 2)</li>
-                            <li class="ml-4">• Category (boost: 3)</li>
-                            <li class="ml-4">• Grade Level (boost: 3)</li>
-                            <li class="ml-4">• Material Type (boost: 3)</li>
-                            <li class="ml-4">• Author (boost: 1)</li>
-                            <li><strong>Minimum Should Match:</strong> 2 clauses</li>
-                        </ul>
-                    </div>
-                `;
-            }
-            const tooltip = document.getElementById('searchInfoTooltip');
-            tooltip.innerHTML = typeLabel + html;
         }
 
         async function performSearch(query, page = 1, append = false) {
@@ -667,11 +450,12 @@
                 totalResults = data.total || 0;
                 currentPage = data.page || 1;
                 
-                // Show intents (this will show filter suggestions if intents are detected)
-                showIntents(data.intents || {});
-                
-                // Show search information
-                showSearchInfo(query, false);
+                // Use correct intent keys from backend
+                const detectedIntents = {
+                    category: data.category_intents || [],
+                    grade: data.grade_intents || []
+                };
+                renderIntentsSummary(detectedIntents);
                 
                 if (!append) {
                     loadedResults = [];
@@ -779,10 +563,36 @@
             noResultsMessage.classList.add('hidden');
             showMoreButton.classList.add('hidden');
             searchInfoTooltip.innerHTML = '';
+            intentsSummary.innerHTML = '';
             updateClearButtonVisibility();
             // Optionally, reset filters UI if needed
         }
         clearSearchButton.addEventListener('click', clearSearch);
+
+        // Replace renderIntentsSummary with a compact version
+        function renderIntentsSummary(intents) {
+            if (!intents || (typeof intents === 'object' && Object.keys(intents).length === 0)) {
+                intentsSummary.innerHTML = '';
+                return;
+            }
+            let html = '';
+            if (intents.category && intents.category.length > 0) {
+                html += `<div class="font-semibold text-purple-700 mb-1">Detected Categories:</div><ul class="mb-1">` +
+                    intents.category.map(([cat, conf]) =>
+                        `<li class="ml-4 text-purple-800">${cat} <span class='text-xs text-gray-500'>(${(conf*100).toFixed(1)}%)</span></li>`
+                    ).join('') + '</ul>';
+            }
+            if (intents.grade && intents.grade.length > 0) {
+                html += `<div class="font-semibold text-blue-700 mb-1">Detected Grades:</div><ul class="mb-1">` +
+                    intents.grade.map(([grade, conf]) =>
+                        `<li class="ml-4 text-blue-800">${grade} <span class='text-xs text-gray-500'>(${(conf*100).toFixed(1)}%)</span></li>`
+                    ).join('') + '</ul>';
+            }
+            if (html) {
+                html = `<div class="mb-2 text-base">${html}</div>`;
+            }
+            intentsSummary.innerHTML = html;
+        }
     </script>
 </body>
 </html> 

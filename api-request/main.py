@@ -20,11 +20,17 @@ def call_api(text_query):
 @app.route('/', methods=['GET', 'POST'])
 def home():
     result = None
+    category_intents = []
+    grade_intents = []
     if request.method == 'POST':
         query = request.form.get('query', '')
         if query:
             result = call_api(query)
-    return render_template('index.html', result=result)
+            # Extract category and grade intents with confidence
+            tags = result.get('tags', {}) if isinstance(result, dict) else {}
+            category_intents = tags.get('category', [])
+            grade_intents = tags.get('grade', [])
+    return render_template('index.html', result=result, category_intents=category_intents, grade_intents=grade_intents)
 
 if __name__ == "__main__":
     app.run(debug=True) 

@@ -167,8 +167,34 @@ def search():
         db = client[os.getenv('DATABASE_NAME', 'materials_db')]
         collection = db[os.getenv('COLLECTION_NAME', 'materials')]
 
-        # Add must clauses for category and grade_level
-        must_clauses = [
+        # Call intent detection service
+        category_intents = []
+        grade_intents = []
+        try:
+            tags = call_intent_api(query)
+            category_intents = tags.get('category', []) if isinstance(tags, dict) else []
+            grade_intents = tags.get('grade', []) if isinstance(tags, dict) else []
+        except Exception as e:
+            category_intents = []
+            grade_intents = []
+
+        # Leave must_clauses empty for future use
+        must_clauses = []
+        should_clauses = [
+            {
+                "text": {
+                    "query": query,
+                    "path": "title",
+                    "score": {"boost": {"value": 8}}
+                }
+            },
+            {
+                "text": {
+                    "query": query,
+                    "path": "description",
+                    "score": {"boost": {"value": 2}}
+                }
+            },
             {
                 "text": {
                     "query": query,
@@ -182,21 +208,19 @@ def search():
                     "path": "grade_level",
                     "score": {"boost": {"value": 2}}
                 }
-            }
-        ]
-        should_clauses = [
+            },
             {
                 "text": {
                     "query": query,
-                    "path": "title",
-                    "score": {"boost": {"value": 7}}
+                    "path": "material_type",
+                    "score": {"boost": {"value": 2}}
                 }
             },
             {
                 "text": {
                     "query": query,
-                    "path": "description",
-                    "score": {"boost": {"value": 2}}
+                    "path": "author_slug",
+                    "score": {"boost": {"value": 1}}
                 }
             }
         ]
@@ -230,7 +254,9 @@ def search():
             "results": results,
             "total": total_count,
             "page": page,
-            "limit": limit
+            "limit": limit,
+            "category_intents": category_intents,
+            "grade_intents": grade_intents
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
