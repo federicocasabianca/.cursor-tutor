@@ -181,6 +181,69 @@
                 width: fit-content;
             }
         }
+        
+        /* Typeahead styling - Compact version */
+        .typeahead-suggestion {
+            padding: 0.25rem 0.5rem; /* Further reduced */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: background-color 0.2s;
+            min-height: 2rem;
+        }
+        .typeahead-suggestion:hover {
+            background-color: #f3f4f6;
+        }
+        .typeahead-suggestion.selected {
+            background-color: #dbeafe;
+        }
+        .typeahead-avatar {
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: white;
+            flex-shrink: 0;
+        }
+        .typeahead-avatar.material {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .typeahead-avatar.author {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .typeahead-avatar.query {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        .typeahead-content {
+            flex: 1;
+            min-width: 0;
+        }
+        .typeahead-text {
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.1rem;
+            font-size: 0.92em;
+            line-height: 1.2;
+        }
+        .typeahead-meta {
+            font-size: 0.68rem;
+            color: #6b7280;
+        }
+        .typeahead-score {
+            font-size: 0.68rem;
+            color: #059669;
+            font-weight: 600;
+        }
+        .typeahead-suggestion strong {
+            font-weight: 700;
+            color: #2563eb;
+            background: none;
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -204,15 +267,21 @@
 
             <!-- Search Form -->
             <div class="max-w-2xl mx-auto mb-4 flex items-center gap-2">
-                <form id="searchForm" class="flex gap-2 flex-1">
+                <form id="searchForm" class="flex gap-2 flex-1 relative">
                     <input type="text" 
                            id="searchInput" 
                            class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                           placeholder="Search materials by title, description, type, or author...">
+                           placeholder="Search materials by title, description, type, or author..."
+                           autocomplete="off">
                     <button type="submit" 
                             class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                         Search
                     </button>
+                    
+                    <!-- Typeahead Suggestions Dropdown -->
+                    <div id="typeaheadDropdown" class="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto hidden">
+                        <div id="typeaheadSuggestions" class="py-2"></div>
+                    </div>
                 </form>
                 <button id="clearSearchButton" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2 ml-2">Clear Search</button>
                 <span id="searchInfoTooltip" class="search-info-tooltip ml-2" tabindex="0" style="outline: none;"></span>
@@ -256,6 +325,8 @@
         const clearSearchButton = document.getElementById('clearSearchButton');
         const searchInfoTooltip = document.getElementById('searchInfoTooltip');
         const intentsSummary = document.getElementById('intentsSummary');
+        const typeaheadDropdown = document.getElementById('typeaheadDropdown');
+        const typeaheadSuggestions = document.getElementById('typeaheadSuggestions');
 
         function showLoading() {
             loading.style.display = 'block';
@@ -564,6 +635,7 @@
             showMoreButton.classList.add('hidden');
             searchInfoTooltip.innerHTML = '';
             intentsSummary.innerHTML = '';
+            hideTypeahead();
             updateClearButtonVisibility();
             // Optionally, reset filters UI if needed
         }
@@ -593,6 +665,235 @@
             }
             intentsSummary.innerHTML = html;
         }
+
+        // Typeahead functionality
+        let typeaheadTimeout = null;
+        let selectedSuggestionIndex = -1;
+        let currentSuggestions = [];
+
+        function getTypeaheadAvatar(type) {
+            switch(type) {
+                case 'material':
+                    return '<div class="typeahead-avatar material">📚</div>';
+                case 'author':
+                    return '<div class="typeahead-avatar author">👤</div>';
+                case 'query':
+                    return '<div class="typeahead-avatar query">🔍</div>';
+                default:
+                    return '<div class="typeahead-avatar query">🔍</div>';
+            }
+        }
+
+        function getTypeaheadMeta(suggestion) {
+            switch(suggestion.type) {
+                case 'material':
+                    return `Material • Rating: ${suggestion.score.toFixed(1)}/5`;
+                case 'author':
+                    return 'Author';
+                case 'query':
+                    return `Previous search • Used ${suggestion.score} times`;
+                default:
+                    return '';
+            }
+        }
+
+        // Utility: Highlight matching substring
+        function highlightMatch(text, query) {
+            if (!query) return text;
+            const idx = text.toLowerCase().indexOf(query.toLowerCase());
+            if (idx === -1) return text;
+            const before = text.slice(0, idx);
+            const match = text.slice(idx, idx + query.length);
+            const after = text.slice(idx + query.length);
+            return `${before}<strong>${match}</strong>${after}`;
+        }
+
+        // Update renderTypeaheadSuggestions to use highlightMatch
+        function renderTypeaheadSuggestions(suggestions, query) {
+            typeaheadSuggestions.innerHTML = '';
+            if (!suggestions.length) {
+                typeaheadDropdown.classList.add('hidden');
+                return;
+            }
+            suggestions.forEach((suggestion, idx) => {
+                const div = document.createElement('div');
+                div.className = 'typeahead-suggestion flex items-center';
+                if (idx === selectedSuggestionIndex) div.classList.add('selected');
+                // Avatar
+                const avatar = document.createElement('div');
+                avatar.className = `typeahead-avatar ${suggestion.type}`;
+                avatar.innerHTML = suggestion.type === 'material' ? '📚' : (suggestion.type === 'author' ? '👤' : '🔍');
+                // Content
+                const content = document.createElement('div');
+                content.className = 'typeahead-content';
+                // Highlight match in main text
+                content.innerHTML = `<div class="typeahead-text">${highlightMatch(suggestion.text, query)}</div>`;
+                if (suggestion.meta) {
+                    content.innerHTML += `<div class="typeahead-meta">${suggestion.meta}</div>`;
+                }
+                // Score (if present)
+                if (suggestion.score !== undefined) {
+                    content.innerHTML += `<div class="typeahead-score">${suggestion.score}</div>`;
+                }
+                div.appendChild(avatar);
+                div.appendChild(content);
+                div.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    selectTypeaheadSuggestion(idx);
+                });
+                typeaheadSuggestions.appendChild(div);
+            });
+            typeaheadDropdown.classList.remove('hidden');
+        }
+
+        async function fetchTypeaheadSuggestions(query) {
+            try {
+                const response = await fetch(`/typeahead?q=${encodeURIComponent(query)}`);
+                const suggestions = await response.json();
+                currentSuggestions = suggestions;
+                renderTypeaheadSuggestions(suggestions, query);
+            } catch (error) {
+                console.error('Typeahead error:', error);
+                typeaheadDropdown.classList.add('hidden');
+            }
+        }
+
+        function handleSuggestionSelection(suggestion) {
+            if (suggestion.type === 'material') {
+                // For materials, search by ID to get exact match
+                performSearchByMaterialId(suggestion.id);
+            } else {
+                // For authors and queries, use the text as search query
+                searchInput.value = suggestion.text;
+                currentQuery = suggestion.text;
+                currentPage = 1;
+                performSearch(suggestion.text, 1, false);
+            }
+            hideTypeahead();
+        }
+
+        async function performSearchByMaterialId(materialId) {
+            showLoading();
+            try {
+                const response = await fetch(`/search/material/${materialId}`);
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                const results = data.results || [];
+                totalResults = data.total || 0;
+                currentPage = data.page || 1;
+                
+                const detectedIntents = {
+                    category: data.category_intents || [],
+                    grade: data.grade_intents || []
+                };
+                renderIntentsSummary(detectedIntents);
+                
+                loadedResults = results;
+                resultsContainer.innerHTML = '';
+                noResultsMessage.classList.add('hidden');
+                
+                if (results.length === 0) {
+                    noResultsMessage.classList.remove('hidden');
+                } else {
+                    results.forEach((material, idx) => {
+                        try {
+                            resultsContainer.innerHTML += createResultCard(material, idx);
+                        } catch (error) {
+                            console.error('Error creating card for material:', material, error);
+                        }
+                    });
+                }
+                
+                showMoreButton.classList.add('hidden');
+                updateResultsCount();
+                
+            } catch (error) {
+                console.error('Material search error:', error);
+                alert('An error occurred while searching for the material. Please try again.');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function hideTypeahead() {
+            typeaheadDropdown.classList.add('hidden');
+            selectedSuggestionIndex = -1;
+            currentSuggestions = [];
+        }
+
+        function handleTypeaheadKeydown(e) {
+            if (!typeaheadDropdown.classList.contains('hidden') && currentSuggestions.length > 0) {
+                switch(e.key) {
+                    case 'ArrowDown':
+                        e.preventDefault();
+                        selectedSuggestionIndex = Math.min(selectedSuggestionIndex + 1, currentSuggestions.length - 1);
+                        renderTypeaheadSuggestions(currentSuggestions, currentQuery);
+                        break;
+                    case 'ArrowUp':
+                        e.preventDefault();
+                        selectedSuggestionIndex = Math.max(selectedSuggestionIndex - 1, -1);
+                        renderTypeaheadSuggestions(currentSuggestions, currentQuery);
+                        break;
+                    case 'Enter':
+                        e.preventDefault();
+                        if (selectedSuggestionIndex >= 0 && selectedSuggestionIndex < currentSuggestions.length) {
+                            handleSuggestionSelection(currentSuggestions[selectedSuggestionIndex]);
+                        } else {
+                            searchForm.dispatchEvent(new Event('submit'));
+                        }
+                        break;
+                    case 'Escape':
+                        hideTypeahead();
+                        break;
+                }
+            }
+        }
+
+        // Event listeners for typeahead
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+            updateClearButtonVisibility();
+            
+            if (query.length >= 1) {
+                clearTimeout(typeaheadTimeout);
+                typeaheadTimeout = setTimeout(() => {
+                    fetchTypeaheadSuggestions(query);
+                }, 300);
+            } else {
+                hideTypeahead();
+            }
+        });
+
+        searchInput.addEventListener('focus', () => {
+            const query = searchInput.value.trim();
+            if (query.length >= 1) {
+                fetchTypeaheadSuggestions(query);
+            }
+        });
+
+        searchInput.addEventListener('keydown', handleTypeaheadKeydown);
+
+        // Handle suggestion clicks
+        typeaheadSuggestions.addEventListener('click', (e) => {
+            const suggestionElement = e.target.closest('.typeahead-suggestion');
+            if (suggestionElement) {
+                const index = parseInt(suggestionElement.dataset.index);
+                if (index >= 0 && index < currentSuggestions.length) {
+                    handleSuggestionSelection(currentSuggestions[index]);
+                }
+            }
+        });
+
+        // Hide typeahead when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!searchForm.contains(e.target)) {
+                hideTypeahead();
+            }
+        });
     </script>
 </body>
 </html> 

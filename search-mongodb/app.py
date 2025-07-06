@@ -64,6 +64,18 @@ def ensure_indexes(client):
             ("author_slug", "text")
         ], name="title_text_description_text_material_type_text_author_slug_text")
         
+        # Note: For Atlas Search, you need to create a search index in the MongoDB Atlas UI
+        # The search index should include these fields:
+        # - title (text)
+        # - description (text)
+        # - category (text)
+        # - grade_level (text)
+        # - material_type (text)
+        # - author_slug (text)
+        # - bestseller_rating (number)
+        # - material_id (number)
+        print("Note: Ensure you have created a 'search_index' in MongoDB Atlas with the required fields")
+        
         print("Successfully created/updated all indexes")
     except Exception as e:
         print(f"Error creating indexes: {e}")
@@ -178,6 +190,27 @@ def search():
             category_intents = []
             grade_intents = []
 
+        # Determine category boost and tooltip
+        category_boost = 5
+        boost_tooltip = "Category field uses default boost (5). "
+        high_conf_category = None
+        high_conf_category_raw = None
+        for cat, conf in category_intents:
+            if conf > 0.95:
+                high_conf_category_raw = cat
+                # Use only the top-level category if path-like
+                top_level_cat = cat.split('->')[0].strip() if '->' in cat else cat
+                high_conf_category = (top_level_cat, conf, cat)
+                break
+        if high_conf_category:
+            category_boost = 7
+            boost_tooltip = f"Category field uses high boost (7) because intent '{high_conf_category[2]}' (using top-level '{high_conf_category[0]}') was detected with confidence {high_conf_category[1]*100:.1f}%. "
+        else:
+            if category_intents:
+                boost_tooltip += "Intent detected but confidence is 95% or lower. "
+            else:
+                boost_tooltip += "No category intent detected. "
+
         # Leave must_clauses empty for future use
         must_clauses = []
         should_clauses = [
@@ -197,9 +230,9 @@ def search():
             },
             {
                 "text": {
-                    "query": query,
+                    "query": high_conf_category[0] if high_conf_category else query,
                     "path": "category",
-                    "score": {"boost": {"value": 5}}
+                    "score": {"boost": {"value": category_boost}}
                 }
             },
             {
@@ -250,13 +283,18 @@ def search():
         for result in results:
             result['_id'] = str(result['_id'])
             result['score'] = round(result.get('score', 0), 2)
+        # Store successful search if results were found
+        if total_count > 0:
+            store_search_query(query)
+        
         return jsonify({
             "results": results,
             "total": total_count,
             "page": page,
             "limit": limit,
             "category_intents": category_intents,
-            "grade_intents": grade_intents
+            "grade_intents": grade_intents,
+            "search_boost_tooltip": boost_tooltip
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -327,6 +365,376 @@ def detect_intents_spacy(query):
         if matches:
             detected.add(intent)
     return list(detected)
+
+def load_previous_searches():
+    """Load previous search queries from searches.json"""
+    try:
+        with open('searches/searches.json', 'r', encoding='utf-8') as file:
+            searches = json.load(file)
+        
+        # Aggregate search queries by frequency
+        search_freq = {}
+        for search in searches:
+            keyword = search.get('search_keyword', '').strip()
+            if keyword:
+                freq = int(search.get('search_frequency', 1))
+                if keyword in search_freq:
+                    search_freq[keyword] += freq
+                else:
+                    search_freq[keyword] = freq
+        
+        # Convert to list of (query, frequency) tuples, sorted by frequency
+        search_list = [(query, freq) for query, freq in search_freq.items()]
+        search_list.sort(key=lambda x: x[1], reverse=True)
+        return search_list
+    except Exception as e:
+        print(f"Error loading previous searches: {e}")
+        return []
+
+def store_search_query(query):
+    """Store a successful search query to searches.json"""
+    try:
+        # Load existing searches
+        searches = []
+        try:
+            with open('searches/searches.json', 'r', encoding='utf-8') as file:
+                searches = json.load(file)
+        except FileNotFoundError:
+            searches = []
+        
+        # Check if query already exists
+        query_exists = False
+        for search in searches:
+            if search.get('search_keyword', '').strip() == query.strip():
+                # Update frequency and last search date
+                current_freq = int(search.get('search_frequency', 1))
+                search['search_frequency'] = str(current_freq + 1)
+                search['last_search_date'] = datetime.now().strftime('%Y-%m-%d')
+                query_exists = True
+                break
+        
+        # If query doesn't exist, add new entry
+        if not query_exists:
+            new_search = {
+                "user_id": "system",
+                "search_keyword": query.strip(),
+                "search_frequency": "1",
+                "first_search_date": datetime.now().strftime('%Y-%m-%d'),
+                "last_search_date": datetime.now().strftime('%Y-%m-%d'),
+                "devices_used": "web"
+            }
+            searches.append(new_search)
+        
+        # Save back to file
+        with open('searches/searches.json', 'w', encoding='utf-8') as file:
+            json.dump(searches, file, indent=2, ensure_ascii=False)
+            
+    except Exception as e:
+        print(f"Error storing search query: {e}")
+
+@app.route('/typeahead')
+def typeahead():
+    query = request.args.get('q', '').strip()
+    
+    try:
+        client = get_mongodb_connection()
+        db = client[os.getenv('DATABASE_NAME', 'materials_db')]
+        collection = db[os.getenv('COLLECTION_NAME', 'materials')]
+        
+        # Collect all suggestions by type
+        materials = []
+        authors = []
+        queries = []
+        
+        # Handle empty query - show most frequent searches
+        if not query:
+            previous_searches = load_previous_searches()
+            for search_query, frequency in previous_searches[:10]:  # Top 10 most frequent
+                queries.append({
+                    "text": search_query,
+                    "type": "query",
+                    "id": search_query,
+                    "score": frequency,
+                    "search_score": 0,
+                    "highlight_start": 0,
+                    "highlight_end": 0
+                })
+            
+            # Return only frequent queries for empty input
+            return jsonify(queries[:10])
+        
+        # For non-empty queries, proceed with normal search
+        # 1. Search for materials (titles) - get more than needed for balancing
+        material_pipeline = [
+            {
+                "$search": {
+                    "index": "search_index",
+                    "text": {
+                        "query": query,
+                        "path": "title",
+                        "fuzzy": {"maxEdits": 1}
+                    }
+                }
+            },
+            {"$addFields": {"score": {"$meta": "searchScore"}}},
+            {"$addFields": {"bestseller_rating": {"$ifNull": ["$bestseller_rating", 0]}}},
+            {"$sort": {"bestseller_rating": -1, "title": 1}},
+            {"$limit": 10},  # Get more for balancing
+            {
+                "$project": {
+                    "title": 1,
+                    "material_id": 1,
+                    "bestseller_rating": 1,
+                    "score": 1
+                }
+            }
+        ]
+        
+        material_results = list(collection.aggregate(material_pipeline))
+        for material in material_results:
+            # Calculate highlight positions for material titles
+            title = material['title']
+            highlight_start, highlight_end = find_highlight_positions(title, query)
+            
+            materials.append({
+                "text": title,
+                "type": "material",
+                "id": material['material_id'],
+                "score": material.get('bestseller_rating', 0),
+                "search_score": material.get('score', 0),
+                "highlight_start": highlight_start,
+                "highlight_end": highlight_end
+            })
+        
+        # 2. Search for authors - get more than needed for balancing
+        author_pipeline = [
+            {
+                "$search": {
+                    "index": "search_index",
+                    "text": {
+                        "query": query,
+                        "path": "author_slug",
+                        "fuzzy": {"maxEdits": 1}
+                    }
+                }
+            },
+            {"$group": {"_id": "$author_slug"}},
+            {"$sort": {"_id": 1}},
+            {"$limit": 10}  # Get more for balancing
+        ]
+        
+        author_results = list(collection.aggregate(author_pipeline))
+        for author in author_results:
+            # Calculate highlight positions for author names
+            author_name = author['_id']
+            highlight_start, highlight_end = find_highlight_positions(author_name, query)
+            
+            authors.append({
+                "text": author_name,
+                "type": "author",
+                "id": author_name,
+                "score": 0,  # Authors ranked alphabetically
+                "search_score": 0,
+                "highlight_start": highlight_start,
+                "highlight_end": highlight_end
+            })
+        
+        # 3. Search for previous queries - get more than needed for balancing
+        previous_searches = load_previous_searches()
+        for search_query, frequency in previous_searches:
+            if query.lower() in search_query.lower():
+                # Calculate highlight positions for search queries
+                highlight_start, highlight_end = find_highlight_positions(search_query, query)
+                
+                queries.append({
+                    "text": search_query,
+                    "type": "query",
+                    "id": search_query,
+                    "score": frequency,
+                    "search_score": 0,
+                    "highlight_start": highlight_start,
+                    "highlight_end": highlight_end
+                })
+                if len(queries) >= 10:  # Get more for balancing
+                    break
+        
+        # 4. Add the typed query as a fallback if no matches found
+        if not materials and not authors and not queries:
+            return jsonify([{
+                "text": query,
+                "type": "query",
+                "id": query,
+                "score": 0,
+                "search_score": 0,
+                "highlight_start": 0,
+                "highlight_end": len(query)
+            }])
+        
+        # 5. Dynamic balancing algorithm (same as before)
+        def balance_suggestions(materials, authors, queries, target_total=10):
+            """Dynamically balance suggestions to reach target_total"""
+            available_types = []
+            if materials:
+                available_types.append('material')
+            if authors:
+                available_types.append('author')
+            if queries:
+                available_types.append('query')
+            
+            if not available_types:
+                return []
+            
+            # Calculate base distribution based on available types
+            if len(available_types) == 1:
+                # Only one type available - use all available slots
+                if available_types[0] == 'material':
+                    return materials[:target_total]
+                elif available_types[0] == 'author':
+                    return authors[:target_total]
+                else:  # query
+                    return queries[:target_total]
+            
+            elif len(available_types) == 2:
+                # Two types available - adjust 70/20/10 ratio
+                if 'query' in available_types and 'material' in available_types:
+                    # Queries get 70%, materials get 30%
+                    query_count = min(7, len(queries))
+                    material_count = min(target_total - query_count, len(materials))
+                    return queries[:query_count] + materials[:material_count]
+                
+                elif 'query' in available_types and 'author' in available_types:
+                    # Queries get 80%, authors get 20%
+                    query_count = min(8, len(queries))
+                    author_count = min(target_total - query_count, len(authors))
+                    return queries[:query_count] + authors[:author_count]
+                
+                elif 'material' in available_types and 'author' in available_types:
+                    # Materials get 80%, authors get 20%
+                    material_count = min(8, len(materials))
+                    author_count = min(target_total - material_count, len(authors))
+                    return materials[:material_count] + authors[:author_count]
+            
+            else:
+                # All three types available - use standard 70/20/10 ratio
+                query_count = min(7, len(queries))
+                material_count = min(2, len(materials))
+                author_count = min(1, len(authors))
+                
+                # If we have room, distribute remaining slots
+                remaining = target_total - query_count - material_count - author_count
+                if remaining > 0:
+                    if len(materials) > material_count:
+                        material_count += min(remaining // 2, len(materials) - material_count)
+                        remaining -= min(remaining // 2, len(materials) - material_count)
+                    if remaining > 0 and len(authors) > author_count:
+                        author_count += min(remaining, len(authors) - author_count)
+                
+                return queries[:query_count] + materials[:material_count] + authors[:author_count]
+        
+        # 6. Apply dynamic balancing
+        balanced_suggestions = balance_suggestions(materials, authors, queries, 10)
+        
+        # 7. Sort within each type and apply final ranking
+        def calculate_priority(suggestion):
+            base_score = 0
+            
+            # Type-based priority (adjusted for dynamic balancing)
+            if suggestion['type'] == 'query':
+                base_score = 70
+            elif suggestion['type'] == 'material':
+                base_score = 20
+            elif suggestion['type'] == 'author':
+                base_score = 10
+            
+            # Boost by individual scores
+            if suggestion['type'] == 'material':
+                # Normalize bestseller rating (0-5 scale) to 0-100
+                base_score += (suggestion['score'] / 5) * 20
+            elif suggestion['type'] == 'query':
+                # Boost by frequency (normalize to reasonable range)
+                base_score += min(suggestion['score'] * 2, 30)
+            
+            # Boost by search relevance score
+            base_score += suggestion['search_score'] * 10
+            
+            return base_score
+        
+        # Sort by priority and ensure we have exactly 10 (or fewer if not enough available)
+        balanced_suggestions.sort(key=calculate_priority, reverse=True)
+        final_suggestions = balanced_suggestions[:10]
+        
+        return jsonify(final_suggestions)
+        
+    except Exception as e:
+        print(f"Typeahead error: {e}")
+        return jsonify([])
+    finally:
+        if 'client' in locals():
+            client.close()
+
+def find_highlight_positions(text, query):
+    """Find the start and end positions for highlighting matching text"""
+    if not query or not text:
+        return 0, 0
+    
+    text_lower = text.lower()
+    query_lower = query.lower()
+    
+    # Find the first occurrence of the query in the text
+    start_pos = text_lower.find(query_lower)
+    if start_pos == -1:
+        # If exact match not found, try to find partial matches
+        query_words = query_lower.split()
+        for word in query_words:
+            if len(word) >= 2:  # Only consider words with 2+ characters
+                word_pos = text_lower.find(word)
+                if word_pos != -1:
+                    start_pos = word_pos
+                    end_pos = word_pos + len(word)
+                    return start_pos, end_pos
+        
+        # If no partial matches found, return 0, 0
+        return 0, 0
+    
+    end_pos = start_pos + len(query)
+    return start_pos, end_pos
+
+@app.route('/search/material/<int:material_id>')
+def search_material_by_id(material_id):
+    """Search for a specific material by ID"""
+    try:
+        client = get_mongodb_connection()
+        db = client[os.getenv('DATABASE_NAME', 'materials_db')]
+        collection = db[os.getenv('COLLECTION_NAME', 'materials')]
+        
+        # Find the specific material
+        material = collection.find_one({"material_id": material_id})
+        
+        if not material:
+            return jsonify({"error": "Material not found"}), 404
+        
+        # Convert ObjectId to string for JSON serialization
+        material['_id'] = str(material['_id'])
+        material['score'] = 10.0  # High score for exact match
+        
+        # Store the search query (material title)
+        store_search_query(material['title'])
+        
+        return jsonify({
+            "results": [material],
+            "total": 1,
+            "page": 1,
+            "limit": 1,
+            "category_intents": [],
+            "grade_intents": [],
+            "search_boost_tooltip": "Exact material match"
+        })
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if 'client' in locals():
+            client.close()
 
 if __name__ == '__main__':
     # Create indexes immediately when starting the application
