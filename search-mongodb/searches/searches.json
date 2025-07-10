@@ -4738,9 +4738,9 @@
   {
     "user_id": "3873545",
     "search_keyword": "Materialpaket \"Cool wie Bolle\"",
-    "search_frequency": "1",
+    "search_frequency": "2",
     "first_search_date": "2025-04-28",
-    "last_search_date": "2025-04-28",
+    "last_search_date": "2025-07-06",
     "devices_used": "desktop"
   },
   {
@@ -4954,6 +4954,30 @@
   {
     "user_id": "system",
     "search_keyword": "deutsch klasse kostenlos",
+    "search_frequency": "1",
+    "first_search_date": "2025-07-06",
+    "last_search_date": "2025-07-06",
+    "devices_used": "web"
+  },
+  {
+    "user_id": "system",
+    "search_keyword": "62 Diskussionsthemen (Argumentation, Pro- und Contra-Debatte, Diskussion)",
+    "search_frequency": "1",
+    "first_search_date": "2025-07-06",
+    "last_search_date": "2025-07-06",
+    "devices_used": "web"
+  },
+  {
+    "user_id": "system",
+    "search_keyword": "XL Material Paket Ernährung | PAKET, Ernährung, Gesund, Gesunde Ernährung, Biologie, Grundlagen der Ernährung",
+    "search_frequency": "1",
+    "first_search_date": "2025-07-06",
+    "last_search_date": "2025-07-06",
+    "devices_used": "web"
+  },
+  {
+    "user_id": "system",
+    "search_keyword": "Frühling-Arbeitsblätter-Mix (Mathe und Deutsch; Klasse 3)",
     "search_frequency": "1",
     "first_search_date": "2025-07-06",
     "last_search_date": "2025-07-06",

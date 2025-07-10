@@ -739,7 +739,7 @@
                 div.appendChild(content);
                 div.addEventListener('mousedown', (e) => {
                     e.preventDefault();
-                    selectTypeaheadSuggestion(idx);
+                    handleSuggestionSelection(currentSuggestions[idx]);
                 });
                 typeaheadSuggestions.appendChild(div);
             });

@@ -1,6 +1,6 @@
 import json
 import sys
-from app import detect_intents_spacy, PHRASE_MATCHERS, nlp
+from intents.service import detect_intents_spacy
 from typing import Dict, List, Tuple
 
 SEARCHES_PATH = './search-mongodb/searches/searches.json'

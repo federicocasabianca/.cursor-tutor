@@ -22,6 +22,31 @@ search-mongodb/
     └── index.html     # Web interface template
 ```
 
+## Modular Structure (Recommended Refactor)
+
+To keep the codebase maintainable and scalable, split the application into the following modules/blueprints:
+
+- **app.py**: Main entry point. Handles app creation, configuration, and blueprint registration.
+- **db.py**: Database connection logic and helpers for MongoDB.
+- **search/**: Search-related routes and business logic.
+  - `routes.py`: Search endpoints (e.g., `/search`, `/search/material/<id>`)
+  - `service.py`: Search aggregation and ranking logic
+- **typeahead/**: Typeahead suggestion endpoints and logic.
+  - `routes.py`: `/typeahead` endpoint
+  - `service.py`: Suggestion balancing, highlighting, and ranking
+- **intents/**: Intent detection and taxonomy logic.
+  - `routes.py`: Intent-related endpoints
+  - `service.py`: Calls to external intent API, local taxonomy matching
+- **taxonomy/**: Taxonomy loading and management.
+  - `loader.py`: Loads and parses taxonomy CSVs
+- **utils/**: Helper functions used across modules.
+  - `highlight.py`: Text highlighting utilities
+  - `helpers.py`: Miscellaneous helpers
+- **templates/**: HTML templates for the web interface
+- **static/**: (Optional) Static assets (CSS, JS, images)
+
+**Each module/blueprint is responsible for a single concern, making the codebase easier to maintain, test, and extend.**
+
 ## Setup
 
 1. Create a virtual environment (recommended):
