@@ -244,6 +244,29 @@
             color: #2563eb;
             background: none;
         }
+        /* Add CSS for the clear search button inside the input */
+        #clearSearchButton {
+            position: absolute;
+            right: 6.5rem; /* Adjust to fit between input and search button */
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            padding: 0.25rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: color 0.15s;
+            box-shadow: none;
+            font-size: 1.1rem;
+            height: 2rem;
+            width: 2rem;
+            display: none;
+        }
+        #clearSearchButton:hover {
+            color: #374151;
+            background: #f3f4f6;
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -270,20 +293,24 @@
                 <form id="searchForm" class="flex gap-2 flex-1 relative">
                     <input type="text" 
                            id="searchInput" 
-                           class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
                            placeholder="Search materials by title, description, type, or author..."
                            autocomplete="off">
                     <button type="submit" 
                             class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                         Search
                     </button>
-                    
+                    <!-- Clear Search CTA inside input -->
+                    <button id="clearSearchButton" type="button" aria-label="Clear search" class="absolute right-24 top-1/2 transform -translate-y-1/2 bg-transparent text-gray-400 hover:text-gray-600 focus:outline-none p-1 rounded-full transition-all duration-150 hidden" style="z-index: 10;">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                     <!-- Typeahead Suggestions Dropdown -->
                     <div id="typeaheadDropdown" class="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto hidden">
                         <div id="typeaheadSuggestions" class="py-2"></div>
                     </div>
                 </form>
-                <button id="clearSearchButton" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2 ml-2">Clear Search</button>
                 <span id="searchInfoTooltip" class="search-info-tooltip ml-2" tabindex="0" style="outline: none;"></span>
             </div>
 
@@ -611,7 +638,7 @@
 
         function updateClearButtonVisibility() {
             if (searchInput.value.trim()) {
-                clearSearchButton.style.display = '';
+                clearSearchButton.style.display = 'block';
                 clearSearchButton.disabled = false;
             } else {
                 clearSearchButton.style.display = 'none';
@@ -872,6 +899,9 @@
             const query = searchInput.value.trim();
             if (query.length >= 1) {
                 fetchTypeaheadSuggestions(query);
+            } else {
+                // If input is empty, show top 10 most frequent searches
+                fetchTypeaheadSuggestions('');
             }
         });
 

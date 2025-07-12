@@ -4982,5 +4982,13 @@
     "first_search_date": "2025-07-06",
     "last_search_date": "2025-07-06",
     "devices_used": "web"
+  },
+  {
+    "user_id": "system",
+    "search_keyword": "Demokratie - Was ist Demokratie?",
+    "search_frequency": "1",
+    "first_search_date": "2025-07-06",
+    "last_search_date": "2025-07-06",
+    "devices_used": "web"
   }
 ]
