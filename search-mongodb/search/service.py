@@ -1,69 +1,15 @@
 import os
 from db import get_mongodb_connection
 from intents.service import call_intent_api
+from query_tracking.service import store_search_query_mongodb, load_previous_searches_mongodb
 
 def load_previous_searches():
-    """Load previous search queries from searches.json"""
-    import json
-    try:
-        with open('searches/searches.json', 'r', encoding='utf-8') as file:
-            searches = json.load(file)
-        # Aggregate search queries by frequency
-        search_freq = {}
-        for search in searches:
-            keyword = search.get('search_keyword', '').strip()
-            if keyword:
-                freq = int(search.get('search_frequency', 1))
-                if keyword in search_freq:
-                    search_freq[keyword] += freq
-                else:
-                    search_freq[keyword] = freq
-        # Convert to list of (query, frequency) tuples, sorted by frequency
-        search_list = [(query, freq) for query, freq in search_freq.items()]
-        search_list.sort(key=lambda x: x[1], reverse=True)
-        return search_list
-    except Exception as e:
-        print(f"Error loading previous searches: {e}")
-        return []
+    """Load previous search queries from MongoDB"""
+    return load_previous_searches_mongodb(limit=100)
 
-def store_search_query(query):
-    """Store a successful search query to searches.json"""
-    import json
-    from datetime import datetime
-    try:
-        # Load existing searches
-        searches = []
-        try:
-            with open('searches/searches.json', 'r', encoding='utf-8') as file:
-                searches = json.load(file)
-        except FileNotFoundError:
-            searches = []
-        # Check if query already exists
-        query_exists = False
-        for search in searches:
-            if search.get('search_keyword', '').strip() == query.strip():
-                # Update frequency and last search date
-                current_freq = int(search.get('search_frequency', 1))
-                search['search_frequency'] = str(current_freq + 1)
-                search['last_search_date'] = datetime.now().strftime('%Y-%m-%d')
-                query_exists = True
-                break
-        # If query doesn't exist, add new entry
-        if not query_exists:
-            new_search = {
-                "user_id": "system",
-                "search_keyword": query.strip(),
-                "search_frequency": "1",
-                "first_search_date": datetime.now().strftime('%Y-%m-%d'),
-                "last_search_date": datetime.now().strftime('%Y-%m-%d'),
-                "devices_used": "web"
-            }
-            searches.append(new_search)
-        # Save back to file
-        with open('searches/searches.json', 'w', encoding='utf-8') as file:
-            json.dump(searches, file, indent=2, ensure_ascii=False)
-    except Exception as e:
-        print(f"Error storing search query: {e}")
+def store_search_query(query, result_count=0):
+    """Store a successful search query to MongoDB"""
+    store_search_query_mongodb(query, result_count)
 
 def search_materials(query, page, limit):
     if not query:
@@ -144,7 +90,7 @@ def search_materials(query, page, limit):
             result['_id'] = str(result['_id'])
             result['score'] = round(result.get('score', 0), 2)
         if total_count > 0:
-            store_search_query(query)
+            store_search_query(query, total_count)
         return {
             "results": results,
             "total": total_count,

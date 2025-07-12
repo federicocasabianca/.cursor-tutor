@@ -43,6 +43,11 @@ def ensure_indexes(client):
         ], name="title_text_description_text_material_type_text_author_slug_text")
         print("Note: Ensure you have created a 'search_index' in MongoDB Atlas with the required fields")
         print("Successfully created/updated all indexes")
+        
+        # Create query tracking indexes
+        from query_tracking.service import ensure_query_tracking_indexes
+        ensure_query_tracking_indexes(client)
+        
     except Exception as e:
         print(f"Error creating indexes: {e}")
         raise

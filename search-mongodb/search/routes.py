@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from search.service import search_materials, get_material_by_id, store_search_query
+from query_tracking.service import get_query_statistics
 
 search_bp = Blueprint('search', __name__)
 
@@ -17,3 +18,9 @@ def search_material_by_id_route(material_id):
     if result is None:
         return jsonify({"error": "Material not found"}), 404
     return jsonify(result)
+
+@search_bp.route('/admin/query-stats')
+def query_statistics():
+    """Admin endpoint to view query tracking statistics"""
+    stats = get_query_statistics()
+    return jsonify(stats)
