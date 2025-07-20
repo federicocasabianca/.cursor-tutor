@@ -6,6 +6,7 @@ A web application for searching and managing educational materials in MongoDB. T
 
 - Modern, responsive web interface
 - Real-time search with relevance scoring
+- **Learning-to-Rank (LTR) system** using XGBoost for improved ranking
 - Material insertion from JSON dataset
 - Beautiful card-based results display
 - MongoDB text search integration
@@ -18,6 +19,17 @@ search-mongodb/
 ├── README.md
 ├── app.py              # Flask application
 ├── requirements.txt    # Python dependencies
+├── ltr/                # Learning-to-Rank system
+│   ├── README.md       # LTR documentation
+│   ├── feature_engineering.py
+│   ├── data_generator.py
+│   ├── model.py
+│   ├── ranking_service.py
+│   ├── train_model.py
+│   ├── test_ranking.py
+│   ├── run_pipeline.py
+│   ├── data/           # Training data
+│   └── models/         # Trained models
 └── templates/
     └── index.html     # Web interface template
 ```
@@ -67,12 +79,18 @@ DATABASE_NAME=materials_db
 COLLECTION_NAME=materials
 ```
 
-4. Run the application:
+4. (Optional) Set up the Learning-to-Rank system:
+```bash
+cd ltr
+python run_pipeline.py --min-queries 50
+```
+
+5. Run the application:
 ```bash
 python app.py
 ```
 
-5. Open your browser and navigate to `http://localhost:5000`
+6. Open your browser and navigate to `http://localhost:5000`
 
 ## Usage
 
@@ -99,6 +117,10 @@ python app.py
 - PyMongo 4.6.1
 - python-dotenv 1.0.1
 - flask-cors 4.0.0
+- XGBoost 2.0.3 (for LTR system)
+- scikit-learn 1.3.2 (for LTR system)
+- pandas 2.1.4 (for LTR system)
+- numpy 1.24.3 (for LTR system)
 
 ## Security Notes
 

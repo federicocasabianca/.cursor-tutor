@@ -40,3 +40,20 @@
 .read-the-docs {
   color: #888;
 }
+
+.stepper-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.back-btn, .next-btn, .submit-btn {
+  min-width: 120px;
+}
+
+.error {
+  color: #ff4d4f;
+  margin-top: 1rem;
+  font-weight: bold;
+}

@@ -54,6 +54,14 @@ const TRIP_CATEGORIES = [
   },
 ];
 
+const STEPS = [
+  'destination',
+  'dates',
+  'categories',
+  'allocation',
+  'review',
+];
+
 function App() {
   const [form, setForm] = useState({
     destination: '',
@@ -66,6 +74,7 @@ function App() {
   });
   const [error, setError] = useState('');
   const [showItinerary, setShowItinerary] = useState(false);
+  const [step, setStep] = useState(0);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -74,7 +83,6 @@ function App() {
 
   const handleCategorySelect = (cat) => {
     setError('');
-    setShowItinerary(false);
     setForm((prev) => {
       let selected = prev.selectedCategories;
       if (selected.includes(cat)) {
@@ -107,76 +115,103 @@ function App() {
     0
   );
 
+  const validateStep = () => {
+    setError('');
+    if (step === 0) {
+      if (!form.destination || !form.airport) {
+        setError('Please fill in destination and airport.');
+        return false;
+      }
+    } else if (step === 1) {
+      if (!form.dateFrom && !form.numDays) {
+        setError('Please provide either a date range or number of days.');
+        return false;
+      }
+    } else if (step === 2) {
+      if (form.selectedCategories.length === 0) {
+        setError('Please select at least one trip type.');
+        return false;
+      }
+    } else if (step === 3) {
+      if (totalAllocation !== 100) {
+        setError('Total allocation must be 100%.');
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const handleNext = (e) => {
+    if (e) e.preventDefault();
+    if (validateStep()) {
+      setStep((prev) => prev + 1);
+      setError('');
+    }
+  };
+
+  const handleBack = (e) => {
+    if (e) e.preventDefault();
+    setError('');
+    setStep((prev) => (prev > 0 ? prev - 1 : prev));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
-    if (!form.destination || !form.airport) {
-      setError('Please fill in destination and airport.');
-      return;
+    if (validateStep()) {
+      setShowItinerary(true);
+      setStep(4);
     }
-    if (!form.dateFrom && !form.numDays) {
-      setError('Please provide either a date range or number of days.');
-      return;
-    }
-    if (form.selectedCategories.length === 0) {
-      setError('Please select at least one trip type.');
-      return;
-    }
-    if (totalAllocation !== 100) {
-      setError('Total allocation must be 100%.');
-      return;
-    }
-    setShowItinerary(true);
   };
 
   return (
     <div className="container">
       <h1>Trip Itinerary Planner</h1>
       <form className="trip-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Destination</label>
-          <input name="destination" value={form.destination} onChange={handleInput} required />
-        </div>
-        <div className="form-group">
-          <label>Destination Airport</label>
-          <input name="airport" value={form.airport} onChange={handleInput} required />
-        </div>
-        <div className="form-group">
-          <label>Date From</label>
-          <input type="date" name="dateFrom" value={form.dateFrom} onChange={handleInput} />
-        </div>
-        <div className="form-group">
-          <label>Date To</label>
-          <input type="date" name="dateTo" value={form.dateTo} onChange={handleInput} />
-        </div>
-        <div className="form-group">
-          <label>Or Number of Days</label>
-          <input type="number" name="numDays" min="1" value={form.numDays} onChange={handleInput} />
-        </div>
-        <div className="form-group">
-          <label>Type of Trip (max 3)</label>
-          <div className="categories">
-            {TRIP_CATEGORIES.map((cat) => (
-              <button
-                type="button"
-                key={cat.name}
-                className={
-                  'category-btn' +
-                  (form.selectedCategories.includes(cat.name) ? ' selected' : '')
-                }
-                onClick={() => handleCategorySelect(cat.name)}
-              >
-                <span className="icon">{cat.icon}</span> {cat.name}
-                <div className="subcats">
-                  {cat.subcategories.map((sub) => (
-                    <span key={sub} className="subcat">{sub}</span>
-                  ))}
-                </div>
-              </button>
-            ))}
+        {step === 0 && (
+          <div className="form-group">
+            <label>Destination</label>
+            <input name="destination" value={form.destination} onChange={handleInput} required />
+            <label>Destination Airport</label>
+            <input name="airport" value={form.airport} onChange={handleInput} required />
           </div>
-        </div>
-        {form.selectedCategories.length > 0 && (
+        )}
+        {step === 1 && (
+          <div className="form-group">
+            <label>Date From</label>
+            <input type="date" name="dateFrom" value={form.dateFrom} onChange={handleInput} />
+            <label>Date To</label>
+            <input type="date" name="dateTo" value={form.dateTo} onChange={handleInput} />
+            <label>Or Number of Days</label>
+            <input type="number" name="numDays" min="1" value={form.numDays} onChange={handleInput} />
+          </div>
+        )}
+        {step === 2 && (
+          <div className="form-group">
+            <label>Type of Trip (max 3)</label>
+            <div className="categories">
+              {TRIP_CATEGORIES.map((cat) => (
+                <button
+                  type="button"
+                  key={cat.name}
+                  className={
+                    'category-btn' +
+                    (form.selectedCategories.includes(cat.name) ? ' selected' : '')
+                  }
+                  onClick={() => handleCategorySelect(cat.name)}
+                >
+                  <span className="icon">{cat.icon}</span> {cat.name}
+                  <div className="subcats">
+                    {cat.subcategories.map((sub) => (
+                      <span key={sub} className="subcat">{sub}</span>
+                    ))}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+        {step === 3 && form.selectedCategories.length > 0 && (
           <div className="form-group">
             <label>Allocate your time (%)</label>
             {form.selectedCategories.map((cat) => (
@@ -195,10 +230,45 @@ function App() {
             <div className="total">Total: {totalAllocation}%</div>
           </div>
         )}
+        {step === 4 && (
+          <div className="itinerary">
+            <h2>Your Itinerary for {form.destination}</h2>
+            <ul>
+              {form.selectedCategories.map((cat) => (
+                <li key={cat}>
+                  <strong>{cat}</strong>: {form.allocations[cat]}% of your trip
+                </li>
+              ))}
+            </ul>
+            <p>
+              {form.dateFrom && form.dateTo
+                ? `From ${form.dateFrom} to ${form.dateTo}`
+                : form.numDays
+                ? `For ${form.numDays} days`
+                : ''}
+            </p>
+          </div>
+        )}
         {error && <div className="error">{error}</div>}
-        <button type="submit" className="submit-btn">Generate Itinerary</button>
+        <div className="stepper-controls">
+          {step > 0 && step < 4 && (
+            <button type="button" className="back-btn" onClick={handleBack}>
+              Back
+            </button>
+          )}
+          {step < 3 && (
+            <button type="button" className="next-btn" onClick={handleNext}>
+              Next
+            </button>
+          )}
+          {step === 3 && (
+            <button type="submit" className="submit-btn">
+              Generate Itinerary
+            </button>
+          )}
+        </div>
       </form>
-      {showItinerary && (
+      {showItinerary && step === 4 && (
         <div className="itinerary">
           <h2>Your Itinerary for {form.destination}</h2>
           <ul>

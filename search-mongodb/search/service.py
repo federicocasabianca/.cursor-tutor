@@ -2,6 +2,7 @@ import os
 from db import get_mongodb_connection
 from intents.service import call_intent_api
 from query_tracking.service import store_search_query_mongodb, load_previous_searches_mongodb
+from ltr.ranking_service import re_rank_search_results
 
 def load_previous_searches():
     """Load previous search queries from MongoDB"""
@@ -89,9 +90,13 @@ def search_materials(query, page, limit):
         for result in results:
             result['_id'] = str(result['_id'])
             result['score'] = round(result.get('score', 0), 2)
+        
+        # Store search query for tracking
         if total_count > 0:
             store_search_query(query, total_count)
-        return {
+        
+        # Create search results dictionary
+        search_results = {
             "results": results,
             "total": total_count,
             "page": page,
@@ -100,6 +105,14 @@ def search_materials(query, page, limit):
             "grade_intents": grade_intents,
             "search_boost_tooltip": boost_tooltip
         }
+        
+        # Apply LTR re-ranking
+        try:
+            re_ranked_results = re_rank_search_results(query, search_results)
+            return re_ranked_results
+        except Exception as e:
+            print(f"Error in LTR re-ranking, using original results: {e}")
+            return search_results
     finally:
         if 'client' in locals():
             client.close()
