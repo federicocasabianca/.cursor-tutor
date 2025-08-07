@@ -11,9 +11,9 @@ from typing import List, Tuple, Dict, Any
 # Add parent directory to path to import modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from ltr.data_generator import TrainingDataGenerator
-from ltr.feature_engineering import FeatureEngineer
-from ltr.model import LTRModel
+from .data_generator import TrainingDataGenerator
+from .feature_engineering import FeatureEngineer
+from .model import LTRModel
 
 
 def train_ltr_model(training_data_file: str = 'training_data.json', 

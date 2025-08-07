@@ -9,7 +9,7 @@ import os
 # Add parent directory to path to import modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from ltr.ranking_service import get_ranking_service
+from .ranking_service import get_ranking_service
 from search.service import search_materials
 
 

@@ -4,7 +4,7 @@ import random
 from typing import List, Dict, Any, Tuple
 from db import get_mongodb_connection
 from query_tracking.service import load_previous_searches_mongodb
-from feature_engineering import generate_synthetic_labels
+from .feature_engineering import generate_synthetic_labels
 from search.service import search_materials
 
 # Label mapping
@@ -103,7 +103,7 @@ class TrainingDataGenerator:
     def save_training_data(self, training_data: List[Dict], filename: str = 'training_data.json'):
         os.makedirs('data', exist_ok=True)
         with open(f'data/{filename}', 'w', encoding='utf-8') as f:
-            json.dump(training_data, f, indent=2, ensure_ascii=False)
+            json.dump(training_data, f, indent=2, ensure_ascii=False, default=str)
         print(f"Training data saved to data/{filename}")
 
     def load_training_data(self, filename: str = 'training_data.json') -> List[Dict]:

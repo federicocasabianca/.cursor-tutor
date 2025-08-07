@@ -1,0 +1,24 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+rule "Ensure each project has documentation/prd.md with high-level description" {
+  meta {
+    description: "Checks that every project contains a documentation/prd.md file with a high-level description of the initiative."
+    severity: "error"
+  }
+
+  for_each_project: {
+    let prd_path = path.join(project.root, "documentation", "prd.md")
+    if (!fs.exists(prd_path)) {
+      error(`Missing documentation/prd.md in project: ${project.name}`)
+    } else {
+      let content = fs.read(prd_path)
+      if (!content.match(/high[- ]?level description/i)) {
+        warn(`documentation/prd.md in project ${project.name} does not appear to contain a high-level description.`)
+      }
+    }
+  }
+}

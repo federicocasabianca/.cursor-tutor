@@ -1,7 +1,7 @@
 import os
 import sys
 from typing import List, Dict, Any, Optional
-from ltr.model import LTRModel
+from .model import LTRModel
 
 
 class RankingService:

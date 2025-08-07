@@ -6,7 +6,7 @@ from typing import List, Dict, Any, Tuple
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import ndcg_score, mean_squared_error
 import xgboost as xgb
-from feature_engineering import FeatureEngineer
+from .feature_engineering import FeatureEngineer
 
 
 class LTRModel:

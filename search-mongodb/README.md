@@ -77,6 +77,7 @@ pip install -r requirements.txt
 MONGODB_URI=your_mongodb_connection_string
 DATABASE_NAME=materials_db
 COLLECTION_NAME=materials
+SUGGEST_WORLD=de
 ```
 
 4. (Optional) Set up the Learning-to-Rank system:
@@ -99,6 +100,12 @@ python app.py
 - Results are displayed in cards with relevance scores
 - Search works across title, description, material type, and author fields
 
+### Typeahead Suggestions
+- Real-time suggestions appear as you type
+- Suggestions include materials, authors, and popular queries
+- Uses external API for high-quality suggestions
+- Fallback to user's input if no suggestions are available
+
 ### Inserting Materials
 - Click the "Insert Materials from JSON" button to load materials from dataset.json
 - Progress and results are shown via notifications
@@ -117,6 +124,7 @@ python app.py
 - PyMongo 4.6.1
 - python-dotenv 1.0.1
 - flask-cors 4.0.0
+- requests 2.31.0 (for external API calls)
 - XGBoost 2.0.3 (for LTR system)
 - scikit-learn 1.3.2 (for LTR system)
 - pandas 2.1.4 (for LTR system)
