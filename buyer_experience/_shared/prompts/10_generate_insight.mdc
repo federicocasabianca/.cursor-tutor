@@ -1,0 +1,61 @@
+# name: generate_insight
+# description: Transform selected signals into one evidence-backed insight.
+# inputs:
+#   - project_slug: buyer_experience
+#   - insight_id: be-ic-2025-08-001
+#   - type?: string
+#   - signal_ids: array[buyer_experience-sig-kpis-dach-desktop-2024-07_2025-08]
+#   - owner?: string
+# outputs:
+#   - path: projects/{project_slug}/insights/{insight_id}.md
+#     type: markdown
+
+# system:
+Create a valid **insight** per `_shared/schemas/insight.schema.md`.
+
+# retrieval:
+Load each signal file:
+- projects/{project_slug}/signals/**/<signal_id>.md
+
+# template:
+---
+artifact: insight
+project: {{project_slug}}
+id: {{insight_id}}
+date: {{date:%Y-%m-%d}}
+type: {{type or "opportunity"}}
+owner: {{owner or "TBD"}}
+claim: "{{Synthesize a short, falsifiable statement}}"
+strength: {{Infer "weak"|"medium"|"strong"}}
+tags: []
+segments: []
+evidence:
+  signals: [{{#each signal_ids}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}]
+  quotes: []
+  metrics: []
+behavior:
+  observed_actions: [{{Derive behaviors if present; else "TBD"}}]
+  frequency: "TBD"
+  recency: "TBD"
+  intensity: "TBD"
+links:
+  from: [{{#each signal_ids}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}]
+  to: []
+---
+### Rationale
+- TBD
+
+### Evidence summary
+- TBD
+
+### Counter-evidence
+- TBD
+
+### Implications
+- TBD
+
+### Experiments
+- TBD
+
+### Metrics to watch
+- TBD

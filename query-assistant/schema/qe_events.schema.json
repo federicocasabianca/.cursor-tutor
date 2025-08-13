@@ -1,0 +1,210 @@
+{
+  "table": "events",
+  "fields": [
+    {
+      "column_name": "ab_tests_key",
+      "data_type": "ARRAY\u003cSTRING\u003e",
+      "is_nullable": "NO"
+    },
+    {
+      "column_name": "ab_tests_value",
+      "data_type": "ARRAY\u003cSTRING\u003e",
+      "is_nullable": "NO"
+    },
+    {
+      "column_name": "date",
+      "data_type": "DATE",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "extra",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "ga_client_id",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "ga_load_status",
+      "data_type": "INT64",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "ga_track_id",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "geo_ip_key",
+      "data_type": "ARRAY\u003cSTRING\u003e",
+      "is_nullable": "NO"
+    },
+    {
+      "column_name": "geo_ip_value",
+      "data_type": "ARRAY\u003cSTRING\u003e",
+      "is_nullable": "NO"
+    },
+    {
+      "column_name": "internal_path",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "ip_address",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "item_discount",
+      "data_type": "INT64",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "item_id",
+      "data_type": "INT64",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "item_labels",
+      "data_type": "ARRAY\u003cSTRING\u003e",
+      "is_nullable": "NO"
+    },
+    {
+      "column_name": "item_price",
+      "data_type": "INT64",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "number",
+      "data_type": "INT64",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "os",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "page_url",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "position",
+      "data_type": "INT64",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "purchase_id",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "query",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "query_params_key",
+      "data_type": "ARRAY\u003cSTRING\u003e",
+      "is_nullable": "NO"
+    },
+    {
+      "column_name": "query_params_value",
+      "data_type": "ARRAY\u003cSTRING\u003e",
+      "is_nullable": "NO"
+    },
+    {
+      "column_name": "referrer",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "session_id",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "source",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "test_segment",
+      "data_type": "INT64",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "time",
+      "data_type": "TIMESTAMP",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "total_results",
+      "data_type": "INT64",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "type",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "user_agent",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "user_device",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "user_id",
+      "data_type": "INT64",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "user_region",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "utm_campaign",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "utm_content",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "utm_medium",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "utm_source",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "utm_term",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "version",
+      "data_type": "FLOAT64",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "world",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    }
+  ]
+}

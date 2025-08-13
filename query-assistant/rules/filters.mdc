@@ -1,0 +1,10 @@
+---
+alwaysApply: true
+---
+
+
+rules:
+  - description: "If a query requires a time filter, use the appropriate date syntax for the environment: BigQuery uses DATE_SUB(CURRENT_DATE(), INTERVAL X DAY), Clickhouse uses today() - INTERVAL X DAY"
+  - description: "If the input contains 'frequent queries' or 'search terms', use type='appearedInSearch' and group by `query`."
+  - description: "For BigQuery: Use backticks for table names like `project.dataset.table`. For Clickhouse: Use standard table names like table_name."
+

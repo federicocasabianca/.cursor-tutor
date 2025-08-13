@@ -1,0 +1,53 @@
+# name: generate_strategy_generic
+# description: Create a generic strategy from selected insights.
+# inputs:
+#   - project_slug: string
+#   - strategy_id_stub: string
+#   - insight_ids: array[string]
+#   - owner?: string
+#   - tags?: array[string]
+# outputs:
+#   - path: projects/{project_slug}/strategy/generic/{project_slug}-str-generic-{strategy_id_stub}.md
+#     type: markdown
+
+# system:
+Produce a **framework-agnostic strategy** compliant with `_shared/schemas/strategy.generic.schema.md`.
+
+# retrieval:
+Load each insight:
+- projects/{project_slug}/insights/<insight_id>.md
+
+# template:
+---
+artifact: strategy
+framework: generic
+project: {{project_slug}}
+id: {{project_slug}}-str-generic-{{strategy_id_stub}}
+version: 1
+date: {{date:%Y-%m-%d}}
+owner: {{owner or "TBD"}}
+links:
+  from: [{{#each insight_ids}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}]
+  to: []
+{{#if tags}}tags: [{{#each tags}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}]{{/if}}
+---
+## Summary
+- TBD
+
+## Core Challenge
+- TBD
+
+## Goals
+- TBD
+
+## Pillars
+- TBD
+
+## Initiatives
+- TBD
+
+## Risks & Assumptions
+- TBD
+
+## Evidence
+- TBD

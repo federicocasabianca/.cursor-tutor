@@ -1,0 +1,10 @@
+---
+alwaysApply: true
+---
+
+rules:
+  - description: "When generating queries that reference A/B test segments, use ab_tests.key and ab_tests.value fields, which are arrays."
+  - description: "For BigQuery: To filter for a segment, use `EXISTS(SELECT 1 FROM UNNEST(ab_tests.key) AS k WITH OFFSET i JOIN UNNEST(ab_tests.value) AS v WITH OFFSET j ON i = j WHERE k = 'DES' AND v IN ('A','B'))`"
+  - description: "For Clickhouse: To filter for a segment, use `arrayElement(ab_tests.value, indexOf(ab_tests.key, 'i')) = 'j' THEN 'Elastic'`"
+  - description: "For Clickhouse: To use the segment pulled in the previous instruction as part of WHERE clause, use `indexOf(ab_tests.key, 'i') > 0`"
+  - description: "Avoid filtering directly on ab_tests.key[0] since values are not ordered."
