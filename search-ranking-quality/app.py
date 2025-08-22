@@ -6,6 +6,41 @@ import os
 
 app = Flask(__name__)
 
+def get_world_flag(world):
+    """Get flag emoji for world/country code"""
+    flag_mapping = {
+        'us': '🇺🇸',
+        'uk': '🇬🇧',
+        'ca': '🇨🇦',
+        'au': '🇦🇺',
+        'de': '🇩🇪',
+        'fr': '🇫🇷',
+        'es': '🇪🇸',
+        'it': '🇮🇹',
+        'br': '🇧🇷',
+        'mx': '🇲🇽',
+        'in': '🇮🇳',
+        'jp': '🇯🇵',
+        'kr': '🇰🇷',
+        'cn': '🇨🇳',
+        'nl': '🇳🇱',
+        'se': '🇸🇪',
+        'no': '🇳🇴',
+        'dk': '🇩🇰',
+        'fi': '🇫🇮',
+        'pt': '🇵🇹',
+        'pl': '🇵🇱',
+        'ru': '🇷🇺',
+        'tr': '🇹🇷',
+        'za': '🇿🇦',
+        'ar': '🇦🇷',
+        'cl': '🇨🇱',
+        'co': '🇨🇴',
+        'pe': '🇵🇪',
+        'nz': '🇳🇿'
+    }
+    return flag_mapping.get(world.lower(), '🌍')
+
 def load_materials_data():
     """Load materials data from JSON file"""
     try:
@@ -16,7 +51,41 @@ def load_materials_data():
         print(f"Error loading materials.json: {e}")
         return None
 
-def calculate_metrics(materials, top_k=18):
+def analyze_query_title_match(query, title):
+    """Analyze how well the query matches the material title"""
+    if not query or not title or query == 'No query found':
+        return {'type': 'no_match', 'score': 0, 'matched_tokens': []}
+    
+    # Clean and tokenize query and title
+    import re
+    query_clean = re.sub(r'[^\w\s]', ' ', query.lower()).strip()
+    title_clean = re.sub(r'[^\w\s]', ' ', title.lower()).strip()
+    
+    if not query_clean or not title_clean:
+        return {'type': 'no_match', 'score': 0, 'matched_tokens': []}
+    
+    query_tokens = [token for token in query_clean.split() if len(token) > 2]  # Ignore short words
+    
+    if not query_tokens:
+        return {'type': 'no_match', 'score': 0, 'matched_tokens': []}
+    
+    # Check for full match (entire query appears in title)
+    if query_clean in title_clean:
+        return {'type': 'full_match', 'score': 100, 'matched_tokens': query_tokens}
+    
+    # Check for partial match (any tokens appear in title)
+    matched_tokens = []
+    for token in query_tokens:
+        if token in title_clean:
+            matched_tokens.append(token)
+    
+    if matched_tokens:
+        match_percentage = (len(matched_tokens) / len(query_tokens)) * 100
+        return {'type': 'partial_match', 'score': match_percentage, 'matched_tokens': matched_tokens}
+    
+    return {'type': 'no_match', 'score': 0, 'matched_tokens': []}
+
+def calculate_metrics(materials, top_k=18, original_query=''):
     """Calculate ranking quality metrics for top-K results"""
     if not materials or len(materials) == 0:
         return {}
@@ -24,10 +93,31 @@ def calculate_metrics(materials, top_k=18):
     # Take top-K results
     top_k_materials = materials[:top_k]
     
+    # Extract world information for flag
+    world_info = {}
+    if top_k_materials:
+        first_material_world = top_k_materials[0].get('world', '')
+        world_info = {
+            'world': first_material_world,
+            'flag': get_world_flag(first_material_world)
+        }
+    
+    # Analyze query-title matching
+    title_matches = []
+    match_summary = {'full_match': 0, 'partial_match': 0, 'no_match': 0}
+    
+    for material in top_k_materials:
+        title = material.get('title', '')
+        match_result = analyze_query_title_match(original_query, title)
+        title_matches.append(match_result)
+        match_summary[match_result['type']] += 1
+    
     # Extract query information
     query_info = {
-        'original_query': 'No query found',
-        'modified_query': 'No query found'
+        'original_query': original_query or 'No query found',
+        'world_info': world_info,
+        'title_matches': title_matches,
+        'match_summary': match_summary
     }
     
     # Price mix metrics
@@ -124,7 +214,7 @@ def calculate_metrics(materials, top_k=18):
         'total_results': len(materials)
     }
 
-def prepare_table_data(materials, top_k=18):
+def prepare_table_data(materials, top_k=18, original_query=''):
     """Prepare data for the results table"""
     if not materials:
         return []
@@ -142,11 +232,15 @@ def prepare_table_data(materials, top_k=18):
         # Extract seller segments
         seller_segments = material.get('seller_segments', [])
         
+        # Analyze title matching
+        title = material.get('title', '')
+        match_result = analyze_query_title_match(original_query, title)
+        
         row = {
             'rank': i + 1,
-            'world': material.get('world', ''),
             'id': material.get('id', ''),
-            'title': material.get('title', ''),
+            'title': title,
+            'title_match': match_result,
             'material_categories': ', '.join(category_titles),
             'material_class_grades': ', '.join(grade_titles),
             'price': material.get('price', 0),
@@ -176,17 +270,13 @@ def get_data():
     
     # Extract query information
     auto_suggest = data.get('auto_suggest', {})
-    query_info = {
-        'original_query': auto_suggest.get('original_query', 'No query found'),
-        'modified_query': auto_suggest.get('modified_query', 'No query found')
-    }
+    original_query = auto_suggest.get('original_query', 'No query found')
     
     # Calculate metrics
-    metrics = calculate_metrics(materials)
-    metrics['query_info'] = query_info
+    metrics = calculate_metrics(materials, top_k=18, original_query=original_query)
     
     # Prepare table data
-    table_data = prepare_table_data(materials)
+    table_data = prepare_table_data(materials, top_k=18, original_query=original_query)
     
     return jsonify({
         'metrics': metrics,
@@ -205,17 +295,13 @@ def reload_data():
     
     # Extract query information
     auto_suggest = data.get('auto_suggest', {})
-    query_info = {
-        'original_query': auto_suggest.get('original_query', 'No query found'),
-        'modified_query': auto_suggest.get('modified_query', 'No query found')
-    }
+    original_query = auto_suggest.get('original_query', 'No query found')
     
     # Calculate metrics
-    metrics = calculate_metrics(materials)
-    metrics['query_info'] = query_info
+    metrics = calculate_metrics(materials, top_k=18, original_query=original_query)
     
     # Prepare table data
-    table_data = prepare_table_data(materials)
+    table_data = prepare_table_data(materials, top_k=18, original_query=original_query)
     
     return jsonify({
         'metrics': metrics,
