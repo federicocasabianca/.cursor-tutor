@@ -4,6 +4,7 @@ import numpy as np
 from datetime import datetime
 import os
 import glob
+import csv
 
 app = Flask(__name__)
 
@@ -41,6 +42,54 @@ def get_world_flag(world):
         'nz': '🇳🇿'
     }
     return flag_mapping.get(world.lower(), '🌍')
+
+def detect_query_intent_type(query_path):
+    """Detect the intent type from the query path"""
+    if not query_path:
+        return {'type': 'unknown', 'has_category': False, 'has_grade': False}
+    
+    # Normalize path
+    path_lower = query_path.lower()
+    
+    # Determine intent type based on folder structure
+    if 'no-intent' in path_lower and 'category' in path_lower and 'grade-level' in path_lower:
+        return {'type': 'no-intent_category_grade-level', 'has_category': True, 'has_grade': True}
+    elif 'category' in path_lower and 'grade-level' in path_lower:
+        return {'type': 'category_grade-level', 'has_category': True, 'has_grade': True}
+    elif 'no-intent' in path_lower and 'category' in path_lower:
+        return {'type': 'no-intent_category', 'has_category': True, 'has_grade': False}
+    elif 'no-intent' in path_lower and 'grade-level' in path_lower:
+        return {'type': 'no-intent_grade-level', 'has_category': False, 'has_grade': True}
+    elif 'category' in path_lower:
+        return {'type': 'category', 'has_category': True, 'has_grade': False}
+    elif 'grade-level' in path_lower:
+        return {'type': 'grade-level', 'has_category': False, 'has_grade': True}
+    elif 'no-intent' in path_lower:
+        return {'type': 'no-intent', 'has_category': False, 'has_grade': False}
+    else:
+        return {'type': 'unknown', 'has_category': False, 'has_grade': False}
+
+def load_taxonomy_data():
+    """Load taxonomy data from CSV file"""
+    taxonomy = {}
+    try:
+        with open('taxonomy/categories.csv', 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                category_id = row['id']
+                title = row['title'].lower() if row['title'] else ''
+                path = row['path'].lower() if row['path'] else ''
+                
+                taxonomy[category_id] = {
+                    'title': title,
+                    'path': path,
+                    'full_title': row['title'],
+                    'full_path': row['path']
+                }
+        return taxonomy
+    except Exception as e:
+        print(f"Error loading taxonomy data: {e}")
+        return {}
 
 def scan_query_structure():
     """Scan the test-queries folder structure and return available queries"""
@@ -138,6 +187,139 @@ def analyze_query_title_match(query, title):
     
     return {'type': 'no_match', 'score': 0, 'matched_tokens': []}
 
+def analyze_query_category_match(query, material_categories, taxonomy):
+    """Analyze how well the query matches the material categories based on taxonomy"""
+    if not query or not material_categories or not taxonomy or query == 'No query found':
+        return {'type': 'no_match', 'score': 0, 'matched_categories': [], 'query_category': None}
+    
+    # Clean and tokenize query
+    import re
+    query_clean = re.sub(r'[^\w\s]', ' ', query.lower()).strip()
+    query_tokens = [token for token in query_clean.split() if len(token) > 2]
+    
+    if not query_tokens:
+        return {'type': 'no_match', 'score': 0, 'matched_categories': [], 'query_category': None}
+    
+    # Find which taxonomy category the query might be referring to
+    query_category = None
+    query_category_info = None
+    best_match_score = 0
+    
+    for cat_id, cat_data in taxonomy.items():
+        match_score = 0
+        
+        for token in query_tokens:
+            # Exact title match gets highest priority
+            if cat_data['title'] == token:
+                match_score += 100
+            # Token is the entire title (reverse check)
+            elif token == cat_data['title']:
+                match_score += 100
+            # Token appears at the beginning of title
+            elif cat_data['title'].startswith(token):
+                match_score += 80
+            # Title appears at the beginning of token (for compound words)
+            elif token.startswith(cat_data['title']) and len(cat_data['title']) > 3:
+                match_score += 70
+            # Token appears in title (but not at start)
+            elif token in cat_data['title'] and len(token) > 3:
+                match_score += 50
+            # Token appears in path
+            elif cat_data['path'] and token in cat_data['path'] and len(token) > 3:
+                match_score += 30
+        
+        # Update best match if this one is better
+        if match_score > best_match_score:
+            best_match_score = match_score
+            query_category = cat_id
+            query_category_info = cat_data
+    
+    # If no category found in taxonomy for the query, it's not a category query
+    if not query_category:
+        return {'type': 'no_match', 'score': 0, 'matched_categories': [], 'query_category': None}
+    
+    # Extract material category titles and check against the query category
+    material_category_titles = []
+    matched_categories = []
+    
+    for cat in material_categories:
+        cat_title = cat.get('full_title', '').lower()
+        if cat_title and cat_title != 'meta':
+            material_category_titles.append(cat_title)
+            
+            # Check if this material category matches the query category
+            query_title = query_category_info['title']
+            query_path = query_category_info['path']
+            query_full_title = query_category_info['full_title']
+            
+            # More flexible matching - check for root words and similar terms
+            def get_root_word(word):
+                # Simple stemming for German words
+                word = word.lower()
+                if word.endswith('en'):
+                    return word[:-2]  # religionen -> religion
+                elif word.endswith('e'):
+                    return word[:-1]  # schule -> schul
+                return word
+            
+            query_root = get_root_word(query_title)
+            cat_root = get_root_word(cat_title)
+            
+            # Extract the last part of the category path (the actual category title)
+            cat_parts = cat_title.split(' → ')
+            cat_actual_title = cat_parts[-1] if cat_parts else cat_title
+            
+            # Check if the query category title matches the actual category title
+            # This prevents matching "Herbst" with "Sommer" just because they share the same path
+            title_matches = (
+                query_title == cat_actual_title or
+                query_root == get_root_word(cat_actual_title) or
+                query_full_title.lower() == cat_actual_title or
+                (len(query_title) > 3 and query_title in cat_actual_title) or
+                (len(cat_actual_title) > 3 and cat_actual_title in query_title)
+            )
+            
+            # Also check for broader category matches (like "Religion" matching full hierarchy)
+            broader_matches = (
+                query_title in cat_title or 
+                cat_title in query_title or
+                query_full_title.lower() in cat_title or
+                cat_title in query_full_title.lower()
+            )
+            
+            if title_matches or broader_matches:
+                matched_categories.append(cat_title)
+    
+    # Determine match type
+    if not matched_categories:
+        return {
+            'type': 'no_match', 
+            'score': 0, 
+            'matched_categories': [], 
+            'query_category': query_category_info['full_title'],
+            'material_categories': material_category_titles
+        }
+    
+    # Check if the query category is the ONLY category present (Full Match)
+    if len(material_category_titles) == len(matched_categories):
+        return {
+            'type': 'full_match', 
+            'score': 100, 
+            'matched_categories': matched_categories,
+            'query_category': query_category_info['full_title'],
+            'material_categories': material_category_titles
+        }
+    
+    # Partial match - query category present but with other categories
+    match_percentage = (len(matched_categories) / len(material_category_titles)) * 100 if material_category_titles else 0
+    return {
+        'type': 'partial_match', 
+        'score': match_percentage,
+        'matched_categories': matched_categories,
+        'query_category': query_category_info['full_title'],
+        'material_categories': material_category_titles
+    }
+
 def calculate_metrics(materials, top_k=18, original_query=''):
     """Calculate ranking quality metrics for top-K results"""
     if not materials or len(materials) == 0:
@@ -145,6 +327,9 @@ def calculate_metrics(materials, top_k=18, original_query=''):
     
     # Take top-K results
     top_k_materials = materials[:top_k]
+    
+    # Load taxonomy data for category matching
+    taxonomy = load_taxonomy_data()
     
     # Extract world information for flag
     world_info = {}
@@ -157,20 +342,32 @@ def calculate_metrics(materials, top_k=18, original_query=''):
     
     # Analyze query-title matching
     title_matches = []
-    match_summary = {'full_match': 0, 'partial_match': 0, 'no_match': 0}
+    title_match_summary = {'full_match': 0, 'partial_match': 0, 'no_match': 0}
     
     for material in top_k_materials:
         title = material.get('title', '')
         match_result = analyze_query_title_match(original_query, title)
         title_matches.append(match_result)
-        match_summary[match_result['type']] += 1
+        title_match_summary[match_result['type']] += 1
+    
+    # Analyze query-category matching
+    category_matches = []
+    category_match_summary = {'full_match': 0, 'partial_match': 0, 'no_match': 0}
+    
+    for material in top_k_materials:
+        categories = material.get('material_categories', [])
+        match_result = analyze_query_category_match(original_query, categories, taxonomy)
+        category_matches.append(match_result)
+        category_match_summary[match_result['type']] += 1
     
     # Extract query information
     query_info = {
         'original_query': original_query or 'No query found',
         'world_info': world_info,
         'title_matches': title_matches,
-        'match_summary': match_summary
+        'title_match_summary': title_match_summary,
+        'category_matches': category_matches,
+        'category_match_summary': category_match_summary
     }
     
     # Price mix metrics
@@ -267,10 +464,17 @@ def calculate_metrics(materials, top_k=18, original_query=''):
         'total_results': len(materials)
     }
 
-def prepare_table_data(materials, top_k=18, original_query=''):
-    """Prepare data for the results table"""
+def prepare_table_data(materials, top_k=18, original_query='', intent_type=None):
+    """Prepare data for the results table with intent-aware matching"""
     if not materials:
         return []
+    
+    # Default intent type if not provided
+    if intent_type is None:
+        intent_type = {'type': 'unknown', 'has_category': False, 'has_grade': False}
+    
+    # Load taxonomy data for category matching (only if needed)
+    taxonomy = load_taxonomy_data() if intent_type.get('has_category', False) else {}
     
     table_data = []
     for i, material in enumerate(materials[:top_k]):
@@ -285,15 +489,28 @@ def prepare_table_data(materials, top_k=18, original_query=''):
         # Extract seller segments
         seller_segments = material.get('seller_segments', [])
         
-        # Analyze title matching
+        # Always analyze title matching
         title = material.get('title', '')
-        match_result = analyze_query_title_match(original_query, title)
+        title_match_result = analyze_query_title_match(original_query, title)
+        
+        # Analyze category matching only if the intent type has category
+        category_match_result = None
+        if intent_type.get('has_category', False):
+            category_match_result = analyze_query_category_match(original_query, categories, taxonomy)
+        
+        # TODO: Add grade-level matching for grade-level intent types
+        grade_match_result = None
+        if intent_type.get('has_grade', False):
+            # Placeholder for future grade-level matching implementation
+            grade_match_result = {'type': 'no_match', 'score': 0, 'matched_grades': []}
         
         row = {
             'rank': i + 1,
             'id': material.get('id', ''),
             'title': title,
-            'title_match': match_result,
+            'title_match': title_match_result,
+            'category_match': category_match_result,
+            'grade_match': grade_match_result,
             'material_categories': ', '.join(category_titles),
             'material_class_grades': ', '.join(grade_titles),
             'price': material.get('price', 0),
@@ -301,7 +518,8 @@ def prepare_table_data(materials, top_k=18, original_query=''):
             'engagement_score': f"{material.get('engagement_score', 0):.2e}",
             'is_bundle': 'Yes' if material.get('is_bundle', False) else 'No',
             'created_at': material.get('created_at', ''),
-            'seller_segments': ', '.join(seller_segments) if seller_segments else 'None'
+            'seller_segments': ', '.join(seller_segments) if seller_segments else 'None',
+            'intent_type': intent_type
         }
         table_data.append(row)
     
@@ -342,16 +560,20 @@ def get_data():
     auto_suggest = data.get('auto_suggest', {})
     original_query = auto_suggest.get('original_query', 'No query found')
     
+    # Detect intent type from query path
+    intent_type = detect_query_intent_type(query_path)
+    
     # Calculate metrics
     metrics = calculate_metrics(materials, top_k=18, original_query=original_query)
     
-    # Prepare table data
-    table_data = prepare_table_data(materials, top_k=18, original_query=original_query)
+    # Prepare table data with intent-aware matching
+    table_data = prepare_table_data(materials, top_k=18, original_query=original_query, intent_type=intent_type)
     
     return jsonify({
         'metrics': metrics,
         'table_data': table_data,
         'query_path': query_path,
+        'intent_type': intent_type,
         'success': True
     })
 
@@ -373,16 +595,20 @@ def reload_data():
     auto_suggest = data.get('auto_suggest', {})
     original_query = auto_suggest.get('original_query', 'No query found')
     
+    # Detect intent type from query path
+    intent_type = detect_query_intent_type(query_path)
+    
     # Calculate metrics
     metrics = calculate_metrics(materials, top_k=18, original_query=original_query)
     
-    # Prepare table data
-    table_data = prepare_table_data(materials, top_k=18, original_query=original_query)
+    # Prepare table data with intent-aware matching
+    table_data = prepare_table_data(materials, top_k=18, original_query=original_query, intent_type=intent_type)
     
     return jsonify({
         'metrics': metrics,
         'table_data': table_data,
         'query_path': query_path,
+        'intent_type': intent_type,
         'success': True,
         'reloaded_at': datetime.now().isoformat()
     })
