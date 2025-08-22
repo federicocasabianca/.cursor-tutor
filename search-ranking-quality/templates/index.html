@@ -224,6 +224,34 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card h3:hover {
+            color: #3498db;
+        }
+        
+        .collapse-icon {
+            margin-left: auto;
+            transition: transform 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .collapse-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+        
+        .collapsible-content {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .collapsible-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
         }
 
         .metric-item {
@@ -316,6 +344,16 @@
             font-size: 1.1rem;
             border-bottom: 2px solid #3498db;
             padding-bottom: 8px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .chart-container h3:hover {
+            color: #3498db;
         }
 
         .chart-grid {
@@ -483,7 +521,8 @@
         <div class="metrics-section">
             <div class="metrics-grid">
                 <div class="metric-card">
-                    <h3>💰 Price Mix</h3>
+                    <h3 onclick="toggleCollapse('price-mix')">💰 Price Mix <span class="collapse-icon collapsed" id="price-mix-icon">▼</span></h3>
+                    <div class="collapsible-content collapsed" id="price-mix-content">
                     <div class="metric-item">
                         <span class="metric-label">Average Price:</span>
                         <span class="metric-value" id="avg-price">-</span>
@@ -503,10 +542,12 @@
                     <div class="insight" id="price-insight">
                         💡 Price diversity indicates search result accessibility across different user budgets.
                     </div>
+                    </div>
                 </div>
 
                 <div class="metric-card">
-                    <h3>📊 Performance Proxy</h3>
+                    <h3 onclick="toggleCollapse('performance-proxy')">📊 Performance Proxy <span class="collapse-icon collapsed" id="performance-proxy-icon">▼</span></h3>
+                    <div class="collapsible-content collapsed" id="performance-proxy-content">
                     <div class="metric-item">
                         <span class="metric-label">Mean Bestseller (log):</span>
                         <span class="metric-value" id="mean-bestseller-log">-</span>
@@ -528,10 +569,12 @@
                     <div class="insight" id="performance-insight">
                         📈 Performance metrics help detect "hero" results and ensure balanced quality distribution.
                     </div>
+                    </div>
                 </div>
 
                 <div class="metric-card">
-                    <h3>🎯 Content & Diversity</h3>
+                    <h3 onclick="toggleCollapse('content-diversity')">🎯 Content & Diversity <span class="collapse-icon collapsed" id="content-diversity-icon">▼</span></h3>
+                    <div class="collapsible-content collapsed" id="content-diversity-content">
                     <div class="metric-item">
                         <span class="metric-label">Bundles Share:</span>
                         <span class="metric-value" id="bundles-share">-</span>
@@ -551,10 +594,12 @@
                     <div class="insight" id="diversity-insight">
                         🎯 Content diversity ensures broader appeal and reduces algorithmic bias in search results.
                     </div>
+                    </div>
                 </div>
 
                 <div class="metric-card">
-                    <h3>📈 Summary</h3>
+                    <h3 onclick="toggleCollapse('summary')">📈 Summary <span class="collapse-icon collapsed" id="summary-icon">▼</span></h3>
+                    <div class="collapsible-content collapsed" id="summary-content">
                     <div class="metric-item">
                         <span class="metric-label">Top-K Results:</span>
                         <span class="metric-value" id="top-k">-</span>
@@ -570,14 +615,17 @@
                     <div class="insight" id="summary-insight">
                         📊 Analyzing top-18 results provides statistically significant insights for ranking optimization.
                     </div>
+                    </div>
                 </div>
             </div>
 
             <div class="chart-container">
-                <h3>📊 Visual Analytics</h3>
+                <h3 onclick="toggleCollapse('visual-analytics')">📊 Visual Analytics <span class="collapse-icon collapsed" id="visual-analytics-icon">▼</span></h3>
+                <div class="collapsible-content collapsed" id="visual-analytics-content">
                 <div class="chart-grid">
                     <div class="chart-item" id="price-distribution-chart"></div>
                     <div class="chart-item" id="bestseller-distribution-chart"></div>
+                </div>
                 </div>
             </div>
         </div>
@@ -894,6 +942,39 @@
             
             summaryInsight.innerHTML = `📊 Analyzing ${topK} of ${totalResults} results (${coverage}% coverage) - sufficient sample for ranking insights.`;
         }
+
+        // Function to toggle collapse/expand for sections
+        function toggleCollapse(sectionId) {
+            const content = document.getElementById(sectionId + '-content');
+            const icon = document.getElementById(sectionId + '-icon');
+            
+            if (content.classList.contains('collapsed')) {
+                // Expand
+                content.classList.remove('collapsed');
+                icon.classList.remove('collapsed');
+                content.style.maxHeight = content.scrollHeight + 'px';
+                content.style.opacity = '1';
+            } else {
+                // Collapse
+                content.classList.add('collapsed');
+                icon.classList.add('collapsed');
+                content.style.maxHeight = '0';
+                content.style.opacity = '0';
+            }
+        }
+
+        // Initialize collapsed state for all sections
+        document.addEventListener('DOMContentLoaded', function() {
+            const collapsibleSections = ['price-mix', 'performance-proxy', 'content-diversity', 'summary', 'visual-analytics'];
+            
+            collapsibleSections.forEach(sectionId => {
+                const content = document.getElementById(sectionId + '-content');
+                if (content) {
+                    content.style.maxHeight = '0';
+                    content.style.opacity = '0';
+                }
+            });
+        });
     </script>
 </body>
 </html>

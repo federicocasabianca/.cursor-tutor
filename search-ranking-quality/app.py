@@ -44,11 +44,11 @@ def get_world_flag(world):
 def load_materials_data():
     """Load materials data from JSON file"""
     try:
-        with open('materials.json', 'r', encoding='utf-8') as f:
+        with open('test-queries/combined/no-intent_category/mini-paket_herbst.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
         return data
     except Exception as e:
-        print(f"Error loading materials.json: {e}")
+        print(f"Error loading mini-paket_herbst.json: {e}")
         return None
 
 def analyze_query_title_match(query, title):
