@@ -3,6 +3,7 @@ import json
 import numpy as np
 from datetime import datetime
 import os
+import glob
 
 app = Flask(__name__)
 
@@ -41,14 +42,66 @@ def get_world_flag(world):
     }
     return flag_mapping.get(world.lower(), '🌍')
 
-def load_materials_data():
+def scan_query_structure():
+    """Scan the test-queries folder structure and return available queries"""
+    base_path = 'test-queries'
+    structure = {}
+    
+    if not os.path.exists(base_path):
+        return structure
+    
+    # Define the expected folder structure
+    folders = [
+        'no-intent',
+        'category', 
+        'grade-level',
+        'combined/no-intent_category',
+        'combined/no-intent_grade-level',
+        'combined/category_grade-level',
+        'combined/no-intent_category_grade-level'
+    ]
+    
+    for folder in folders:
+        folder_path = os.path.join(base_path, folder)
+        if os.path.exists(folder_path):
+            # Find all JSON files in this folder
+            json_files = glob.glob(os.path.join(folder_path, '*.json'))
+            queries = []
+            
+            for json_file in json_files:
+                filename = os.path.basename(json_file)
+                query_name = filename.replace('.json', '')
+                queries.append({
+                    'name': query_name,
+                    'path': json_file,
+                    'filename': filename
+                })
+            
+            # Clean folder name for display
+            display_name = folder.replace('combined/', '').replace('_', ' + ').title()
+            if folder.startswith('combined/'):
+                display_name = f"Combined: {display_name}"
+            
+            structure[folder] = {
+                'display_name': display_name,
+                'path': folder_path,
+                'queries': queries,
+                'enabled': len(queries) > 0
+            }
+    
+    return structure
+
+def load_materials_data(query_path=None):
     """Load materials data from JSON file"""
+    if query_path is None:
+        return None  # No default file, require explicit selection
+    
     try:
-        with open('test-queries/combined/no-intent_category/mini-paket_herbst.json', 'r', encoding='utf-8') as f:
+        with open(query_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
         return data
     except Exception as e:
-        print(f"Error loading mini-paket_herbst.json: {e}")
+        print(f"Error loading {query_path}: {e}")
         return None
 
 def analyze_query_title_match(query, title):
@@ -259,12 +312,29 @@ def index():
     """Main page"""
     return render_template('index.html')
 
+@app.route('/api/query-structure')
+def get_query_structure():
+    """API endpoint to get the query folder structure"""
+    try:
+        structure = scan_query_structure()
+        return jsonify({
+            'structure': structure,
+            'success': True
+        })
+    except Exception as e:
+        return jsonify({'error': f'Failed to scan query structure: {e}'}), 500
+
 @app.route('/api/data')
 def get_data():
     """API endpoint to get materials data and metrics"""
-    data = load_materials_data()
+    query_path = request.args.get('query_path')
+    
+    if not query_path:
+        return jsonify({'error': 'No query selected'}), 400
+    
+    data = load_materials_data(query_path)
     if not data:
-        return jsonify({'error': 'Failed to load materials data'}), 500
+        return jsonify({'error': 'Failed to load query data'}), 500
     
     materials = data.get('items', {}).get('materials', [])
     
@@ -281,15 +351,21 @@ def get_data():
     return jsonify({
         'metrics': metrics,
         'table_data': table_data,
+        'query_path': query_path,
         'success': True
     })
 
 @app.route('/api/reload')
 def reload_data():
     """API endpoint to reload data"""
-    data = load_materials_data()
+    query_path = request.args.get('query_path')
+    
+    if not query_path:
+        return jsonify({'error': 'No query selected'}), 400
+    
+    data = load_materials_data(query_path)
     if not data:
-        return jsonify({'error': 'Failed to reload materials data'}), 500
+        return jsonify({'error': 'Failed to reload query data'}), 500
     
     materials = data.get('items', {}).get('materials', [])
     
@@ -306,6 +382,7 @@ def reload_data():
     return jsonify({
         'metrics': metrics,
         'table_data': table_data,
+        'query_path': query_path,
         'success': True,
         'reloaded_at': datetime.now().isoformat()
     })

@@ -47,6 +47,12 @@
             opacity: 0.9;
         }
 
+        .query-selector-section {
+            background: #ffffff;
+            padding: 20px 30px;
+            border-bottom: 2px solid #3498db;
+        }
+
         .query-section {
             background: #f8f9fa;
             padding: 15px 30px;
@@ -175,6 +181,111 @@
         
         .match-indicator-small.no-match {
             background-color: #f44336;
+        }
+
+        /* Query Selector Styles */
+        .query-selector {
+            margin-bottom: 20px;
+        }
+
+        .query-selector h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .folder-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .folder-card {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .folder-card.enabled {
+            cursor: pointer;
+            border-color: #3498db;
+        }
+
+        .folder-card.enabled:hover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+        }
+
+        .folder-card.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .folder-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .folder-card.disabled .folder-title {
+            color: #6c757d;
+        }
+
+        .query-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .query-item {
+            padding: 8px 12px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .query-item:hover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        .query-item.selected {
+            background: #2196f3;
+            color: white;
+            border-color: #1976d2;
+        }
+
+        .query-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .no-queries {
+            color: #6c757d;
+            font-style: italic;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .analysis-sections {
+            transition: opacity 0.3s ease;
+        }
+
+        .analysis-sections.hidden {
+            opacity: 0.3;
+            pointer-events: none;
         }
 
         .reload-btn {
@@ -489,7 +600,16 @@
             <p>Analyze the quality and diversity of search results to optimize ranking algorithms</p>
         </div>
 
-        <div class="query-section">
+        <div class="query-selector-section">
+            <div class="query-selector">
+                <h2>📁 Select Query to Analyze</h2>
+                <div class="folder-grid" id="folder-grid">
+                    <div class="loading">Loading query structure...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="query-section" style="display: none;" id="query-details-section">
             <div class="query-info">
                 <div class="query-box">
                     <h3>🔎 Original Query</h3>
@@ -518,6 +638,7 @@
             </div>
         </div>
 
+        <div class="analysis-sections hidden" id="analysis-sections">
         <div class="metrics-section">
             <div class="metrics-grid">
                 <div class="metric-card">
@@ -657,29 +778,117 @@
                 </table>
             </div>
         </div>
+        </div>
     </div>
 
     <script>
         // Global variables
         let currentData = null;
+        let selectedQueryPath = null;
+        let queryStructure = null;
 
         // Load data on page load
         document.addEventListener('DOMContentLoaded', function() {
-            loadData();
+            loadQueryStructure();
         });
 
-        // Function to load data
-        async function loadData() {
+        // Function to load query structure
+        async function loadQueryStructure() {
             try {
-                const response = await fetch('/api/data');
+                const response = await fetch('/api/query-structure');
+                const data = await response.json();
+                
+                if (data.success) {
+                    queryStructure = data.structure;
+                    renderQueryStructure();
+                } else {
+                    showError('Failed to load query structure');
+                }
+            } catch (error) {
+                console.error('Error loading query structure:', error);
+                showError('Error loading query structure: ' + error.message);
+            }
+        }
+
+        // Function to render query structure
+        function renderQueryStructure() {
+            const folderGrid = document.getElementById('folder-grid');
+            
+            if (!queryStructure || Object.keys(queryStructure).length === 0) {
+                folderGrid.innerHTML = '<div class="no-queries">No query folders found</div>';
+                return;
+            }
+
+            let html = '';
+            for (const [folderId, folderData] of Object.entries(queryStructure)) {
+                const enabledClass = folderData.enabled ? 'enabled' : 'disabled';
+                
+                html += `
+                    <div class="folder-card ${enabledClass}" data-folder="${folderId}">
+                        <div class="folder-title">${folderData.display_name}</div>
+                        <ul class="query-list">
+                `;
+                
+                if (folderData.queries.length > 0) {
+                    folderData.queries.forEach(query => {
+                        html += `
+                            <li class="query-item" data-path="${query.path}" onclick="selectQuery('${query.path}', '${query.name}')">
+                                ${query.name}
+                            </li>
+                        `;
+                    });
+                } else {
+                    html += '<li class="no-queries">No queries available</li>';
+                }
+                
+                html += `
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            folderGrid.innerHTML = html;
+        }
+
+        // Function to select a query
+        async function selectQuery(queryPath, queryName) {
+            // Update UI to show selection
+            document.querySelectorAll('.query-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            document.querySelector(`[data-path="${queryPath}"]`).classList.add('selected');
+            
+            selectedQueryPath = queryPath;
+            
+            // Load data for selected query
+            await loadData(queryPath);
+        }
+
+        // Function to load data
+        async function loadData(queryPath = null) {
+            if (!queryPath) {
+                queryPath = selectedQueryPath;
+            }
+            
+            if (!queryPath) {
+                showError('No query selected');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/data?query_path=${encodeURIComponent(queryPath)}`);
                 const data = await response.json();
                 
                 if (data.success) {
                     currentData = data;
                     updateUI(data);
                     createCharts(data);
+                    
+                    // Show analysis sections
+                    document.getElementById('query-details-section').style.display = 'block';
+                    document.getElementById('analysis-sections').classList.remove('hidden');
                 } else {
-                    showError('Failed to load data');
+                    showError('Failed to load data: ' + (data.error || 'Unknown error'));
                 }
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -689,12 +898,17 @@
 
         // Function to reload data
         async function reloadData() {
+            if (!selectedQueryPath) {
+                showError('No query selected to reload');
+                return;
+            }
+
             try {
                 const reloadBtn = document.querySelector('.reload-btn');
                 reloadBtn.textContent = '🔄 Reloading...';
                 reloadBtn.disabled = true;
 
-                const response = await fetch('/api/reload');
+                const response = await fetch(`/api/reload?query_path=${encodeURIComponent(selectedQueryPath)}`);
                 const data = await response.json();
                 
                 if (data.success) {
@@ -703,7 +917,7 @@
                     createCharts(data);
                     showSuccess('Data reloaded successfully!');
                 } else {
-                    showError('Failed to reload data');
+                    showError('Failed to reload data: ' + (data.error || 'Unknown error'));
                 }
             } catch (error) {
                 console.error('Error reloading data:', error);
