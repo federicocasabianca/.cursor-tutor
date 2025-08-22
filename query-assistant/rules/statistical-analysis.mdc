@@ -1,0 +1,26 @@
+---
+alwaysApply: true
+---
+
+rules:
+  - description: "When calculating percentiles on arrays, always use bounds checking: GREATEST(0, LEAST(calculated_offset, total_results - 1)) to prevent array index out of bounds errors"
+  - description: "For statistical calculations, handle edge cases: check for total_results > 0, avg_price > 0, and division by zero scenarios"
+  - description: "When calculating standard deviation, use STDDEV() function and handle cases where there might be insufficient data points"
+  - description: "For Interquartile Range (IQR) calculations, ensure both Q1 and Q3 are not NULL before computing Q3 - Q1"
+  - description: "When calculating Gini coefficient, use the formula: 1.0 - (sum_abs_diff / (2 * total_results * avg_price)) and validate all components are positive"
+  - description: "For percentage calculations, use ROUND((numerator / denominator) * 100, 2) and handle division by zero with CASE statements"
+  - description: "When aggregating data with GROUP BY, ensure all non-aggregated columns in SELECT are included in GROUP BY clause"
+  - description: "For array operations, use ARRAY_AGG() with ORDER BY to maintain sorted order for percentile calculations"
+  - description: "When joining tables for statistical calculations, use appropriate JOIN types and ensure data integrity across joins"
+  - description: "Always include count of data points (total_results) in output to provide context for statistical validity"
+rules:
+  - description: "When calculating percentiles on arrays, always use bounds checking: GREATEST(0, LEAST(calculated_offset, total_results - 1)) to prevent array index out of bounds errors"
+  - description: "For statistical calculations, handle edge cases: check for total_results > 0, avg_price > 0, and division by zero scenarios"
+  - description: "When calculating standard deviation, use STDDEV() function and handle cases where there might be insufficient data points"
+  - description: "For Interquartile Range (IQR) calculations, ensure both Q1 and Q3 are not NULL before computing Q3 - Q1"
+  - description: "When calculating Gini coefficient, use the formula: 1.0 - (sum_abs_diff / (2 * total_results * avg_price)) and validate all components are positive"
+  - description: "For percentage calculations, use ROUND((numerator / denominator) * 100, 2) and handle division by zero with CASE statements"
+  - description: "When aggregating data with GROUP BY, ensure all non-aggregated columns in SELECT are included in GROUP BY clause"
+  - description: "For array operations, use ARRAY_AGG() with ORDER BY to maintain sorted order for percentile calculations"
+  - description: "When joining tables for statistical calculations, use appropriate JOIN types and ensure data integrity across joins"
+  - description: "Always include count of data points (total_results) in output to provide context for statistical validity"

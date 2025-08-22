@@ -1,0 +1,28 @@
+---
+alwaysApply: true
+---
+
+rules:
+  - description: "When analyzing search result rankings, use type='appearedInSearch' and filter for page_url LIKE 'https://eduki.com/es/resultados-busqueda?query=%'"
+  - description: "For search ranking queries, always use world='es' and date >= '2025-08-12' as base filters"
+  - description: "When processing the 'extra' field from search results, remove leading/trailing quotes using REGEXP_REPLACE(extra, r'^\"|\"$', '') before parsing as JSON"
+  - description: "For search result arrays, use JSON_EXTRACT_ARRAY() to parse the extra field and CROSS JOIN UNNEST() to flatten results"
+  - description: "When extracting position information from search results, use 'index' field (0-based) and limit to index < 36 for top 36 results"
+  - description: "For percentile calculations on variable-sized arrays, use GREATEST(0, LEAST(calculated_offset, total_results - 1)) to prevent array index out of bounds errors"
+  - description: "When calculating top-N sums (e.g., top 12 vs top 36), use index < N for 0-based indexing"
+  - description: "Always include total_results in output to show how many results were actually returned for each search"
+  - description: "Use search_execution_id combining query and timestamp (CAST(time AS STRING)) to differentiate multiple executions of the same query"
+  - description: "For price analysis in search results, handle edge cases: check for total_results > 0, avg_price > 0, and division by zero scenarios"
+  - description: "When calculating Gini coefficient for price distribution, use the formula: 1.0 - (sum_abs_diff / (2 * total_results * avg_price))"
+rules:
+  - description: "When analyzing search result rankings, use type='appearedInSearch' and filter for page_url LIKE 'https://eduki.com/es/resultados-busqueda?query=%'"
+  - description: "For search ranking queries, always use world='es' and date >= '2025-08-12' as base filters"
+  - description: "When processing the 'extra' field from search results, remove leading/trailing quotes using REGEXP_REPLACE(extra, r'^\"|\"$', '') before parsing as JSON"
+  - description: "For search result arrays, use JSON_EXTRACT_ARRAY() to parse the extra field and CROSS JOIN UNNEST() to flatten results"
+  - description: "When extracting position information from search results, use 'index' field (0-based) and limit to index < 36 for top 36 results"
+  - description: "For percentile calculations on variable-sized arrays, use GREATEST(0, LEAST(calculated_offset, total_results - 1)) to prevent array index out of bounds errors"
+  - description: "When calculating top-N sums (e.g., top 12 vs top 36), use index < N for 0-based indexing"
+  - description: "Always include total_results in output to show how many results were actually returned for each search"
+  - description: "Use search_execution_id combining query and timestamp (CAST(time AS STRING)) to differentiate multiple executions of the same query"
+  - description: "For price analysis in search results, handle edge cases: check for total_results > 0, avg_price > 0, and division by zero scenarios"
+  - description: "When calculating Gini coefficient for price distribution, use the formula: 1.0 - (sum_abs_diff / (2 * total_results * avg_price))"

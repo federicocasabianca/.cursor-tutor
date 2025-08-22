@@ -1,0 +1,59 @@
+Annual goals 2025
+Material	+400k (>1.1M)
+Authors	+10k → 34k online
+New users 	+1 Mio
+Buyers	+450k
+GMV 	40 Mio
+EBIT 	1 Mio
+
+2025 goals
+Goal: **Sustain 30% growth in DE world**
+= Reach €40M GMV  
+- product:
+    - purchase frequency / weekly habit (CRM to BahnCard to prepaid…)
+    - pricing (incl bundles and sales function)
+    - lots of AB tests, conversion improvements
+    - sponsored search ?
+- public budgets
+- marketing:
+    - improve site wide sales
+    - brand awareness
+- massively add publisher stock?
+Goal:**Build on top of impact**
+Implement the first “things” based on insights gained from research on teaching materials, whether that’s in product or marketing or elsewhere. For that we need to:
+- Fully understand quality aspects of teaching materials through research
+- use that new understanding, for example to
+    - train authors to upload better materials
+    - improve AI creation tools
+    - better communicate to users (SoMe, etc.)
+    - improve our product
+- try to measure quality of existing stock - difficult AI project?, and if we succeed, use that to further improve things, like
+    - improve conversions in search and recommendations through quality, maybe including personalisation because career stages seem to define what quality is appreciated (goal to increase GMV, don’t accept trade off)
+- advance towards building the leading research unit for the impact of teacher created teaching materials (what does that mean)
+    - understand our current impact (improve education)
+    - be recognised as a quality player in the educational content market
+Goal:**Get 100k teachers to use our AI tools**
+- author / creation tools usage
+- copy what others like MagicSchool (10-12$pm), Fobizz (119€ p year) and Teachino (9,95€ pm or 7,95 with 24m commitment) have and make it either better of cheaper. Freemium premium with half price of competition because of lead gen to materials (and possibly content generation)
+- handshakes
+    - freemium first. once we add premium model discussion with product
+    - entry point on marketplace (product involvement)
+    - do we want to own / use that newly created content on the marketplace?
+    - How does the tool link to our stock (like for this lesson plan, here are worksheets…), do you need more than the search API here?
+    - marketing, explanation, communication?
+Goal:**Prove our world investment strategy works**
+Based on the world investment strategy from Q4 2024, we have a hypothesis on what is the most powerful intervention to take any world to the next stage. For each, we prove the hypothesis is right by applying it to 1 world on that stage and taking it to the next level.
+Open questions include (and need Data this quarter)
+- Why is organic traffic so much lower in ES than it is in GR or was in DE back in the days, where we have exponential growth?
+- Why is CLV so much lower in ES than in GR or was back in the days in DE?
+- is exponential growth of organic search traffic the health KPI to watch? What about GMV/material?
+Goal:**Ensure €1M EBIT**
+- limit cost growth to 20% (staff, marketing, other); own server infrastructure
+- private label (create own materials)
+- author royalties (exp. 70%)
+- **Increase MAB active buyers by 50%**
+- **Make Spanish speaking world take off**
+- **Open 20+ worlds with a staged launch strategy**
+- **First million € of revenue by school accounts**
+- **Find product market fit for Interactive**
+- **tbd: Improve current marketplace model with AI → new annual priority?**

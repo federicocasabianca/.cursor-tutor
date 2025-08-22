@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Ranking Quality Assessment</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .query-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .query-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .query-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .query-box h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .query-text {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2196f3;
+            font-size: 1.1rem;
+            color: #1565c0;
+            font-weight: 500;
+        }
+
+        .reload-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .reload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .metrics-section {
+            padding: 30px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 1px solid #e9ecef;
+        }
+
+        .metric-card h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f3f4;
+        }
+
+        .metric-item:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .chart-container h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .chart-item {
+            min-height: 300px;
+        }
+
+        .table-section {
+            padding: 30px;
+        }
+
+        .table-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .rank {
+            font-weight: 600;
+            color: #3498db;
+        }
+
+        .price {
+            font-weight: 600;
+            color: #27ae60;
+        }
+
+        .bestseller {
+            font-weight: 600;
+            color: #e74c3c;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px;
+            border-left: 4px solid #f44336;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Search Ranking Quality Assessment</h1>
+            <p>Analyze the quality and diversity of search results to optimize ranking algorithms</p>
+        </div>
+
+        <div class="query-section">
+            <div class="query-info">
+                <div class="query-box">
+                    <h3>🔎 Original Query</h3>
+                    <div class="query-text" id="original-query">Loading...</div>
+                </div>
+                <div class="query-box">
+                    <h3>🔄 Modified Query</h3>
+                    <div class="query-text" id="modified-query">Loading...</div>
+                </div>
+                <button class="reload-btn" onclick="reloadData()">
+                    🔄 Reload Data
+                </button>
+            </div>
+        </div>
+
+        <div class="metrics-section">
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3>💰 Price Mix</h3>
+                    <div class="metric-item">
+                        <span class="metric-label">Average Price:</span>
+                        <span class="metric-value" id="avg-price">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Median Price:</span>
+                        <span class="metric-value" id="median-price">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Free Share:</span>
+                        <span class="metric-value" id="free-share">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Free Count:</span>
+                        <span class="metric-value" id="free-count">-</span>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <h3>📊 Performance Proxy</h3>
+                    <div class="metric-item">
+                        <span class="metric-label">Mean Bestseller (log):</span>
+                        <span class="metric-value" id="mean-bestseller-log">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Gini Coefficient:</span>
+                        <span class="metric-value" id="gini-bestseller">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">HHI Index:</span>
+                        <span class="metric-value" id="hhi-bestseller">-</span>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <h3>🎯 Content & Diversity</h3>
+                    <div class="metric-item">
+                        <span class="metric-label">Bundles Share:</span>
+                        <span class="metric-value" id="bundles-share">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Seller Segments:</span>
+                        <span class="metric-value" id="seller-segments-diversity">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Category Breadth:</span>
+                        <span class="metric-value" id="category-breadth">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Grade Breadth:</span>
+                        <span class="metric-value" id="grade-breadth">-</span>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <h3>📈 Summary</h3>
+                    <div class="metric-item">
+                        <span class="metric-label">Top-K Results:</span>
+                        <span class="metric-value" id="top-k">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Total Results:</span>
+                        <span class="metric-value" id="total-results">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Last Updated:</span>
+                        <span class="metric-value" id="last-updated">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3>📊 Visual Analytics</h3>
+                <div class="chart-grid">
+                    <div class="chart-item" id="price-distribution-chart"></div>
+                    <div class="chart-item" id="bestseller-distribution-chart"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-section">
+            <h3>📋 Top-K Results Table</h3>
+            <div class="table-container">
+                <table id="results-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>World</th>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Categories</th>
+                            <th>Grades</th>
+                            <th>Price</th>
+                            <th>Bestseller Rating</th>
+                            <th>Engagement Score</th>
+                            <th>Bundle</th>
+                            <th>Created</th>
+                            <th>Seller Segments</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <tr>
+                            <td colspan="12" class="loading">Loading data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentData = null;
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+        });
+
+        // Function to load data
+        async function loadData() {
+            try {
+                const response = await fetch('/api/data');
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentData = data;
+                    updateUI(data);
+                    createCharts(data);
+                } else {
+                    showError('Failed to load data');
+                }
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showError('Error loading data: ' + error.message);
+            }
+        }
+
+        // Function to reload data
+        async function reloadData() {
+            try {
+                const reloadBtn = document.querySelector('.reload-btn');
+                reloadBtn.textContent = '🔄 Reloading...';
+                reloadBtn.disabled = true;
+
+                const response = await fetch('/api/reload');
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentData = data;
+                    updateUI(data);
+                    createCharts(data);
+                    showSuccess('Data reloaded successfully!');
+                } else {
+                    showError('Failed to reload data');
+                }
+            } catch (error) {
+                console.error('Error reloading data:', error);
+                showError('Error reloading data: ' + error.message);
+            } finally {
+                const reloadBtn = document.querySelector('.reload-btn');
+                reloadBtn.textContent = '🔄 Reload Data';
+                reloadBtn.disabled = false;
+            }
+        }
+
+        // Function to update UI
+        function updateUI(data) {
+            const metrics = data.metrics;
+            const tableData = data.table_data;
+
+            // Update query information
+            document.getElementById('original-query').textContent = metrics.query_info.original_query;
+            document.getElementById('modified-query').textContent = metrics.query_info.modified_query;
+
+            // Update price mix metrics
+            document.getElementById('avg-price').textContent = `€${metrics.price_mix.average_price}`;
+            document.getElementById('median-price').textContent = `€${metrics.price_mix.median_price}`;
+            document.getElementById('free-share').textContent = `${metrics.price_mix.free_share}%`;
+            document.getElementById('free-count').textContent = metrics.price_mix.free_count;
+
+            // Update performance proxy metrics
+            document.getElementById('mean-bestseller-log').textContent = metrics.performance_proxy.mean_bestseller_log;
+            document.getElementById('gini-bestseller').textContent = metrics.performance_proxy.gini_bestseller;
+            document.getElementById('hhi-bestseller').textContent = metrics.performance_proxy.hhi_bestseller;
+
+            // Update content diversity metrics
+            document.getElementById('bundles-share').textContent = `${metrics.content_diversity.bundles_share}%`;
+            document.getElementById('seller-segments-diversity').textContent = metrics.content_diversity.seller_segments_diversity;
+            document.getElementById('category-breadth').textContent = metrics.content_diversity.category_breadth;
+            document.getElementById('grade-breadth').textContent = metrics.content_diversity.grade_breadth;
+
+            // Update summary metrics
+            document.getElementById('top-k').textContent = metrics.top_k;
+            document.getElementById('total-results').textContent = metrics.total_results;
+            document.getElementById('last-updated').textContent = new Date().toLocaleString();
+
+            // Update table
+            updateTable(tableData);
+        }
+
+        // Function to update table
+        function updateTable(tableData) {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+
+            tableData.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="rank">${row.rank}</td>
+                    <td>${row.world}</td>
+                    <td>${row.id}</td>
+                    <td>${row.title}</td>
+                    <td>${row.material_categories}</td>
+                    <td>${row.material_class_grades}</td>
+                    <td class="price">€${row.price}</td>
+                    <td class="bestseller">${row.bestseller_rating}</td>
+                    <td>${row.engagement_score}</td>
+                    <td>${row.is_bundle}</td>
+                    <td>${row.created_at}</td>
+                    <td>${row.seller_segments}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Function to create charts
+        function createCharts(data) {
+            const tableData = data.table_data;
+            
+            // Price distribution chart
+            const prices = tableData.map(row => row.price);
+            const priceTrace = {
+                x: prices,
+                type: 'histogram',
+                nbinsx: 10,
+                marker: {
+                    color: '#3498db',
+                    line: {
+                        color: 'white',
+                        width: 1
+                    }
+                },
+                name: 'Price Distribution'
+            };
+
+            const priceLayout = {
+                title: 'Price Distribution in Top-K Results',
+                xaxis: { title: 'Price (€)' },
+                yaxis: { title: 'Frequency' },
+                bargap: 0.1,
+                showlegend: false
+            };
+
+            Plotly.newPlot('price-distribution-chart', [priceTrace], priceLayout, {responsive: true});
+
+            // Bestseller rating distribution chart
+            const ratings = tableData.map(row => row.bestseller_rating);
+            const ratingTrace = {
+                x: ratings,
+                type: 'histogram',
+                nbinsx: 10,
+                marker: {
+                    color: '#e74c3c',
+                    line: {
+                        color: 'white',
+                        width: 1
+                    }
+                },
+                name: 'Bestseller Rating Distribution'
+            };
+
+            const ratingLayout = {
+                title: 'Bestseller Rating Distribution in Top-K Results',
+                xaxis: { title: 'Bestseller Rating' },
+                yaxis: { title: 'Frequency' },
+                bargap: 0.1,
+                showlegend: false
+            };
+
+            Plotly.newPlot('bestseller-distribution-chart', [ratingTrace], ratingLayout, {responsive: true});
+        }
+
+        // Function to show error
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error';
+            errorDiv.textContent = message;
+            
+            const container = document.querySelector('.container');
+            container.insertBefore(errorDiv, container.firstChild);
+            
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
+        }
+
+        // Function to show success message
+        function showSuccess(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'error';
+            successDiv.style.background = '#e8f5e8';
+            successDiv.style.color = '#2e7d32';
+            successDiv.style.borderLeftColor = '#4caf50';
+            successDiv.textContent = message;
+            
+            const container = document.querySelector('.container');
+            container.insertBefore(successDiv, container.firstChild);
+            
+            setTimeout(() => {
+                successDiv.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+---
+description: Use the relevant tables to pull AOV from the order and order_items table
+alwaysApply: false
+---
+rules:
+  - description: "When the user mentions 'include order data' as part of the query requirements, automatically add the following CTE to the query: order_data AS (SELECT o.user_id, o.number, SUM(it.final_price) as final_price, o.status, o.created_at FROM `gtm-eduki-com.lmp.orders` o LEFT JOIN `gtm-eduki-com.lmp.order_items` it ON o.id = it.order_id WHERE o.status NOT IN ('new', 'pending', 'cancelled') GROUP BY o.user_id, o.number, o.status, o.created_at)"
+  - description: "When order data is included, ensure proper joining between purchase events and orders using CAST(e.purchase_id AS STRING) = CAST(od.number AS STRING)"
+  - description: "For GMV calculations, use SUM(od.final_price) and for AOV calculations, use AVG(od.final_price) where applicable"
+description:
+globs:
+alwaysApply: false
+---
