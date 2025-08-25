@@ -4,9 +4,9 @@ scope: company
 project: buyer_experience
 nature: qualitative
 id: buyer_experience-sig-company-mission_vision
-date: '2025-08-17'
+date: '2025-08-24'
 source: company_doc
-summary: Company Mission & Vision — extracted themes and measures.
+summary: Company Mission & Vision — extracted themes, goals, guardrails, and KPIs.
 coverage: Company-wide
 tags:
 - company
@@ -31,16 +31,23 @@ themes:
 - '## Mission (our “how” do we get there? What’s our   approach?)'
 - '**Our mission is to provide teachers with the resources and tools to deliver the
   impactful education.**'
+goals:
+- '## Purpose (our “why?”)'
+- '**Our purpose is to improve education.**'
+- Education is the future! And yet today’s schools could be so much better, for teachers
+  and students alike.
+- '## Vision (our “what” do we want to achieve?)'
+- '**Our vision is that every teacher is perfectly prepared for lasting impact.**'
+guardrails:
+- TBD
+kpis:
+- TBD
 links:
   from: []
   to: []
 ---
 ### Raw Excerpts
-
 - (No bullet lines detected; pasted text preserved.)
 
-### Explicit/Implied Measures of Success
-- TBD
-
-### Guardrails / Constraints
-- TBD
+### Notes
+- Source text parsed heuristically for goals/guardrails/KPIs.

@@ -4,7 +4,7 @@ scope: project
 project: buyer_experience
 nature: qualitative
 id: buyer_experience-sig-nps-DACH-2025-07-17_2025-08-16
-date: '2025-08-17'
+date: '2025-08-24'
 source: nps_survey
 summary: NPS feedback for DACH over 2025-07-17 → 2025-08-16 (multilingual).
 coverage: DACH, all platforms
