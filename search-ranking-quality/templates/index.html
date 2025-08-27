@@ -220,6 +220,26 @@
             border-left: 4px solid #f44336;
         }
 
+        /* Grade cell color coding based on query match */
+        .grade-cell {
+            position: relative;
+        }
+        
+        .grade-cell.full-match {
+            background-color: rgba(76, 175, 80, 0.1) !important;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .grade-cell.partial-match {
+            background-color: rgba(255, 152, 0, 0.1) !important;
+            border-left: 4px solid #ff9800;
+        }
+        
+        .grade-cell.no-match {
+            background-color: rgba(244, 67, 54, 0.1) !important;
+            border-left: 4px solid #f44336;
+        }
+
         /* Query Selector Styles */
         .query-selector {
             margin-bottom: 20px;
@@ -336,8 +356,16 @@
 
         .match-summary-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 20px;
+        }
+        
+        .match-summary-grid.two-columns {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        .match-summary-grid.one-column {
+            grid-template-columns: 1fr;
         }
 
         .match-section-compact {
@@ -367,7 +395,7 @@
 
         @media (max-width: 768px) {
             .match-summary-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
                 gap: 15px;
             }
             
@@ -866,6 +894,24 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="match-section-compact">
+                        <div class="match-section-title">🎓 Grade Level Matching</div>
+                        <div class="match-items-horizontal">
+                            <div class="match-item-compact">
+                                <span class="match-indicator full-match"></span>
+                                <span class="match-label-compact">Full: <strong id="grade-full-match-count">0</strong></span>
+                            </div>
+                            <div class="match-item-compact">
+                                <span class="match-indicator partial-match"></span>
+                                <span class="match-label-compact">Partial: <strong id="grade-partial-match-count">0</strong></span>
+                            </div>
+                            <div class="match-item-compact">
+                                <span class="match-indicator no-match"></span>
+                                <span class="match-label-compact">None: <strong id="grade-no-match-count">0</strong></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -1081,13 +1127,31 @@
                     categorySection.style.display = 'none';
                 }
                 
+                // Show/hide grade matching section based on intent type
+                const gradeSection = document.querySelector('#match-summary-table .match-section-compact:nth-child(3)');
+                if (intentType && intentType.has_grade && metrics.query_info.grade_match_summary) {
+                    document.getElementById('grade-full-match-count').textContent = metrics.query_info.grade_match_summary.full_match;
+                    document.getElementById('grade-partial-match-count').textContent = metrics.query_info.grade_match_summary.partial_match;
+                    document.getElementById('grade-no-match-count').textContent = metrics.query_info.grade_match_summary.no_match;
+                    gradeSection.style.display = 'block';
+                } else {
+                    gradeSection.style.display = 'none';
+                }
+                
                 // Adjust grid layout based on visible sections
                 const grid = document.querySelector('.match-summary-grid');
-                if (intentType && intentType.has_category) {
-                    grid.style.gridTemplateColumns = '1fr 1fr';
-                } else {
-                    grid.style.gridTemplateColumns = '1fr';
+                let visibleSections = 1; // Always have title
+                if (intentType && intentType.has_category) visibleSections++;
+                if (intentType && intentType.has_grade) visibleSections++;
+                
+                // Update grid class based on number of visible sections
+                grid.className = 'match-summary-grid';
+                if (visibleSections === 1) {
+                    grid.classList.add('one-column');
+                } else if (visibleSections === 2) {
+                    grid.classList.add('two-columns');
                 }
+                // Default (three-columns) is handled by the base class
                 
                 matchSummaryTable.style.display = 'block';
             }
@@ -1148,6 +1212,20 @@
                     categoryCell = `<td>${row.material_categories}</td>`;
                 }
                 
+                let gradeCell = '';
+                if (hasGrade && row.grade_match) {
+                    const gradeMatchType = row.grade_match.type;
+                    const gradeMatchClass = gradeMatchType.replace('_', '-');
+                    gradeCell = `
+                        <td class="grade-cell ${gradeMatchClass}">
+                            <span class="match-indicator-small ${gradeMatchClass}"></span>
+                            ${row.material_class_grades}
+                        </td>
+                    `;
+                } else {
+                    gradeCell = `<td>${row.material_class_grades}</td>`;
+                }
+                
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="rank">${row.rank}</td>
@@ -1157,7 +1235,7 @@
                         ${row.title}
                     </td>
                     ${categoryCell}
-                    <td>${row.material_class_grades}</td>
+                    ${gradeCell}
                     <td class="price">€${row.price}</td>
                     <td class="bestseller">${row.bestseller_rating}</td>
                     <td>${row.engagement_score}</td>

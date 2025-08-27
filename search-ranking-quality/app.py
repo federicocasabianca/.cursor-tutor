@@ -91,6 +91,29 @@ def load_taxonomy_data():
         print(f"Error loading taxonomy data: {e}")
         return {}
 
+def load_grade_taxonomy_data():
+    """Load grade level taxonomy data from CSV file"""
+    grade_taxonomy = {}
+    try:
+        with open('taxonomy/grade_levels.csv', 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                grade_id = row['id']
+                title = row['title'].lower() if row['title'] else ''
+                short_title = row['short_title'].lower() if row['short_title'] else ''
+                
+                grade_taxonomy[grade_id] = {
+                    'title': title,
+                    'short_title': short_title,
+                    'full_title': row['title'],
+                    'full_short_title': row['short_title'],
+                    'position': int(row['position']) if row['position'] else 0
+                }
+        return grade_taxonomy
+    except Exception as e:
+        print(f"Error loading grade taxonomy data: {e}")
+        return {}
+
 def scan_query_structure():
     """Scan the test-queries folder structure and return available queries"""
     base_path = 'test-queries'
@@ -186,6 +209,190 @@ def analyze_query_title_match(query, title):
         return {'type': 'partial_match', 'score': match_percentage, 'matched_tokens': matched_tokens}
     
     return {'type': 'no_match', 'score': 0, 'matched_tokens': []}
+
+def analyze_query_grade_match(query, material_grades, grade_taxonomy):
+    """Analyze how well the query matches the material grades based on grade taxonomy"""
+    if not query or not material_grades or not grade_taxonomy or query == 'No query found':
+        return {'type': 'no_match', 'score': 0, 'matched_grades': [], 'query_grade': None}
+    
+    # Clean and tokenize query
+    import re
+    query_clean = re.sub(r'[^\w\s]', ' ', query.lower()).strip()
+    query_tokens = [token for token in query_clean.split() if len(token) > 0]
+    
+    if not query_tokens:
+        return {'type': 'no_match', 'score': 0, 'matched_grades': [], 'query_grade': None}
+    
+    # Find which grade levels the query might be referring to
+    query_grades = []
+    best_matches = []
+    
+    # Extract numeric patterns and grade patterns from query
+    grade_patterns = []
+    
+    # Pattern matching for various grade formats
+    for token in query_tokens:
+        # Direct number matches (1, 2, 3, etc.)
+        if re.match(r'^\d+$', token):
+            grade_patterns.append(token)
+        
+        # Klasse patterns (klasse, kl, etc.)
+        if 'klasse' in token or token.startswith('kl'):
+            # Extract numbers from patterns like "kl8", "klasse8", etc.
+            numbers = re.findall(r'\d+', token)
+            grade_patterns.extend(numbers)
+    
+    # Handle space-separated patterns like "kl 8", "klasse 5" 
+    for i, token in enumerate(query_tokens):
+        if token in ['kl', 'klasse'] and i + 1 < len(query_tokens):
+            next_token = query_tokens[i + 1]
+            # Check if next token is a number or contains numbers
+            numbers = re.findall(r'\d+', next_token)
+            grade_patterns.extend(numbers)
+    
+    # Look for grade ranges (e.g., "6-8", "6,7,8")
+    query_text = ' '.join(query_tokens)
+    range_patterns = re.findall(r'(\d+)[-,\s]*(?:und\s*)?(\d+)', query_text)
+    for start, end in range_patterns:
+        start_num, end_num = int(start), int(end)
+        for i in range(start_num, end_num + 1):
+            grade_patterns.append(str(i))
+    
+    # Look for multiple grades listed (e.g., "6, 7, 8")
+    multi_patterns = re.findall(r'\d+', query_text)
+    grade_patterns.extend(multi_patterns)
+    
+    # Remove duplicates
+    grade_patterns = list(set(grade_patterns))
+    
+    # Find matching grades in taxonomy
+    for grade_id, grade_data in grade_taxonomy.items():
+        match_score = 0
+        
+        # Check if any of the extracted patterns match this grade
+        grade_title = grade_data['title']
+        grade_short = grade_data['short_title']
+        
+        for pattern in grade_patterns:
+            # Direct match with short title (e.g., "8" matches "8")
+            if pattern == grade_short:
+                match_score += 100
+            # Match within title (e.g., "8" matches "8. Klasse")
+            elif pattern in grade_title:
+                match_score += 90
+            # Match for compound titles
+            elif grade_short in pattern:
+                match_score += 80
+        
+        # Also check for direct word matches in query
+        for token in query_tokens:
+            # Exact title match
+            if grade_title == token:
+                match_score += 100
+            # Token appears in grade title
+            elif token in grade_title and len(token) > 2:
+                match_score += 70
+            # Special patterns for German school system
+            elif 'ef' in token and 'ef' in grade_title:
+                match_score += 95
+            elif 'q1' in token and 'q1' in grade_title:
+                match_score += 95
+            elif 'q2' in token and 'q2' in grade_title:
+                match_score += 95
+            elif 'vorschule' in token and 'vorschule' in grade_title:
+                match_score += 95
+            elif 'erwachsenen' in token and 'erwachsenen' in grade_title:
+                match_score += 90
+            elif 'lehrer' in token and 'lehrer' in grade_title:
+                match_score += 90
+        
+        # If we found a good match, add it to query grades
+        if match_score > 0:
+            best_matches.append({
+                'grade_id': grade_id,
+                'grade_data': grade_data,
+                'score': match_score
+            })
+    
+    # Sort by score and take the best matches
+    best_matches.sort(key=lambda x: x['score'], reverse=True)
+    
+    # If no grades found in taxonomy for the query, it's not a grade query
+    if not best_matches:
+        return {'type': 'no_match', 'score': 0, 'matched_grades': [], 'query_grade': None}
+    
+    # Take the highest scoring grades as the query grades
+    # Only take grades with the highest score to avoid false positives
+    if best_matches:
+        max_score = best_matches[0]['score']
+        # Only take grades with the maximum score (or within 10 points of it)
+        query_grades = [match['grade_data'] for match in best_matches if match['score'] >= max(70, max_score - 10)]
+    else:
+        query_grades = []
+    
+    if not query_grades:
+        return {'type': 'no_match', 'score': 0, 'matched_grades': [], 'query_grade': None}
+    
+    # Extract material grade titles and check against the query grades
+    material_grade_titles = []
+    matched_grades = []
+    
+    for grade in material_grades:
+        grade_title = grade.get('title', '').lower()
+        if grade_title:
+            material_grade_titles.append(grade_title)
+            
+            # Check if this material grade matches any of the query grades
+            for query_grade in query_grades:
+                query_grade_title = query_grade['title']
+                query_grade_short = query_grade['short_title']
+                query_grade_full = query_grade['full_title']
+                
+                # More flexible matching for grades
+                grade_matches = (
+                    query_grade_title == grade_title or
+                    query_grade_short == grade_title or
+                    query_grade_full.lower() == grade_title or
+                    (len(query_grade_short) > 0 and query_grade_short in grade_title) or
+                    (len(grade_title) > 2 and grade_title in query_grade_title)
+                )
+                
+                if grade_matches:
+                    matched_grades.append(grade_title)
+                    break
+    
+    # Determine match type
+    if not matched_grades:
+        return {
+            'type': 'no_match', 
+            'score': 0, 
+            'matched_grades': [], 
+            'query_grade': ', '.join([g['full_title'] for g in query_grades]),
+            'material_grades': material_grade_titles
+        }
+    
+    # Check if ALL material grades match the query grades (Full Match)
+    # This means every material grade matches at least one query grade
+    all_material_grades_match = len(matched_grades) == len(material_grade_titles)
+    
+    if all_material_grades_match:
+        return {
+            'type': 'full_match', 
+            'score': 100, 
+            'matched_grades': matched_grades,
+            'query_grade': ', '.join([g['full_title'] for g in query_grades]),
+            'material_grades': material_grade_titles
+        }
+    
+    # Partial match - query grades present but with other grades
+    match_percentage = (len(matched_grades) / len(material_grade_titles)) * 100 if material_grade_titles else 0
+    return {
+        'type': 'partial_match', 
+        'score': match_percentage,
+        'matched_grades': matched_grades,
+        'query_grade': ', '.join([g['full_title'] for g in query_grades]),
+        'material_grades': material_grade_titles
+    }
 
 def analyze_query_category_match(query, material_categories, taxonomy):
     """Analyze how well the query matches the material categories based on taxonomy"""
@@ -320,7 +527,7 @@ def analyze_query_category_match(query, material_categories, taxonomy):
         'material_categories': material_category_titles
     }
 
-def calculate_metrics(materials, top_k=18, original_query=''):
+def calculate_metrics(materials, top_k=18, original_query='', intent_type=None):
     """Calculate ranking quality metrics for top-K results"""
     if not materials or len(materials) == 0:
         return {}
@@ -328,8 +535,13 @@ def calculate_metrics(materials, top_k=18, original_query=''):
     # Take top-K results
     top_k_materials = materials[:top_k]
     
-    # Load taxonomy data for category matching
+    # Load taxonomy data for category and grade matching
     taxonomy = load_taxonomy_data()
+    grade_taxonomy = load_grade_taxonomy_data()
+    
+    # Default intent type if not provided
+    if intent_type is None:
+        intent_type = {'type': 'unknown', 'has_category': False, 'has_grade': False}
     
     # Extract world information for flag
     world_info = {}
@@ -350,15 +562,27 @@ def calculate_metrics(materials, top_k=18, original_query=''):
         title_matches.append(match_result)
         title_match_summary[match_result['type']] += 1
     
-    # Analyze query-category matching
+    # Analyze query-category matching (only if intent has category)
     category_matches = []
     category_match_summary = {'full_match': 0, 'partial_match': 0, 'no_match': 0}
     
-    for material in top_k_materials:
-        categories = material.get('material_categories', [])
-        match_result = analyze_query_category_match(original_query, categories, taxonomy)
-        category_matches.append(match_result)
-        category_match_summary[match_result['type']] += 1
+    if intent_type.get('has_category', False):
+        for material in top_k_materials:
+            categories = material.get('material_categories', [])
+            match_result = analyze_query_category_match(original_query, categories, taxonomy)
+            category_matches.append(match_result)
+            category_match_summary[match_result['type']] += 1
+    
+    # Analyze query-grade matching (only if intent has grade)
+    grade_matches = []
+    grade_match_summary = {'full_match': 0, 'partial_match': 0, 'no_match': 0}
+    
+    if intent_type.get('has_grade', False):
+        for material in top_k_materials:
+            grades = material.get('material_class_grades', [])
+            match_result = analyze_query_grade_match(original_query, grades, grade_taxonomy)
+            grade_matches.append(match_result)
+            grade_match_summary[match_result['type']] += 1
     
     # Extract query information
     query_info = {
@@ -367,7 +591,9 @@ def calculate_metrics(materials, top_k=18, original_query=''):
         'title_matches': title_matches,
         'title_match_summary': title_match_summary,
         'category_matches': category_matches,
-        'category_match_summary': category_match_summary
+        'category_match_summary': category_match_summary,
+        'grade_matches': grade_matches,
+        'grade_match_summary': grade_match_summary
     }
     
     # Price mix metrics
@@ -498,11 +724,12 @@ def prepare_table_data(materials, top_k=18, original_query='', intent_type=None)
         if intent_type.get('has_category', False):
             category_match_result = analyze_query_category_match(original_query, categories, taxonomy)
         
-        # TODO: Add grade-level matching for grade-level intent types
+        # Analyze grade matching only if the intent type has grade
         grade_match_result = None
         if intent_type.get('has_grade', False):
-            # Placeholder for future grade-level matching implementation
-            grade_match_result = {'type': 'no_match', 'score': 0, 'matched_grades': []}
+            grades = material.get('material_class_grades', [])
+            grade_taxonomy = load_grade_taxonomy_data()
+            grade_match_result = analyze_query_grade_match(original_query, grades, grade_taxonomy)
         
         row = {
             'rank': i + 1,
@@ -564,7 +791,7 @@ def get_data():
     intent_type = detect_query_intent_type(query_path)
     
     # Calculate metrics
-    metrics = calculate_metrics(materials, top_k=18, original_query=original_query)
+    metrics = calculate_metrics(materials, top_k=18, original_query=original_query, intent_type=intent_type)
     
     # Prepare table data with intent-aware matching
     table_data = prepare_table_data(materials, top_k=18, original_query=original_query, intent_type=intent_type)
@@ -599,7 +826,7 @@ def reload_data():
     intent_type = detect_query_intent_type(query_path)
     
     # Calculate metrics
-    metrics = calculate_metrics(materials, top_k=18, original_query=original_query)
+    metrics = calculate_metrics(materials, top_k=18, original_query=original_query, intent_type=intent_type)
     
     # Prepare table data with intent-aware matching
     table_data = prepare_table_data(materials, top_k=18, original_query=original_query, intent_type=intent_type)
