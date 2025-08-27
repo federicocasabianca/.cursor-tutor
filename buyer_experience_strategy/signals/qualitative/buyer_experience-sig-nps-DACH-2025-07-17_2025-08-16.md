@@ -71,6 +71,16 @@ feedback_examples_non_en:
   - Vieles kann genau so im Unterricht eingesetzt werden. Jedoch gibt es auch Materialien,
     die nicht nicht ganz so gut sind.
   detractors: *id001
+market: DACH
+buyer_journey_phase: first_use
+structural_layer: satisfaction
+segments:
+- lead_freemium
+- active_1_time_buyer
+- active_slow_buyer
+- active_normal_buyer
+- active_heavy_buyer
+- active_loyal_buyer
 ---
 ### Summary
 - NPS **47.8** from **10649** used responses (1059 excluded).

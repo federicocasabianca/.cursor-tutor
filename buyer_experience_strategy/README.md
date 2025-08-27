@@ -119,20 +119,23 @@ python buyer_experience_strategy/tools/tag_signal.py \
   --market DACH \
   --phase explore_passive_looking \
   --layer search_relevance \
-  --segments lead_freemium,active_1_time_buyer
+  --segments "active_*"
 
-# Tag company signals for awareness phase
+# Tag company signals for awareness phase (all segments)
 python buyer_experience_strategy/tools/tag_signal.py \
   --glob "signals/qualitative/buyer_experience-sig-company-*.md" \
   --market DACH \
   --phase awareness_discovery \
-  --layer landing_page_ux
+  --layer landing_page_ux \
+  --segments all
 ```
 
 **Features:**
 - **Auto-inference**: `--infer_nps` extracts market and date windows from NPS filenames
 - **Validation**: Checks phase/layer combinations and segment IDs against catalogs
 - **Bulk operations**: Process multiple signals with consistent metadata
+- **Wildcard segments**: Use `active_*`, `lead_*`, `inactive_*`, `churned_*` patterns
+- **All segments**: Use `--segments all` to include all 15 buyer segments
 
 ## File Reference
 
@@ -188,20 +191,26 @@ python buyer_experience_strategy/tools/tag_signal.py \
 
 **Example usage:**
 ```bash
-# Tag NPS signals with journey context
+# Tag NPS signals with wildcard segments (all active buyers)
 python tools/tag_signal.py \
   --glob "signals/qualitative/buyer_experience-sig-nps-*.md" \
   --market DACH \
   --phase first_use \
   --layer satisfaction \
-  --segments lead_freemium,active_1_time_buyer
+  --segments "active_*"
 
-# Tag company signals for awareness phase
+# Tag company signals for all segments
 python tools/tag_signal.py \
   --glob "signals/qualitative/buyer_experience-sig-company-*.md" \
   --market DACH \
   --phase awareness_discovery \
-  --layer landing_page_ux
+  --layer landing_page_ux \
+  --segments all
+
+# Mix wildcards and specific segments
+python tools/tag_signal.py \
+  --glob "signals/qualitative/*.md" \
+  --segments "lead_*,active_loyal_buyer,churned_*"
 ```
 
 ### 2. Insight Engine v2

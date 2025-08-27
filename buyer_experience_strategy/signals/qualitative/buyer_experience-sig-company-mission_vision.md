@@ -45,6 +45,26 @@ kpis:
 links:
   from: []
   to: []
+market: DACH
+segments:
+- lead_freemium
+- lead_new_signup
+- lead_not_activated
+- active_1_time_buyer
+- active_slow_buyer
+- active_normal_buyer
+- active_heavy_buyer
+- active_loyal_buyer
+- inactive_1_time_buyer
+- inactive_slow_buyer
+- inactive_normal_buyer
+- inactive_heavy_buyer
+- inactive_loyal_buyer
+- churned_1_time_buyer
+- churned_slow_buyer
+- churned_normal_buyer
+- churned_heavy_buyer
+- churned_loyal_buyer
 ---
 ### Raw Excerpts
 - (No bullet lines detected; pasted text preserved.)

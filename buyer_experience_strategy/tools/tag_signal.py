@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import argparse, os, re, sys, glob, yaml
+import argparse, os, re, sys, glob, yaml, fnmatch
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
@@ -23,6 +23,32 @@ def valid_phase_layer(bj, phase_id, layer_id):
                 if l.get("id") == layer_id:
                     return True
     return False
+
+def expand_segment_patterns(seg_catalog, patterns):
+    """Expand segment patterns including wildcards and 'all'."""
+    if not patterns:
+        return []
+    
+    # Get all available segment IDs
+    all_segments = [s["id"] for s in seg_catalog.get("segments", []) if "id" in s]
+    
+    # Handle special case: 'all'
+    if len(patterns) == 1 and patterns[0] == "all":
+        return all_segments
+    
+    expanded = set()
+    for pattern in patterns:
+        if pattern == "all":
+            expanded.update(all_segments)
+        elif "*" in pattern:
+            # Wildcard matching
+            matches = fnmatch.filter(all_segments, pattern)
+            expanded.update(matches)
+        else:
+            # Exact match
+            expanded.add(pattern)
+    
+    return sorted(list(expanded))
 
 def valid_segments(seg_catalog, seg_ids):
     if not seg_ids:
@@ -58,7 +84,7 @@ def main():
     ap.add_argument("--market", default=None)
     ap.add_argument("--phase", default=None)
     ap.add_argument("--layer", default=None)
-    ap.add_argument("--segments", default=None, help="Comma-separated segment ids (see buyer_segments.yaml)")
+    ap.add_argument("--segments", default=None, help="Comma-separated segment ids, wildcards (lead_*, active_*), or 'all'")
     ap.add_argument("--observed_at", default=None)
     ap.add_argument("--window_start", default=None)
     ap.add_argument("--window_end", default=None)
@@ -71,10 +97,19 @@ def main():
             print("ERROR: Invalid phase/layer per buyer_journey.yaml")
             sys.exit(1)
 
-    seg_ids = [s.strip() for s in (args.segments.split(",") if args.segments else []) if s.strip()]
-    if seg_ids and not valid_segments(segs, seg_ids):
-        print("ERROR: One or more segment ids are not in buyer_segments.yaml")
+    # Parse and expand segment patterns
+    seg_patterns = [s.strip() for s in (args.segments.split(",") if args.segments else []) if s.strip()]
+    seg_ids = expand_segment_patterns(segs, seg_patterns)
+    
+    if seg_patterns and not valid_segments(segs, seg_ids):
+        print("ERROR: One or more expanded segment ids are not in buyer_segments.yaml")
+        print(f"Requested patterns: {seg_patterns}")
+        print(f"Expanded to: {seg_ids}")
         sys.exit(1)
+    
+    # Show what segments were selected if wildcards/all were used
+    if seg_patterns and ("*" in args.segments or "all" in seg_patterns):
+        print(f"Segment patterns '{args.segments}' expanded to: {seg_ids}")
 
     files = glob.glob(os.path.join(ROOT, args.__dict__["glob"]))
     if not files:
