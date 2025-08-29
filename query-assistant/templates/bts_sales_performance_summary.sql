@@ -24,6 +24,21 @@ WITH bts_pageviews AS (
       'https://eduki.com/de/suchergebnisse?b=1&sale=1',
       'https://eduki.com/de/suchergebnisse?prc=1&b=0'
     )
+
+  UNION ALL
+
+  -- Add Regular Search events (actual query searches)
+  SELECT 
+    date,
+    session_id,
+    page_url,
+    'Regular Search' AS url_type
+  FROM `gtm-eduki-com.QE.events`
+  WHERE date BETWEEN '2025-08-24' AND '2025-08-27'
+    AND world = 'de'
+    AND type = 'appearedInSearch'
+    AND page_url LIKE 'https://eduki.com/de/suchergebnisse?query=%'
+    AND query != ''
 ),
 
 daily_totals AS (
@@ -180,6 +195,22 @@ pageview_events AS (
       'https://eduki.com/de/suchergebnisse?b=1&sale=1',
       'https://eduki.com/de/suchergebnisse?prc=1&b=0'
     )
+
+  UNION ALL
+
+  -- Add Regular Search events for time to convert calculation
+  SELECT 
+    date,
+    session_id,
+    page_url,
+    time,
+    'Regular Search' AS url_type
+  FROM `gtm-eduki-com.QE.events`
+  WHERE date BETWEEN '2025-08-24' AND '2025-08-27'
+    AND world = 'de'
+    AND type = 'appearedInSearch'
+    AND page_url LIKE 'https://eduki.com/de/suchergebnisse?query=%'
+    AND query != ''
 ),
 
 time_to_convert AS (
