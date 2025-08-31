@@ -1,48 +1,114 @@
 ---
 type: schema
-name: strategy_generic
-version: 1
+name: strategy_generic_v3
+version: 3
 ---
 
-# Strategy Schema — Generic (framework-agnostic)
+artifact: strategy
+framework: generic
+project: string                      # e.g., buyer_experience
+id: string                           # e.g., DACH-2025Q3
+version: integer
+date: YYYY-MM-DD
+owner: string                        # DRI(s)
+market: string                       # e.g., DACH
+timeframe:
+  start: YYYY-MM-DD
+  end:   YYYY-MM-DD
+okrs: array[string]                  # OKR ids/titles
+scope:
+  in: array[string]
+  out: array[string]
+constraints: array[string]           # tech/legal/budget
+tags: array[string]
+confidence: low | medium | high
 
-## Purpose
-A concise, framework-agnostic strategy artifact used to align teams and feed narratives/PRDs.
+# --- RUMMELT: Problem & governing rules (WHAT & WHY) ---
+diagnosis:
+  challenge: string                  # core problem/opportunity
+  root_causes: array[string]
+  obstacles: array[string]
+guiding_policy:
+  approach: string                   # how we'll address the challenge
+  strategic_logic: string            # why this approach should work
+  trade_offs: array[string]          # explicit won't-do choices
 
-## Required frontmatter
-- **artifact**: "strategy"
-- **framework**: "generic"
-- **project**: project slug (e.g., buyer_experience)
-- **id**: namespaced (e.g., be-str-generic-2025-08)
-- **date**: YYYY-MM-DD
-- **version**: integer (start at 1)
-- **owner**: person responsible
-- **links.from**: list of **insight IDs** used
+# --- PLAY-TO-WIN: Strategic choices (WHERE & HOW) ---
+where_to_play:
+  market_segments: array[string]
+  customer_segments: array[string]
+  geographies: array[string]
+how_to_win:
+  advantage_hypothesis: string       # concise statement of how we win in W2P
 
-## Recommended frontmatter
-- **tags**: array (e.g., ["buyer_experience","relevance"])
-- **market**: region(s)
-- **confidence**: "low" | "medium" | "high"
-- **priority**: "low" | "medium" | "high"
+# Minimal, non-overlapping enablement
+enablers:
+  critical_capabilities: array[string]
+  capability_gaps: array[string]
 
-## Body sections
-### Summary
-1–3 sentences: core challenge + overall approach.
+# --- 7 POWERS: Durability (WHY THIS LASTS) ---
+seven_powers:
+  chosen: array[string]              # network effects | scale economies | switching costs | branding | cornered resource | process power | counter-positioning
+  status: string                     # none | emerging | established
+  path_to_power: array[string]       # concrete steps to build/strengthen
 
-### Core Challenge
-What problem are we solving (for whom, where in the journey), supported by insights.
+# --- REFORGE: Measurement & mechanics (HOW WE GROW/MEASURE) ---
+north_star_metric:
+  name: string
+  baseline: number
+  target: number
+  unit: string
+  by: YYYY-MM-DD
+input_metrics:
+  - name: string
+    baseline: number
+    target: number
+    unit: string
+    by: YYYY-MM-DD
+loops_impact:
+  acquisition: string                # how the strategy strengthens this loop
+  retention: string
+  monetization: string
 
-### Goals
-Measurable targets (business + user); include baselines if known.
+# --- PORTFOLIO: Focused execution ---
+pillars:
+  - id: string
+    label: string
+    rationale: string
+initiatives_ranked:
+  - pillar_id: string
+    name: string
+    owner: string
+    expected_impact: string          # metric -> delta (with evidence/insight refs)
+    evidence_insights: array[string] # insight ids
+    resources: string                # headcount/budget summary
+    dependencies: array[string]
+    milestones:                      # Now / Next / Later
+      now: array[string]
+      next: array[string]
+      later: array[string]
+    priority?:                       # optional but helpful to force focus
+      impact: high | medium | low
+      confidence: high | medium | low
+      effort: high | medium | low
 
-### Pillars
-3–5 themes that structure the work (short label + one-line rationale).
+# --- GOVERNANCE, RISK & TESTS ---
+review_cadence:
+  frequency: string                  # e.g., monthly
+  owner: string
+  dashboard: string
+risk_assessment:
+  key_risks: array[string]
+  mitigation_strategies: array[string]
+  assumptions: array[string]
+test_plan:
+  experiments: array[string]
+  kill_criteria: array[string]
+counter_moves:
+  anticipated_competitor_responses: array[string]
+  our_responses: array[string]
 
-### Initiatives
-Concrete efforts under pillars (bullets; each should map to a pillar and a metric).
-
-### Risks & Assumptions
-Key unknowns, trade-offs, or second-order effects.
-
-### Evidence
-Bullet list linking the insight ids (and optionally notable signal ids).
+# --- EVIDENCE ---
+links:
+  from: array[string]                # source insight ids/docs
+  to: array[string]
