@@ -5,6 +5,7 @@ from datetime import datetime
 import os
 import glob
 import csv
+from api_client import EdukiSearchAPI
 
 app = Flask(__name__)
 
@@ -822,6 +823,72 @@ def reload_data():
         'success': True,
         'reloaded_at': datetime.now().isoformat()
     })
+
+@app.route('/api/search', methods=['POST'])
+def live_search():
+    """API endpoint for live search using the Eduki API"""
+    try:
+        # Get the search query from request
+        data = request.get_json()
+        if not data or 'query' not in data:
+            return jsonify({'error': 'Query parameter is required'}), 400
+        
+        query = data['query'].strip()
+        if not query:
+            return jsonify({'error': 'Query cannot be empty'}), 400
+        
+        # Initialize API client
+        try:
+            api_client = EdukiSearchAPI()
+        except FileNotFoundError as e:
+            return jsonify({
+                'error': 'API configuration error',
+                'details': 'Bearer token file not found. Please ensure bearer_token.txt exists.',
+                'technical_error': str(e)
+            }), 500
+        except Exception as e:
+            return jsonify({
+                'error': 'API initialization failed',
+                'details': 'Failed to initialize API client.',
+                'technical_error': str(e)
+            }), 500
+        
+        # Make the search request
+        try:
+            search_results = api_client.search_materials(query, limit=12)
+        except Exception as e:
+            return jsonify({
+                'error': 'Search request failed',
+                'details': 'Unable to fetch search results from the API.',
+                'technical_error': str(e)
+            }), 500
+        
+        # Extract materials and original query
+        materials = search_results.get('items', {}).get('materials', [])
+        auto_suggest = search_results.get('auto_suggest', {})
+        original_query = auto_suggest.get('original_query', query)
+        
+        # For live search, we assume no specific intent type (just basic query analysis)
+        intent_type = {'type': 'live_search', 'has_category': False, 'has_grade': False}
+        
+        # Prepare table data (top 12 for compare)
+        table_data = prepare_table_data(materials, top_k=12, original_query=original_query, intent_type=intent_type)
+        
+        return jsonify({
+            'success': True,
+            'query': original_query,
+            'total_results': len(materials),
+            'table_data': table_data,
+            'searched_at': datetime.now().isoformat()
+        })
+        
+    except Exception as e:
+        # Catch any unexpected errors
+        return jsonify({
+            'error': 'Unexpected error occurred',
+            'details': 'An unexpected error occurred while processing your search.',
+            'technical_error': str(e)
+        }), 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001)
