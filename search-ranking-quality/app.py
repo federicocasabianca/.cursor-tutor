@@ -177,7 +177,7 @@ def load_materials_data(query_path=None):
         return None
 
 def analyze_query_title_match(query, title):
-    """Analyze how well the query matches the material title"""
+    """Analyze how well the query matches the material title based on token presence (order independent)"""
     if not query or not title or query == 'No query found':
         return {'type': 'no_match', 'score': 0, 'matched_tokens': []}
     
@@ -189,26 +189,42 @@ def analyze_query_title_match(query, title):
     if not query_clean or not title_clean:
         return {'type': 'no_match', 'score': 0, 'matched_tokens': []}
     
-    query_tokens = [token for token in query_clean.split() if len(token) > 2]  # Ignore short words
+    # Tokenize query - keep ALL tokens (including short ones like "4")
+    query_tokens = [token for token in query_clean.split() if len(token) > 0]
+    title_tokens = [token for token in title_clean.split() if len(token) > 0]
     
     if not query_tokens:
         return {'type': 'no_match', 'score': 0, 'matched_tokens': []}
     
-    # Check for full match (entire query appears in title)
-    if query_clean in title_clean:
-        return {'type': 'full_match', 'score': 100, 'matched_tokens': query_tokens}
-    
-    # Check for partial match (any tokens appear in title)
+    # Check which query tokens are present in the title (order independent)
     matched_tokens = []
-    for token in query_tokens:
-        if token in title_clean:
-            matched_tokens.append(token)
+    for query_token in query_tokens:
+        token_found = False
+        for title_token in title_tokens:
+            # Direct match or flexible matching (e.g., "4" in "4.", "klasse" in "klasse")
+            if query_token == title_token or query_token in title_token or title_token in query_token:
+                token_found = True
+                break
+            # Handle synonyms: Klasse <-> Schulstufe
+            elif (query_token == 'klasse' and 'schulstufe' in title_token) or \
+                 (query_token == 'schulstufe' and 'klasse' in title_token):
+                token_found = True
+                break
+        
+        if token_found:
+            matched_tokens.append(query_token)
     
-    if matched_tokens:
-        match_percentage = (len(matched_tokens) / len(query_tokens)) * 100
+    # Calculate match percentage
+    if not matched_tokens:
+        return {'type': 'no_match', 'score': 0, 'matched_tokens': []}
+    
+    match_percentage = (len(matched_tokens) / len(query_tokens)) * 100
+    
+    # Determine match type based on percentage
+    if match_percentage == 100:
+        return {'type': 'full_match', 'score': match_percentage, 'matched_tokens': matched_tokens}
+    else:
         return {'type': 'partial_match', 'score': match_percentage, 'matched_tokens': matched_tokens}
-    
-    return {'type': 'no_match', 'score': 0, 'matched_tokens': []}
 
 def analyze_query_grade_match(query, material_grades, grade_taxonomy):
     """Analyze how well the query matches the material grades based on grade taxonomy"""
@@ -395,57 +411,38 @@ def analyze_query_grade_match(query, material_grades, grade_taxonomy):
     }
 
 def analyze_query_category_match(query, material_categories, taxonomy):
-    """Analyze how well the query matches the material categories based on taxonomy"""
+    """Analyze how well the query matches the material categories based on token presence (order independent)"""
     if not query or not material_categories or not taxonomy or query == 'No query found':
         return {'type': 'no_match', 'score': 0, 'matched_categories': [], 'query_category': None}
     
     # Clean and tokenize query
     import re
     query_clean = re.sub(r'[^\w\s]', ' ', query.lower()).strip()
-    query_tokens = [token for token in query_clean.split() if len(token) > 2]
+    query_tokens = [token for token in query_clean.split() if len(token) > 2]  # Filter short words for categories
     
     if not query_tokens:
         return {'type': 'no_match', 'score': 0, 'matched_categories': [], 'query_category': None}
     
-    # Find which taxonomy category the query might be referring to
-    query_category = None
-    query_category_info = None
-    best_match_score = 0
+    # Find ALL potential category tokens in the query by checking each token against taxonomy
+    category_tokens_found = []
     
-    for cat_id, cat_data in taxonomy.items():
-        match_score = 0
-        
-        for token in query_tokens:
-            # Exact title match gets highest priority
-            if cat_data['title'] == token:
-                match_score += 100
-            # Token is the entire title (reverse check)
-            elif token == cat_data['title']:
-                match_score += 100
-            # Token appears at the beginning of title
-            elif cat_data['title'].startswith(token):
-                match_score += 80
-            # Title appears at the beginning of token (for compound words)
-            elif token.startswith(cat_data['title']) and len(cat_data['title']) > 3:
-                match_score += 70
-            # Token appears in title (but not at start)
-            elif token in cat_data['title'] and len(token) > 3:
-                match_score += 50
-            # Token appears in path
-            elif cat_data['path'] and token in cat_data['path'] and len(token) > 3:
-                match_score += 30
-        
-        # Update best match if this one is better
-        if match_score > best_match_score:
-            best_match_score = match_score
-            query_category = cat_id
-            query_category_info = cat_data
+    for token in query_tokens:
+        for cat_id, cat_data in taxonomy.items():
+            # Check if this token matches any part of the taxonomy
+            if (cat_data['title'] == token or 
+                token in cat_data['title'] or 
+                (cat_data['path'] and token in cat_data['path'].lower())):
+                category_tokens_found.append({
+                    'token': token,
+                    'category_data': cat_data
+                })
+                break  # Found a match for this token, move to next token
     
-    # If no category found in taxonomy for the query, it's not a category query
-    if not query_category:
+    # If no category tokens found in query, it's not a category query
+    if not category_tokens_found:
         return {'type': 'no_match', 'score': 0, 'matched_categories': [], 'query_category': None}
     
-    # Extract material category titles and check against the query category
+    # Extract material category titles and check which ones contain our category tokens
     material_category_titles = []
     matched_categories = []
     
@@ -454,76 +451,62 @@ def analyze_query_category_match(query, material_categories, taxonomy):
         if cat_title and cat_title != 'meta':
             material_category_titles.append(cat_title)
             
-            # Check if this material category matches the query category
-            query_title = query_category_info['title']
-            query_path = query_category_info['path']
-            query_full_title = query_category_info['full_title']
+            # Check if this material category contains any of our query category tokens
+            category_matched = False
             
-            # More flexible matching - check for root words and similar terms
-            def get_root_word(word):
-                # Simple stemming for German words
-                word = word.lower()
-                if word.endswith('en'):
-                    return word[:-2]  # religionen -> religion
-                elif word.endswith('e'):
-                    return word[:-1]  # schule -> schul
-                return word
+            for category_token_info in category_tokens_found:
+                token = category_token_info['token']
+                cat_data = category_token_info['category_data']
+                
+                # Check multiple matching strategies
+                token_matches = (
+                    # Direct token match in category title
+                    token in cat_title or
+                    # Token matches category hierarchy parts
+                    any(token in part.strip().lower() for part in cat_title.split(' → ')) or
+                    # Fuzzy matching for German words
+                    any(token.startswith(part.strip().lower()[:4]) and len(part.strip()) > 3 
+                        for part in cat_title.split(' → ')) or
+                    any(part.strip().lower().startswith(token[:4]) and len(token) > 3 
+                        for part in cat_title.split(' → '))
+                )
+                
+                if token_matches:
+                    category_matched = True
+                    break
             
-            query_root = get_root_word(query_title)
-            cat_root = get_root_word(cat_title)
-            
-            # Extract the last part of the category path (the actual category title)
-            cat_parts = cat_title.split(' → ')
-            cat_actual_title = cat_parts[-1] if cat_parts else cat_title
-            
-            # Check if the query category title matches the actual category title
-            # This prevents matching "Herbst" with "Sommer" just because they share the same path
-            title_matches = (
-                query_title == cat_actual_title or
-                query_root == get_root_word(cat_actual_title) or
-                query_full_title.lower() == cat_actual_title or
-                (len(query_title) > 3 and query_title in cat_actual_title) or
-                (len(cat_actual_title) > 3 and cat_actual_title in query_title)
-            )
-            
-            # Also check for broader category matches (like "Religion" matching full hierarchy)
-            broader_matches = (
-                query_title in cat_title or 
-                cat_title in query_title or
-                query_full_title.lower() in cat_title or
-                cat_title in query_full_title.lower()
-            )
-            
-            if title_matches or broader_matches:
+            if category_matched:
                 matched_categories.append(cat_title)
     
     # Determine match type
     if not matched_categories:
+        # Create a summary of found category tokens for reporting
+        found_tokens = [info['token'] for info in category_tokens_found]
         return {
             'type': 'no_match', 
             'score': 0, 
             'matched_categories': [], 
-            'query_category': query_category_info['full_title'],
+            'query_category': ', '.join(found_tokens),
             'material_categories': material_category_titles
         }
     
-    # Check if the query category is the ONLY category present (Full Match)
-    if len(material_category_titles) == len(matched_categories):
-        return {
-            'type': 'full_match', 
-            'score': 100, 
-            'matched_categories': matched_categories,
-            'query_category': query_category_info['full_title'],
-            'material_categories': material_category_titles
-        }
-    
-    # Partial match - query category present but with other categories
+    # Calculate match percentage based on how many material categories matched
     match_percentage = (len(matched_categories) / len(material_category_titles)) * 100 if material_category_titles else 0
+    
+    # Determine match type based on percentage
+    if match_percentage == 100:
+        match_type = 'full_match'
+    else:
+        match_type = 'partial_match'
+    
+    # Create summary of found category tokens for reporting
+    found_tokens = [info['token'] for info in category_tokens_found]
+    
     return {
-        'type': 'partial_match', 
+        'type': match_type, 
         'score': match_percentage,
         'matched_categories': matched_categories,
-        'query_category': query_category_info['full_title'],
+        'query_category': ', '.join(found_tokens),
         'material_categories': material_category_titles
     }
 
