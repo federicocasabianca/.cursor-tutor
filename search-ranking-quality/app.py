@@ -688,16 +688,26 @@ def prepare_table_data(materials, top_k=18, original_query='', intent_type=None)
     
     table_data = []
     for i, material in enumerate(materials[:top_k]):
-        # Extract material categories
+        # Extract material categories (with defensive coding)
         categories = material.get('material_categories', [])
-        category_titles = [cat.get('full_title', '') for cat in categories if cat.get('full_title') != 'Meta']
+        category_titles = []
+        if categories and isinstance(categories, list):
+            for cat in categories:
+                if isinstance(cat, dict) and cat.get('full_title') and cat.get('full_title') != 'Meta':
+                    category_titles.append(cat.get('full_title', ''))
         
-        # Extract grade titles
+        # Extract grade titles (with defensive coding)
         grades = material.get('material_class_grades', [])
-        grade_titles = [grade.get('title', '') for grade in grades]
+        grade_titles = []
+        if grades and isinstance(grades, list):
+            for grade in grades:
+                if isinstance(grade, dict) and grade.get('title'):
+                    grade_titles.append(grade.get('title', ''))
         
-        # Extract seller segments
+        # Extract seller segments (with defensive coding)
         seller_segments = material.get('seller_segments', [])
+        if not isinstance(seller_segments, list):
+            seller_segments = []
         
         # Always analyze title matching
         title = material.get('title', '')
@@ -715,20 +725,37 @@ def prepare_table_data(materials, top_k=18, original_query='', intent_type=None)
             grade_taxonomy = load_grade_taxonomy_data()
             grade_match_result = analyze_query_grade_match(original_query, grades, grade_taxonomy)
         
+        # Safe handling of fields that might be missing or in unexpected format
+        try:
+            price = float(material.get('price', 0)) if material.get('price') is not None else 0
+        except (ValueError, TypeError):
+            price = 0
+            
+        try:
+            bestseller_rating = round(float(material.get('bestseller_rating', 0)), 4) if material.get('bestseller_rating') is not None else 0
+        except (ValueError, TypeError):
+            bestseller_rating = 0
+            
+        try:
+            engagement_score = float(material.get('engagement_score', 0)) if material.get('engagement_score') is not None else 0
+            engagement_score_str = f"{engagement_score:.2e}"
+        except (ValueError, TypeError):
+            engagement_score_str = "0.00e+00"
+
         row = {
             'rank': i + 1,
-            'id': material.get('id', ''),
-            'title': title,
+            'id': str(material.get('id', '')),
+            'title': str(title),
             'title_match': title_match_result,
             'category_match': category_match_result,
             'grade_match': grade_match_result,
             'material_categories': ', '.join(category_titles),
             'material_class_grades': ', '.join(grade_titles),
-            'price': material.get('price', 0),
-            'bestseller_rating': round(material.get('bestseller_rating', 0), 4),
-            'engagement_score': f"{material.get('engagement_score', 0):.2e}",
+            'price': price,
+            'bestseller_rating': bestseller_rating,
+            'engagement_score': engagement_score_str,
             'is_bundle': 'Yes' if material.get('is_bundle', False) else 'No',
-            'created_at': material.get('created_at', ''),
+            'created_at': str(material.get('created_at', '')),
             'seller_segments': ', '.join(seller_segments) if seller_segments else 'None',
             'intent_type': intent_type
         }
@@ -866,7 +893,11 @@ def live_search():
         # Extract materials and original query
         materials = search_results.get('items', {}).get('materials', [])
         auto_suggest = search_results.get('auto_suggest', {})
-        original_query = auto_suggest.get('original_query', query)
+        
+        # Use the query parameter directly since auto_suggest might be empty with test_segment=30 and intent=1
+        original_query = query
+        if auto_suggest and isinstance(auto_suggest, dict) and auto_suggest.get('original_query'):
+            original_query = auto_suggest.get('original_query')
         
         # For live search, we assume no specific intent type (just basic query analysis)
         intent_type = {'type': 'live_search', 'has_category': False, 'has_grade': False}

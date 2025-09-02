@@ -42,31 +42,44 @@ class EdukiSearchAPI:
         """
         print(f"Making API request for query: '{query}'")
         
-        # Prepare URL parameters
-        params = {
+        # Prepare URL parameters (these go in the query string)
+        url_params = {
             "limit": limit,
             "p": 0,
             "q": query,
             "world": "de"
         }
         
-        # Prepare payload
-        payload = {
-            "page_content": "value",
-            "test_segment": 27,
+        # Prepare POST body payload (match QA's working config exactly)
+        form_data = {
+            "page_context": "main",  # Note: "page_context" not "page_content"
+            "test_segment": 30,
             "auto_suggest": 1,
-            "intent": 0
+            "intent": 1
+        }
+        
+        print(f"🔧 URL params: {url_params}")
+        print(f"🔧 Form data being sent: {form_data}")
+        
+        # Update headers for JSON payload (match production)
+        headers = {
+            "Authorization": f"Bearer {self.bearer_token}",
+            "Content-Type": "application/json",
+            "Accept": "application/json"
         }
         
         try:
-            # Make POST request
+            # Make POST request with URL params and JSON payload (match production)
             response = requests.post(
                 self.base_url,
-                params=params,
-                json=payload,
-                headers=self.headers,
+                params=url_params,  # URL parameters  
+                json=form_data,     # JSON payload (not form data)
+                headers=headers,
                 timeout=30
             )
+            
+            # Debug: Print the actual URL that was called
+            print(f"🌐 Actual URL called: {response.url}")
             
             # Check if request was successful
             response.raise_for_status()
@@ -75,18 +88,30 @@ class EdukiSearchAPI:
             response_data = response.json()
             
             print(f"✅ API request successful! Status: {response.status_code}")
+            print(f"🔍 Response keys: {list(response_data.keys())}")
+            
+            # Check both possible response structures
+            materials = []
+            if 'data' in response_data and response_data['data'] and 'materials' in response_data['data']:
+                materials = response_data['data']['materials']
+                print(f"📊 Found materials in 'data.materials' structure")
+            elif 'items' in response_data and response_data['items'] and 'materials' in response_data['items']:
+                materials = response_data['items']['materials'] 
+                print(f"📊 Found materials in 'items.materials' structure")
+            else:
+                print(f"⚠️  No materials found in expected structures")
+                print(f"🔍 Full response structure: {json.dumps(response_data, indent=2)[:500]}...")
             
             # Transform the response to match our expected format
-            # The API returns 'data' containing 'materials', but our app expects 'items' containing 'materials'
             transformed_data = {
                 "items": {
-                    "materials": response_data.get('data', {}).get('materials', [])
+                    "materials": materials
                 },
                 "auto_suggest": response_data.get('auto_suggest', {}),
                 "meta": response_data.get('meta', {})
             }
             
-            materials_count = len(transformed_data["items"]["materials"])
+            materials_count = len(materials)
             print(f"Retrieved {materials_count} materials")
             
             return transformed_data
