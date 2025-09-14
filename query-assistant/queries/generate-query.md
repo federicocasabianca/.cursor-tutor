@@ -1,31 +1,19 @@
 # Generate Query
 
 ## User Prompt
-I want to summarize the performance for an A/B for different visualizations listView and gridView.
+I want to know the total number of materials that meet a specific criteria.
 
 ## Expected Query Output
-- Use `events` table
-- Use the starting period `date >= '2025-08-06'`
+- Use `author_profiles` and `materials`
 - Filter by world `world = 'de'`
-- This is an A/B test with the ab_test_key `CVC` and variants are `B: Cart group or C: Cart on Preview`
-- The field to identify the visualization_type are `extra in ('listView','gridView')`.
-- Calculate the total number of sessions
-- Calculate the total number of each visualizationType
-- Calculate the % for each visualization_type out of total number of sessions
-- Calculate the addToFavorites from search page.
-* `type = 'addToFavorites' and page_url like 'https://eduki.com/de/suchergebnisse%'`
-- Calculate the removeToFavorite from search page.
-* `type = 'removeFromFavorites' and page_url like 'https://eduki.com/de/suchergebnisse%'`
-- Calculate the addToCart from search page.
-* `type = 'addToCart' and page_url like 'https://eduki.com/de/suchergebnisse%'`
-- Calculate the time in minutes to conversion after adding to favorites.
-* The conversion event is `type = 'purchase'` and `time` of purchase should be higher than `type = 'addToFavorites'`
-- Calculate the time in minutes to conversion after adding to cart.
-* The conversion event is `type = 'purchase'` and `time` of purchase should be higher than `type = 'addToCart'`
-- Group by variant, visualization_type
-- Return: visualization_type, total_sessions, total_number_visualization_type, %_of_sessions, add2Favorites, removeFromFavorites, add2Cart, conversion_after_favorites, conversion_after_cart
+- Select the `user_id` from the `author_profiles` where segment in (`'dragon','bear','cub'`) 
+- Join the previous data with the `materials` table by `author_id`
+- Filter the elements by `materials` where `is_bundle = 0 AND interactive_id IS NULL AND (is_standalone_interactive = 0 OR is_standalone_interactive IS NULL) AND deleted_at IS NULL AND status NOT IN ('deleted', 'inactive')`
+- Use `custom_pages_total`, if available, otherwise `total_pages`
+- Filter the top 20 materials for each user_id ordered desc by bestseller_rating
+- Return: segment, total number of materials 
 
 ## Environment
-Target: BigQuery
-Project: `gtm-eduki-com`
-Dataset: `QE`
+Target: Clickhouse with Metabase
+Project: not applicable
+Dataset: not applicable

@@ -1,0 +1,60 @@
+{
+  "table": "author_profile",
+  "fields": [
+    {
+      "column_name": "id",
+      "data_type": "INT64",
+      "is_nullable": "NO"
+    },
+    {
+      "column_name": "user_id",
+      "data_type": "INT64",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "segment",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "segment_updated_at",
+      "data_type": "TIMESTAMP",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "royalty",
+      "data_type": "INT64",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "in_blocklist",
+      "data_type": "BOOL",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "in_watchlist",
+      "data_type": "BOOL",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "review_status",
+      "data_type": "STRING",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "manager_id",
+      "data_type": "INT64",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "created_at",
+      "data_type": "TIMESTAMP",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "updated_at",
+      "data_type": "TIMESTAMP",
+      "is_nullable": "YES"
+    }
+  ]
+}
