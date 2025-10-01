@@ -1,111 +1,172 @@
-"""
-Generate training datasets for Material-Type intent
---------------------------------------------------
-This script scans every seasonal ZIP archive and writes **five** CSV files:
-  1. material_only.csv                  – queries w/ Material-Type only
-  2. material_plus_category.csv          – Material-Type + Category (no Grade)
-  3. material_plus_grade.csv             – Material-Type + Grade (no Category)
-  4. material_plus_category_grade.csv    – Material-Type + Category + Grade
-  5. material_other_combos.csv           – Material-Type plus any other mix
-Each output row:  query,frequency,intents_json
-Dependencies: pandas, zipfile, pathlib, regex (pip install regex)
-Place script in /mnt/data and run:  python generate_material_type_datasets.py
-"""
-from pathlib import Path
-import zipfile, json, csv
-import regex as re
+import zipfile
+import json
 import pandas as pd
+import re
+from pathlib import Path
 
-# --------------------------------- helper: load taxonomy tables
-RESOURCE_DIR = Path('./taxonomy')
-TAXO_FILES = {
-    'category':  'taxonomy_categories.csv',
-    'grade':     'taxonomy_grade_levels.csv',
-    'material':  'taxonomy_material_type.csv',
-    'schooltypes': 'taxonomy_school_types.csv'
-}
+# ---------- CONFIG ----------
+taxonomy_dir = Path("/Users/federico.casabianca/.cursor-tutor/material_type_dataset/taxonomy")
+zip_files = list(taxonomy_dir.glob("*.zip"))  # All ZIP files
+cat_path = Path("/Users/federico.casabianca/.cursor-tutor/material_type_dataset/taxonomy/taxonomy_categories.csv")
+freq_threshold = 100  # only include queries with frequency > X
+# ----------------------------
 
-def load_taxonomy(kind):
-    df = pd.read_csv(RESOURCE_DIR / TAXO_FILES[kind])
-    return {str(x).lower(): row['node_id'] for x, row in df.set_index('node_name').iterrows()}
+# Load taxonomy
+categories = pd.read_csv(cat_path)
 
-category_lu  = load_taxonomy('category')
-grade_lu     = load_taxonomy('grade')
-material_lu  = load_taxonomy('material')
+def normalize(text):
+    if pd.isna(text):
+        return ""
+    return str(text).lower().strip()
 
-# quick tokeniser
-TOK_RE = re.compile(r"[\p{L}\p{N}]+", re.UNICODE)
+category_tokens = set(categories['title'].map(normalize).dropna().tolist())
 
-def tokens(text):
-    return [t.lower() for t in TOK_RE.findall(text)]
+# Comprehensive Grade Level Patterns (High + Medium Priority)
+# Based on analysis of all ZIP files with frequency > 1,000
+grade_level_patterns = [
+    # High Priority - Single grades (klasse 1-12)
+    'klasse 1', 'klasse 2', 'klasse 3', 'klasse 4', 'klasse 5', 
+    'klasse 6', 'klasse 7', 'klasse 8', 'klasse 9', 'klasse 10',
+    'klasse 11', 'klasse 12',
+    
+    # High Priority - Special levels
+    'vorschule', 'kita',
+    
+    # Medium Priority - Abbreviations with dot and space (kl. X)
+    'kl. 1', 'kl. 2', 'kl. 3', 'kl. 4', 'kl. 5', 'kl. 6', 
+    'kl. 7', 'kl. 8', 'kl. 9', 'kl. 10', 'kl. 11', 'kl. 12',
+    
+    # Medium Priority - Abbreviations with space (kl X)
+    'kl 1', 'kl 2', 'kl 3', 'kl 4', 'kl 5', 'kl 6', 
+    'kl 7', 'kl 8', 'kl 9', 'kl 10', 'kl 11', 'kl 12',
+    
+    # Medium Priority - Abbreviations with dot no space (kl.X)
+    'kl.1', 'kl.2', 'kl.3', 'kl.4', 'kl.5', 'kl.6', 
+    'kl.7', 'kl.8', 'kl.9', 'kl.10', 'kl.11', 'kl.12',
+    
+    # Medium Priority - No spaces (klasseX)
+    'klasse1', 'klasse2', 'klasse3', 'klasse4', 'klasse5',
+    'klasse6', 'klasse7', 'klasse8', 'klasse9',
+    
+    # Medium Priority - Common ranges
+    'klasse 1-2', 'klasse 1-3', 'klasse 1-4', 'klasse 1-6',
+    'klasse 2-3', 'klasse 2-4', 'klasse 3-4', 'klasse 3-6',
+    'klasse 4-5', 'klasse 5-6', 'klasse 5-7', 'klasse 7-10',
+    'klasse 1 - 4',  # with spaces around dash
+    
+    # Medium Priority - Extra spaces
+    'klasse  1', 'klasse  2', 'klasse  4',
+    
+    # Medium Priority - Abbreviations no space (klX)
+    'kl1', 'kl2', 'kl3', 'kl4', 'kl5', 'kl6', 'kl7', 'kl8', 'kl9'
+]
 
-# --------------------------------- gather queries
-ZIP_FILES = sorted(RESOURCE_DIR.glob('*Query*.zip'))
+# Convert to set for faster lookup
+grade_level_set = set(grade_level_patterns)
 
-def extract_queries():
-    for zf in ZIP_FILES:
-        with zipfile.ZipFile(zf) as z:
-            for name in z.namelist():
-                if name.endswith('.csv'):
-                    df = pd.read_csv(z.open(name))
-                    for _, row in df.iterrows():
-                        yield row['query'], int(row.get('frequency', 1))
+print("="*80)
+print("CONFIGURATION")
+print("="*80)
+print(f"Grade level patterns loaded: {len(grade_level_set)}")
+print(f"Category tokens loaded: {len(category_tokens)}")
+print(f"Frequency threshold: {freq_threshold}")
+print("="*80 + "\n")
 
-# --------------------------------- classify intents per query
+# Initialize counters
+query_counts = {"No-intent": 0, "Category intent": 0, "Grade level intent": 0, "Combination": 0}
+query_examples = {"No-intent": {}, "Category intent": {}, "Grade level intent": {}, "Combination": {}}
+total = 0
 
-def classify(q):
-    tk = tokens(q)
-    intents = set()
-    # material
-    if any(t in material_lu for t in tk):
-        intents.add('material')
-    # category (subject/season/language/skill/curriculum)
-    if any(t in category_lu for t in tk):
-        intents.add('category')
-    # grade level (simple pattern 0-13 or Klasse/Kl.)
-    for t in tk:
-        if t in grade_lu or re.match(r'^[1-9][0-3]?\.?\s*(klasse|kl)$', t):
-            intents.add('grade')
-            break
-    return intents
+# Function to classify
+def classify_query(query: str, freq: int):
+    global total
+    q = normalize(query)
+    tokens = set(q.split())
+    
+    # Check for category intent (token-based)
+    has_cat = any(t in category_tokens for t in tokens)
+    
+    # Check for grade level intent (substring-based for better pattern matching)
+    # This catches patterns like "klasse 1-2" that don't work with token matching
+    has_grade = any(pattern in q for pattern in grade_level_set)
 
-# --------------------------------- output csv writers
-FILES = {
-    'material_only':                   None,
-    'material_plus_category':          None,
-    'material_plus_grade':             None,
-    'material_plus_category_grade':    None,
-    'material_other_combos':           None,
-}
+    category = None
+    if not has_cat and not has_grade:
+        category = "No-intent"
+    elif has_cat and not has_grade:
+        category = "Category intent"
+    elif has_grade and not has_cat:
+        category = "Grade level intent"
+    elif has_cat and has_grade:
+        category = "Combination"
+    
+    if category:
+        query_counts[category] += freq
+        query_examples[category][query] = query_examples[category].get(query, 0) + freq
+    total += freq
 
-writers = {}
-for tag in FILES:
-    fh = open(RESOURCE_DIR / f'{tag}.csv', 'w', newline='', encoding='utf-8')
-    writers[tag] = csv.writer(fh)
-    writers[tag].writerow(['query', 'frequency', 'intents'])
-    FILES[tag] = fh
+# Stream parse JSON inside all ZIP files
+print(f"Processing {len(zip_files)} ZIP files...")
+for zip_path in zip_files:
+    print(f"  - {zip_path.name}")
+    with zipfile.ZipFile(zip_path, 'r') as z:
+        for file in z.namelist():
+            if not file.endswith(".json"):
+                continue
+            with z.open(file) as f:
+                for line in f:
+                    try:
+                        line = line.decode("utf-8", errors='ignore').strip().rstrip(",")
+                    except:
+                        continue
+                    if not line or not line.startswith("{"):
+                        continue
+                    try:
+                        obj = json.loads(line)
+                        query = obj.get("query", "")
+                        freq = int(obj.get("frequency", 0))
+                        if freq > freq_threshold:
+                            classify_query(query, freq)
+                    except:
+                        continue
 
-# --------------------------------- main loop
-for q, freq in extract_queries():
-    intents = classify(q)
-    if 'material' not in intents:
-        continue  # skip – no material-type token
-    intents_json = json.dumps(sorted(intents))
-    key = None
-    if intents == {'material'}:
-        key = 'material_only'
-    elif intents == {'material', 'category'}:
-        key = 'material_plus_category'
-    elif intents == {'material', 'grade'}:
-        key = 'material_plus_grade'
-    elif intents == {'material', 'category', 'grade'}:
-        key = 'material_plus_category_grade'
-    else:
-        key = 'material_other_combos'
-    writers[key].writerow([q, freq, intents_json])
+print(f"\nTotal queries analyzed: {total:,}\n")
 
-# close files
-for fh in FILES.values():
-    fh.close()
+# Compute percentages
+percentages = {k: round(v / total * 100, 2) for k, v in query_counts.items() if total > 0}
 
-print("Done – files written to /mnt/data")
+# Get top 10 queries for each category
+def get_top_queries(category: str, n: int = 10):
+    queries = query_examples[category]
+    sorted_queries = sorted(queries.items(), key=lambda x: x[1], reverse=True)[:n]
+    return [q[0] for q in sorted_queries]
+
+# Convert to DataFrame for nicer output
+results = pd.DataFrame([
+    {
+        "Query Type": k, 
+        "Percentage": percentages.get(k, 0), 
+        "Total Frequency": query_counts[k],
+        "Examples": get_top_queries(k)
+    }
+    for k in query_counts
+])
+
+# Display settings for better output
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_colwidth', None)
+pd.set_option('display.width', None)
+
+print(results)
+print("\n" + "="*80 + "\n")
+print("TOP 10 QUERIES BY TYPE:")
+print("="*80 + "\n")
+
+for _, row in results.iterrows():
+    print(f"{row['Query Type']}:")
+    print(f"  Percentage: {row['Percentage']}%")
+    print(f"  Total Frequency: {row['Total Frequency']:,}")
+    print(f"  Examples:")
+    for i, query in enumerate(row['Examples'], 1):
+        print(f"    {i}. {query}")
+    print()
