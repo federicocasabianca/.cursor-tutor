@@ -21,7 +21,7 @@ WITH mp_events AS (
     e.ab_tests_key,
     e.ab_tests_value
   FROM `gtm-eduki-com.QE.events` e
-  WHERE e.date >= '2025-09-18'
+  WHERE e.date >= '2025-10-03'
     AND e.world IN ('de', 'es', 'it', 'gr')
     AND e.user_device IN ('desktop', 'mobile', 'tablet')
 ),
@@ -29,10 +29,16 @@ WITH mp_events AS (
 mp_sessions AS (
   SELECT DISTINCT session_id, user_id
   FROM mp_events mp
-  WHERE mp.page_url LIKE 'https://eduki.com/de/suchergebnisse%' OR mp.page_url like '%Search%'
-          AND mp.query != '' AND mp.query IS NOT NULL
-              AND mp.type = 'appearedInSearch'
-              AND mp.world IN ('de', 'es', 'it', 'gr')
+  WHERE (
+    (mp.world = 'de' AND mp.page_url LIKE 'https://eduki.com/de/suchergebnisse%')
+    OR (mp.world = 'es' AND mp.page_url LIKE 'https://eduki.com/es/resultados-busqueda%')
+    OR (mp.world = 'it' AND mp.page_url LIKE 'https://eduki.com/it/risultati-della-ricerca%')
+    OR (mp.world = 'gr' AND mp.page_url LIKE 'https://eduki.com/gr/search-results%')
+    OR mp.page_url LIKE '%Search%'
+  )
+    AND mp.query != '' AND mp.query IS NOT NULL
+    AND mp.type = 'appearedInSearch'
+    AND mp.world IN ('de', 'es', 'it', 'gr')
 ),
 
 ab_assign AS (
@@ -45,9 +51,9 @@ ab_assign AS (
   INNER JOIN mp_sessions s USING (session_id, user_id)
   CROSS JOIN UNNEST(e.ab_tests_key)  AS ab_key WITH OFFSET key_offset
   CROSS JOIN UNNEST(e.ab_tests_value) AS ab_value WITH OFFSET value_offset
-  WHERE e.date >= '2025-09-18'
+  WHERE e.date >= '2025-10-03'
     AND key_offset = value_offset
-    AND ab_key = 'DSR'
+    AND ab_key = 'DSR2'
     AND e.world IN ('de', 'es', 'it', 'gr')
   GROUP BY s.session_id, s.user_id
 ),
@@ -116,7 +122,6 @@ session_clicks AS (
             OR (e.world = 'it' AND e.page_url LIKE 'https://eduki.com/it/risultati-della-ricerca?query=%')
             OR (e.world = 'gr' AND e.page_url LIKE 'https://eduki.com/gr/search-results?query=%')
           )
-          AND e.internal_path = 'sp'
           AND e.source = 'search' THEN 1 END) AS total_clicks,
     COUNT(CASE WHEN e.type = 'click' 
           AND (
@@ -125,7 +130,6 @@ session_clicks AS (
             OR (e.world = 'it' AND e.page_url LIKE 'https://eduki.com/it/risultati-della-ricerca?query=%')
             OR (e.world = 'gr' AND e.page_url LIKE 'https://eduki.com/gr/search-results?query=%')
           )
-          AND e.internal_path = 'sp'
           AND e.source = 'search'
           AND e.position = 1 THEN 1 END) AS clicks_at_1,
     COUNT(CASE WHEN e.type = 'click' 
@@ -135,7 +139,6 @@ session_clicks AS (
             OR (e.world = 'it' AND e.page_url LIKE 'https://eduki.com/it/risultati-della-ricerca?query=%')
             OR (e.world = 'gr' AND e.page_url LIKE 'https://eduki.com/gr/search-results?query=%')
           )
-          AND e.internal_path = 'sp'
           AND e.source = 'search'
           AND e.position = 2 THEN 1 END) AS clicks_at_2,
     COUNT(CASE WHEN e.type = 'click' 
@@ -145,7 +148,6 @@ session_clicks AS (
             OR (e.world = 'it' AND e.page_url LIKE 'https://eduki.com/it/risultati-della-ricerca?query=%')
             OR (e.world = 'gr' AND e.page_url LIKE 'https://eduki.com/gr/search-results?query=%')
           )
-          AND e.internal_path = 'sp'
           AND e.source = 'search'
           AND e.position = 3 THEN 1 END) AS clicks_at_3,
     COUNT(CASE WHEN e.type = 'click' 
@@ -155,7 +157,6 @@ session_clicks AS (
             OR (e.world = 'it' AND e.page_url LIKE 'https://eduki.com/it/risultati-della-ricerca?query=%')
             OR (e.world = 'gr' AND e.page_url LIKE 'https://eduki.com/gr/search-results?query=%')
           )
-          AND e.internal_path = 'sp'
           AND e.source = 'search'
           AND e.position = 4 THEN 1 END) AS clicks_at_4,
     COUNT(CASE WHEN e.type = 'click' 
@@ -165,7 +166,6 @@ session_clicks AS (
             OR (e.world = 'it' AND e.page_url LIKE 'https://eduki.com/it/risultati-della-ricerca?query=%')
             OR (e.world = 'gr' AND e.page_url LIKE 'https://eduki.com/gr/search-results?query=%')
           )
-          AND e.internal_path = 'sp'
           AND e.source = 'search'
           AND e.position = 5 THEN 1 END) AS clicks_at_5,
     COUNT(CASE WHEN e.type = 'click' 
@@ -175,7 +175,6 @@ session_clicks AS (
             OR (e.world = 'it' AND e.page_url LIKE 'https://eduki.com/it/risultati-della-ricerca?query=%')
             OR (e.world = 'gr' AND e.page_url LIKE 'https://eduki.com/gr/search-results?query=%')
           )
-          AND e.internal_path = 'sp'
           AND e.source = 'search'
           AND e.position BETWEEN 6 AND 12 THEN 1 END) AS clicks_at_6_12,
     COUNT(CASE WHEN e.type = 'appearedInSearch' THEN 1 END) AS total_searches
@@ -183,7 +182,7 @@ session_clicks AS (
   LEFT JOIN mp_events e
     ON s.session_id = e.session_id
     AND s.world = e.world
-  WHERE e.date >= '2025-09-18'
+  WHERE e.d_local >= '2025-10-03'
   GROUP BY s.session_id, s.world, s.variant
 ),
 
@@ -195,7 +194,7 @@ purchase_map AS (
     CAST(e.purchase_id AS STRING) AS order_number
   FROM `gtm-eduki-com.QE.events` e
   INNER JOIN suggestion_only_sessions s USING (session_id, user_id)
-  WHERE e.date >= '2025-09-18'
+  WHERE e.date >= '2025-10-03'
     AND e.purchase_id IS NOT NULL
 ),
 
