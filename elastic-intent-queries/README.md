@@ -48,12 +48,12 @@ python run_query.py "klasse 5 mathematik"
 - **Parameters**:
   - `limit=36`
   - `p=0` 
-  - `q=<search_query>`
+  - `q=<search_query>` (URL encoded)
   - `world=de`
 - **Payload**:
   - `page_content=value`
   - `test_segment=30`
-  - `auto_suggest=0`
+  - `auto_suggest=1`
   - `intent=1`
 
 ## File Naming Convention
@@ -72,5 +72,6 @@ Examples:
 ## Response Format
 
 The API returns JSON responses containing:
+- `query` - The original search query used
 - `data.materials[]` - Array of search results
 - Each material includes: title, description, author, cover image, etc.

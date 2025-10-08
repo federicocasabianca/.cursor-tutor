@@ -14,7 +14,7 @@ from pathlib import Path
 class EdukiSearchAPI:
     def __init__(self, bearer_token_file="bearer_token.txt"):
         """Initialize the API client with bearer token."""
-        self.base_url = "https://api.eduki.com/api/v3/search/materials"
+        self.base_url = "https://metrics.api.eduki.info/api/v3/search/materials"
         self.bearer_token = self._load_bearer_token(bearer_token_file)
         self.headers = {
             "Authorization": f"Bearer {self.bearer_token}",
@@ -73,7 +73,7 @@ class EdukiSearchAPI:
             "page_content": "value",
             "test_segment": 30,
             "auto_suggest": 1,
-            "intent": 0
+            "intent": 1
         }
         
         try:
@@ -98,7 +98,7 @@ class EdukiSearchAPI:
             # Save response if requested
             if save_response:
                 filename = self._create_filename(query)
-                self._save_response(response_data, filename)
+                self._save_response(response_data, filename, decoded_query)
                 print(f"💾 Response saved to: {filename}")
             
             return response_data
@@ -110,9 +110,13 @@ class EdukiSearchAPI:
                 print(f"Response: {e.response.text}")
             return None
     
-    def _save_response(self, data, filename):
-        """Save response data to JSON file."""
+    def _save_response(self, data, filename, query=None):
+        """Save response data to JSON file with query parameter."""
         try:
+            # Add query parameter to the data if provided
+            if query:
+                data['query'] = query
+            
             with open(filename, 'w', encoding='utf-8') as f:
                 json.dump(data, f, indent=2, ensure_ascii=False)
         except Exception as e:
@@ -133,7 +137,7 @@ def main():
     
     # Test queries
     test_queries = [
-        "buchstabeneinführung"
+        "deutsch 1 klasse"
     ]
     
     print(f"\n📝 Testing {len(test_queries)} queries:")

@@ -177,15 +177,32 @@ def load_materials_data(query_path=None):
         print(f"Error loading {query_path}: {e}")
         return None
 
-def analyze_query_title_match(query, title):
+def normalize_german_chars(text):
+    """Normalize German umlauts and special characters to ASCII equivalents"""
+    if not text:
+        return text
+    # Replace German umlauts and special characters
+    replacements = {
+        'ä': 'a', 'ö': 'o', 'ü': 'u', 'ß': 'ss',
+        'Ä': 'a', 'Ö': 'o', 'Ü': 'u'
+    }
+    for umlaut, replacement in replacements.items():
+        text = text.replace(umlaut, replacement)
+    return text
+
+def analyze_query_title_match(query, title, intent_type=None):
     """Analyze how well the query matches the material title based on token presence (order independent)"""
     if not query or not title or query == 'No query found':
         return {'type': 'no_match', 'score': 0, 'matched_tokens': []}
     
     # Clean and tokenize query and title
     import re
-    query_clean = re.sub(r'[^\w\s]', ' ', query.lower()).strip()
-    title_clean = re.sub(r'[^\w\s]', ' ', title.lower()).strip()
+    # Normalize German characters before cleaning
+    query_normalized = normalize_german_chars(query.lower())
+    title_normalized = normalize_german_chars(title.lower())
+    
+    query_clean = re.sub(r'[^\w\s]', ' ', query_normalized).strip()
+    title_clean = re.sub(r'[^\w\s]', ' ', title_normalized).strip()
     
     if not query_clean or not title_clean:
         return {'type': 'no_match', 'score': 0, 'matched_tokens': []}
@@ -211,6 +228,11 @@ def analyze_query_title_match(query, title):
                  (query_token == 'schulstufe' and 'klasse' in title_token):
                 token_found = True
                 break
+            # Handle related biology terms
+            elif (query_token == 'okologie' and 'biologie' in title_token) or \
+                 (query_token == 'biologie' and 'okologie' in title_token):
+                token_found = True
+                break
         
         if token_found:
             matched_tokens.append(query_token)
@@ -221,8 +243,18 @@ def analyze_query_title_match(query, title):
     
     match_percentage = (len(matched_tokens) / len(query_tokens)) * 100
     
+    # For category-intent queries, if the main category token matches, consider it a strong match
+    if intent_type and intent_type.get('has_category', False):
+        # Check if we have category-relevant tokens matched
+        category_tokens = [token for token in matched_tokens if len(token) > 2]  # Filter out short tokens like "7"
+        if category_tokens:
+            # If we matched category-relevant tokens, boost the score
+            match_percentage = max(match_percentage, 80)  # Minimum 80% for category token matches
+    
     # Determine match type based on percentage
     if match_percentage == 100:
+        return {'type': 'full_match', 'score': match_percentage, 'matched_tokens': matched_tokens}
+    elif match_percentage >= 80:
         return {'type': 'full_match', 'score': match_percentage, 'matched_tokens': matched_tokens}
     else:
         return {'type': 'partial_match', 'score': match_percentage, 'matched_tokens': matched_tokens}
@@ -234,7 +266,9 @@ def analyze_query_grade_match(query, material_grades, grade_taxonomy):
     
     # Clean and tokenize query
     import re
-    query_clean = re.sub(r'[^\w\s]', ' ', query.lower()).strip()
+    # Normalize German characters before cleaning
+    query_normalized = normalize_german_chars(query.lower())
+    query_clean = re.sub(r'[^\w\s]', ' ', query_normalized).strip()
     query_tokens = [token for token in query_clean.split() if len(token) > 0]
     
     if not query_tokens:
@@ -290,37 +324,41 @@ def analyze_query_grade_match(query, material_grades, grade_taxonomy):
         grade_title = grade_data['title']
         grade_short = grade_data['short_title']
         
+        # Normalize grade titles for matching
+        grade_title_normalized = normalize_german_chars(grade_title)
+        grade_short_normalized = normalize_german_chars(grade_short)
+        
         for pattern in grade_patterns:
             # Direct match with short title (e.g., "8" matches "8")
-            if pattern == grade_short:
+            if pattern == grade_short_normalized:
                 match_score += 100
             # Match within title (e.g., "8" matches "8. Klasse")
-            elif pattern in grade_title:
+            elif pattern in grade_title_normalized:
                 match_score += 90
             # Match for compound titles
-            elif grade_short in pattern:
+            elif grade_short_normalized in pattern:
                 match_score += 80
         
         # Also check for direct word matches in query
         for token in query_tokens:
             # Exact title match
-            if grade_title == token:
+            if grade_title_normalized == token:
                 match_score += 100
             # Token appears in grade title
-            elif token in grade_title and len(token) > 2:
+            elif token in grade_title_normalized and len(token) > 2:
                 match_score += 70
             # Special patterns for German school system
-            elif 'ef' in token and 'ef' in grade_title:
+            elif 'ef' in token and 'ef' in grade_title_normalized:
                 match_score += 95
-            elif 'q1' in token and 'q1' in grade_title:
+            elif 'q1' in token and 'q1' in grade_title_normalized:
                 match_score += 95
-            elif 'q2' in token and 'q2' in grade_title:
+            elif 'q2' in token and 'q2' in grade_title_normalized:
                 match_score += 95
-            elif 'vorschule' in token and 'vorschule' in grade_title:
+            elif 'vorschule' in token and 'vorschule' in grade_title_normalized:
                 match_score += 95
-            elif 'erwachsenen' in token and 'erwachsenen' in grade_title:
+            elif 'erwachsenen' in token and 'erwachsenen' in grade_title_normalized:
                 match_score += 90
-            elif 'lehrer' in token and 'lehrer' in grade_title:
+            elif 'lehrer' in token and 'lehrer' in grade_title_normalized:
                 match_score += 90
         
         # If we found a good match, add it to query grades
@@ -359,19 +397,22 @@ def analyze_query_grade_match(query, material_grades, grade_taxonomy):
         if grade_title:
             material_grade_titles.append(grade_title)
             
+            # Normalize material grade title for matching
+            grade_title_normalized = normalize_german_chars(grade_title)
+            
             # Check if this material grade matches any of the query grades
             for query_grade in query_grades:
-                query_grade_title = query_grade['title']
-                query_grade_short = query_grade['short_title']
-                query_grade_full = query_grade['full_title']
+                query_grade_title = normalize_german_chars(query_grade['title'])
+                query_grade_short = normalize_german_chars(query_grade['short_title'])
+                query_grade_full = normalize_german_chars(query_grade['full_title'].lower())
                 
                 # More flexible matching for grades
                 grade_matches = (
-                    query_grade_title == grade_title or
-                    query_grade_short == grade_title or
-                    query_grade_full.lower() == grade_title or
-                    (len(query_grade_short) > 0 and query_grade_short in grade_title) or
-                    (len(grade_title) > 2 and grade_title in query_grade_title)
+                    query_grade_title == grade_title_normalized or
+                    query_grade_short == grade_title_normalized or
+                    query_grade_full == grade_title_normalized or
+                    (len(query_grade_short) > 0 and query_grade_short in grade_title_normalized) or
+                    (len(grade_title_normalized) > 2 and grade_title_normalized in query_grade_title)
                 )
                 
                 if grade_matches:
@@ -418,7 +459,9 @@ def analyze_query_category_match(query, material_categories, taxonomy):
     
     # Clean and tokenize query
     import re
-    query_clean = re.sub(r'[^\w\s]', ' ', query.lower()).strip()
+    # Normalize German characters before cleaning
+    query_normalized = normalize_german_chars(query.lower())
+    query_clean = re.sub(r'[^\w\s]', ' ', query_normalized).strip()
     query_tokens = [token for token in query_clean.split() if len(token) > 2]  # Filter short words for categories
     
     if not query_tokens:
@@ -429,10 +472,14 @@ def analyze_query_category_match(query, material_categories, taxonomy):
     
     for token in query_tokens:
         for cat_id, cat_data in taxonomy.items():
+            # Normalize taxonomy data for matching
+            cat_title_normalized = normalize_german_chars(cat_data['title'])
+            cat_path_normalized = normalize_german_chars(cat_data['path'].lower()) if cat_data['path'] else ''
+            
             # Check if this token matches any part of the taxonomy
-            if (cat_data['title'] == token or 
-                token in cat_data['title'] or 
-                (cat_data['path'] and token in cat_data['path'].lower())):
+            if (cat_title_normalized == token or 
+                token in cat_title_normalized or 
+                (cat_path_normalized and token in cat_path_normalized)):
                 category_tokens_found.append({
                     'token': token,
                     'category_data': cat_data
@@ -455,6 +502,9 @@ def analyze_query_category_match(query, material_categories, taxonomy):
             # Check if this material category contains any of our query category tokens
             category_matched = False
             
+            # Normalize category title for matching
+            cat_title_normalized = normalize_german_chars(cat_title)
+            
             for category_token_info in category_tokens_found:
                 token = category_token_info['token']
                 cat_data = category_token_info['category_data']
@@ -462,13 +512,13 @@ def analyze_query_category_match(query, material_categories, taxonomy):
                 # Check multiple matching strategies
                 token_matches = (
                     # Direct token match in category title
-                    token in cat_title or
+                    token in cat_title_normalized or
                     # Token matches category hierarchy parts
-                    any(token in part.strip().lower() for part in cat_title.split(' → ')) or
+                    any(token in normalize_german_chars(part.strip().lower()) for part in cat_title.split(' → ')) or
                     # Fuzzy matching for German words
-                    any(token.startswith(part.strip().lower()[:4]) and len(part.strip()) > 3 
+                    any(token.startswith(normalize_german_chars(part.strip().lower())[:4]) and len(part.strip()) > 3 
                         for part in cat_title.split(' → ')) or
-                    any(part.strip().lower().startswith(token[:4]) and len(token) > 3 
+                    any(normalize_german_chars(part.strip().lower()).startswith(token[:4]) and len(token) > 3 
                         for part in cat_title.split(' → '))
                 )
                 
@@ -542,7 +592,7 @@ def calculate_metrics(materials, top_k=18, original_query='', intent_type=None):
     
     for material in top_k_materials:
         title = material.get('title', '')
-        match_result = analyze_query_title_match(original_query, title)
+        match_result = analyze_query_title_match(original_query, title, intent_type)
         title_matches.append(match_result)
         title_match_summary[match_result['type']] += 1
     
@@ -711,7 +761,7 @@ def prepare_table_data(materials, top_k=18, original_query='', intent_type=None)
         
         # Always analyze title matching
         title = material.get('title', '')
-        title_match_result = analyze_query_title_match(original_query, title)
+        title_match_result = analyze_query_title_match(original_query, title, intent_type)
         
         # Analyze category matching only if the intent type has category
         category_match_result = None
