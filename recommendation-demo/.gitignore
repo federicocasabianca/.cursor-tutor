@@ -1,2 +1,7 @@
+# macOS system files
+.DS_Store
+.DS_Store?
+*/.DS_Store
+
 # Project specific
 recommendation-demo/real_prototype/data/materials.json
