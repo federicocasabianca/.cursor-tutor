@@ -60,16 +60,20 @@ class EdukiSearchAPI:
         decoded_query = self._decode_query(query)
         print(f"Making request for query: '{decoded_query}'")
         
-        # Prepare URL parameters
+        # Prepare URL parameters with manual space encoding
         params = {
             "access_check": 1,
             "limit": 36,
             "p": 0,
-            "q": decoded_query,  # Use decoded query for the actual request
+            "q": decoded_query.replace(' ', '%20'),  # Use %20 instead of + for spaces
             "world": "de",
             "intent": 1,
-            "includeMetrics": 1
+            "metrics": 1
         }
+        
+        # Debug: Print the actual URL being constructed
+        print(f"Debug - Query parameter: '{decoded_query}'")
+        print(f"Debug - URL will be: {self.base_url}?q={decoded_query.replace(' ', '%20')}&...")
         
         # Prepare payload
         payload = {
@@ -78,7 +82,7 @@ class EdukiSearchAPI:
         }
         
         try:
-            # Make POST request
+            # Make POST request with proper URL encoding
             response = requests.post(
                 self.base_url,
                 params=params,
@@ -147,14 +151,14 @@ def main():
     test_queries = [
         "vorschule",
         "klasse 1",
-        "1. Klasse"
+        "1. Klasse",
         "erwachsenenbildung",
         "klasse 2",
         "2. klasse",
         "klasse 4",
         "4. klasse",
         "klasse 3",
-        "3. klasse",
+        "3.klasse",
         "klasse 5"
     ]
     
