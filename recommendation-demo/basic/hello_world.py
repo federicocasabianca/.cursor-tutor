@@ -1,1 +1,0 @@
-print("Hello, Cursor AI!")

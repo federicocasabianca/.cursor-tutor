@@ -1,0 +1,102 @@
+---
+alwaysApply: false
+trigger: "Create Epic"
+---
+
+# Create JIRA Epic Rule
+
+When the user requests to "Create Epic" or mentions creating an Epic from a PRD, follow this structured process:
+
+## Required Information
+
+1. **Project Key**: Ask for or use the JIRA project key (e.g., "SRCH")
+2. **PRD File**: Locate the PRD file in the `@initiatives` folder structure
+3. **Issue Type**: Use "Epic" as the issue type
+
+## Epic Structure
+
+### Summary
+- Extract from PRD title or create a concise summary of the epic
+- Format: Should be clear and descriptive
+
+### Description
+Structure the description using JIRA markup (h2, h3, *, ||, ----) with the following sections:
+
+1. **Context**
+   - Extract from PRD section 1 (Context)
+   - Include benchmarked approaches if mentioned
+   - Include the goal and strategic approach
+
+2. **User Problem**
+   - Extract from PRD section 2 (User Problem)
+   - List the problems/impacts
+
+3. **Hypothesis**
+   - Extract from PRD section 3 (Hypothesis)
+   - Format as a table using JIRA table syntax (||)
+
+4. **Solution: A/B Test** (or appropriate solution type)
+   - Extract from PRD section 4 (Solution)
+   - Include all variants (e.g., Variant A - Push Flow, Variant B - Pull Flow)
+   - Use h3 for variant headings
+
+5. **Metrics of Success**
+   - Extract from PRD section 5 (Metrics of Success)
+   - Format as a table with columns: Metric, Type, Baseline, Target
+
+6. **Scope**
+   - Extract from PRD section 6 (Scope)
+   - Include "In Scope" (h3) and "Out of Scope" (h3) subsections
+
+7. **Questions This Test Will Answer**
+   - Extract from PRD section 7 (Questions)
+   - Format as a bulleted list
+
+### Acceptance Criteria
+Extract and structure from the PRD, organized by:
+- Variant/Flow requirements (if applicable)
+- Technical requirements
+- Functional requirements
+
+Format using h3 headings for major sections and bullet points for individual criteria.
+
+### Definition of Done
+Create a comprehensive list including:
+- Implementation completion
+- Testing requirements
+- Code review
+- Documentation
+- Analytics/tracking
+- QA sign-off
+- Stakeholder approval
+- Feature flagging/rollout readiness
+
+## JIRA Markup Formatting
+
+Use JIRA's wiki markup:
+- Headings: `h2.`, `h3.`
+- Bold: `*text*`
+- Bullets: `*` or `**` for nested
+- Tables: `||` for headers, `|` for cells
+- Horizontal rule: `----`
+- Line breaks: Empty line
+
+## Process Steps
+
+1. Read the PRD file from the `@initiatives` folder
+2. Extract all relevant sections
+3. Format content using JIRA markup
+4. Create the Epic using `mcp_Jira_create_ticket` with:
+   - `summary`: Epic summary
+   - `description`: Full formatted description
+   - `projectKey`: Provided by user (default to "SRCH" if not specified)
+   - `issueType`: "Epic"
+5. Include Acceptance Criteria and Definition of Done in the description section
+6. Confirm creation with the user, providing the ticket number
+
+## Notes
+
+- If project key is not provided, ask the user before creating
+- Ensure all PRD content is preserved in the Epic
+- Use consistent formatting throughout
+- Acceptance Criteria and Definition of Done should be clearly separated in the description using h2 headings
