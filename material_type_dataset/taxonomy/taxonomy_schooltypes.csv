@@ -1,0 +1,10 @@
+id,title,position,tooltip,world,is_interdisciplinary
+1,Kita / Vorschule,1,,de,true
+2,Grundschule,26,,de,false
+3,Sek I Mittlere Schulform,29,,de,false
+4,Sek I Gymnasium,32,,de,false
+5,Sek II,35,,de,false
+6,Berufsschule,38,,de,false
+7,Förderunterricht,41,,de,false
+8,Erwachsenenbildung,44,,de,true
+9,"Material ist unabhängig von Schultyp & Klassenstufen, z.B. Agenda für Elternabend",46,,de,true

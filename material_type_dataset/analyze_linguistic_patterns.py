@@ -298,24 +298,7 @@ print(f"  Frequency: {multi_word_freq:,} ({multi_word_percentage:.1f}%)")
 
 # Save detailed results
 results = {
-    'summary': {
-        'total_queries': len(linguistic_data),
-        'total_frequency': total_frequency,
-        'avg_word_count': avg_word_count,
-        'avg_char_count': avg_char_count,
-        'avg_complexity': avg_complexity,
-        'avg_natural_language': avg_natural_language,
-        'single_word_percentage': single_word_percentage,
-        'multi_word_percentage': multi_word_percentage
-    },
-    'intent_distribution': dict(intent_stats),
-    'complexity_distribution': dict(complexity_distribution),
-    'natural_language_distribution': dict(natural_language_distribution),
-    'word_count_distribution': dict(word_count_dist),
-    'top_complex_queries': complex_queries[:20],
-    'top_natural_queries': natural_queries[:20],
-    'single_word_examples': sorted(single_word_queries, key=lambda x: x['frequency'], reverse=True)[:50],
-    'detailed_analysis': linguistic_data
+    'top_complex_queries': complex_queries[:20]
 }
 
 with open(output_file, 'w', encoding='utf-8') as f:
@@ -324,29 +307,3 @@ with open(output_file, 'w', encoding='utf-8') as f:
 print(f"\n" + "="*80)
 print(f"✓ Detailed linguistic analysis saved to: {output_file}")
 print("="*80)
-
-# Create CSV for easier analysis
-csv_data = []
-for d in linguistic_data:
-    csv_data.append({
-        'query': d['query'],
-        'frequency': d['frequency'],
-        'intent': d['intent'],
-        'word_count': d['word_count'],
-        'char_count': d['char_count'],
-        'linguistic_complexity_score': d['linguistic_complexity_score'],
-        'natural_language_score': d['natural_language_score'],
-        'is_single_word': d['is_single_word'],
-        'has_conjunctions': d['has_conjunctions'],
-        'has_prepositions': d['has_prepositions'],
-        'has_articles': d['has_articles'],
-        'has_adjectives': d['has_adjectives'],
-        'has_descriptive_words': d['has_descriptive_words'],
-        'has_educational_terms': d['has_educational_terms'],
-        'has_qualifiers': d['has_qualifiers']
-    })
-
-csv_df = pd.DataFrame(csv_data)
-csv_path = output_file.with_suffix('.csv')
-csv_df.to_csv(csv_path, index=False, encoding='utf-8')
-print(f"✓ CSV analysis saved to: {csv_path}")

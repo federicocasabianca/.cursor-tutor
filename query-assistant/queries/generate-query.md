@@ -1,63 +1,59 @@
 # Generate Query
 
 ## User Prompt
-Pull the time where search queries where executed
+Obtain the folder usage as part of the wishlist.
 
 ## Expected Query Output
-- Filter by world `world = 'de'`
-- Event is `type:"pageView"` and `page_url = 'https://eduki.com/de/suchergebnisse?query%'` and `session_id is not null` 
-- Return: time and query.
+- Filter by world `world = 'de'` and `date >= CURRENT_DATE() - 3m`
+- App orders `user_device NOT IN ('desktop', 'tablet', 'mobile') and AND os in ('android', 'ios')`  
+- Add element to wishlist `type = 'addToFavorites'`
+- Create a new folder `type = 'createFolder'`
+- Update an existing folder `type = 'updateFolder'`
+- Remove an existing folder `type = 'removeFolder'`
+- Filter by `session_id is not null` and `user_id is not null`
+- Return: total sessions, total add to wishlist, total create new folder, % of create folders on total add to wishlist, total update new folder, % of update folders on total add to wishlist, total remove new folder, % of remove folders on total add to wishlist.
 
 ## Environment
 Target: BigQuery
 Project: `gtm-eduki-com`
 Dataset: `QE`
 
-## Generated Query
-
+## Query
 ```sql
-WITH search_events AS (
-  SELECT 
-    time,
-    query,
-    EXTRACT(HOUR FROM time) AS hour
+WITH filtered_events AS (
+  SELECT
+    session_id,
+    user_id,
+    type
   FROM `gtm-eduki-com.QE.events`
   WHERE world = 'de'
-    AND type = 'pageView'
-    AND page_url LIKE 'https://eduki.com/de/suchergebnisse?query%'
+    AND DATE(event_timestamp) >= DATE_SUB(CURRENT_DATE(), INTERVAL 3 MONTH)
+    AND user_device NOT IN ('desktop', 'tablet', 'mobile')
+    AND os IN ('android', 'ios')
     AND session_id IS NOT NULL
+    AND user_id IS NOT NULL
 ),
-
-time_periods AS (
-  SELECT 
-    CASE 
-      WHEN hour >= 6 AND hour < 8 THEN 'Early Morning (6-8)'
-      WHEN hour >= 8 AND hour < 12 THEN 'Morning (8-12)'
-      WHEN hour >= 12 AND hour < 14 THEN 'Midday (12-14)'
-      WHEN hour >= 14 AND hour < 16 THEN 'Afternoon (14-16)'
-      WHEN hour >= 16 AND hour < 20 THEN 'Evening (16-20)'
-      WHEN hour >= 20 AND hour < 24 THEN 'Night (20-24)'
-      ELSE 'Late Night (0-6)'
-    END AS time_period,
-    time,
-    query
-  FROM search_events
+session_totals AS (
+  SELECT COUNT(DISTINCT session_id) AS total_sessions
+  FROM filtered_events
+),
+event_totals AS (
+  SELECT
+    SUM(CASE WHEN type = 'addToFavorites' THEN 1 ELSE 0 END) AS total_add_to_wishlist,
+    SUM(CASE WHEN type = 'createFolder' THEN 1 ELSE 0 END) AS total_create_folder,
+    SUM(CASE WHEN type = 'updateFolder' THEN 1 ELSE 0 END) AS total_update_folder,
+    SUM(CASE WHEN type = 'removeFolder' THEN 1 ELSE 0 END) AS total_remove_folder
+  FROM filtered_events
 )
-
-SELECT 
-  time_period,
-  COUNT(*) AS search_count,
-  ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS percentage
-FROM time_periods
-GROUP BY time_period
-ORDER BY 
-  CASE time_period
-    WHEN 'Early Morning (6-8)' THEN 1
-    WHEN 'Morning (8-12)' THEN 2
-    WHEN 'Midday (12-14)' THEN 3
-    WHEN 'Afternoon (14-16)' THEN 4
-    WHEN 'Evening (16-20)' THEN 5
-    WHEN 'Night (20-24)' THEN 6
-    WHEN 'Late Night (0-6)' THEN 7
-  END
+SELECT
+  st.total_sessions,
+  et.total_add_to_wishlist,
+  et.total_create_folder,
+  SAFE_DIVIDE(et.total_create_folder, et.total_add_to_wishlist) AS pct_create_folder_of_adds,
+  et.total_update_folder,
+  SAFE_DIVIDE(et.total_update_folder, et.total_add_to_wishlist) AS pct_update_folder_of_adds,
+  et.total_remove_folder,
+  SAFE_DIVIDE(et.total_remove_folder, et.total_add_to_wishlist) AS pct_remove_folder_of_adds
+FROM session_totals st
+CROSS JOIN event_totals et;
 ```

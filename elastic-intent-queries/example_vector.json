@@ -1,0 +1,1155 @@
+{
+  "items": {
+    "materials": [
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Deutsch → Anfangsunterricht",
+            "title": "Anfangsunterricht",
+            "full_path": "Meta→Deutsch→Anfangsunterricht"
+          }
+        ],
+        "id": 1300402,
+        "material_class_grades": [
+          {
+            "title": "1. Klasse"
+          }
+        ],
+        "title": "Freiarbeit: Silbenkasten - Spielzeug (Kl. 1)",
+        "_score": 0.044949494
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Deutsch → Sprache untersuchen → Wortschatz",
+            "title": "Wortschatz",
+            "full_path": "Meta→Deutsch→Sprache untersuchen→Wortschatz"
+          },
+          {
+            "full_title": "Meta → DaZ/DaF → Zusatzangabe – GER Kompetenzniveau → A1",
+            "title": "A1",
+            "full_path": "Meta→DaZ/DaF→Zusatzangabe – GER Kompetenzniveau→A1"
+          },
+          {
+            "full_title": "Meta → Kita → Sprache & Kommunikation",
+            "title": "Sprache & Kommunikation",
+            "full_path": "Meta→Kita→Sprache & Kommunikation"
+          }
+        ],
+        "id": 3120,
+        "material_class_grades": [
+          {
+            "title": "1. Klasse"
+          },
+          {
+            "title": "2. Klasse"
+          }
+        ],
+        "title": "Spielzeug: DaZ Material - Vokabeln - Nomen - Bildkarten",
+        "_score": 0.044949494
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Deutsch → Sprechen & Zuhören → Erzählen & Beschreiben",
+            "title": "Erzählen & Beschreiben",
+            "full_path": "Meta→Deutsch→Sprechen & Zuhören→Erzählen & Beschreiben"
+          },
+          {
+            "full_title": "Meta → Deutsch → Sprache untersuchen → Wortschatz → Wortschatz nach Themen",
+            "title": "Wortschatz nach Themen",
+            "full_path": "Meta→Deutsch→Sprache untersuchen→Wortschatz→Wortschatz nach Themen"
+          }
+        ],
+        "id": 919252,
+        "material_class_grades": [
+          {
+            "title": "2. Klasse"
+          },
+          {
+            "title": "3. Klasse"
+          }
+        ],
+        "title": "Sag es nicht! Spielzeuge - Wörter erklären",
+        "_score": 0.04464286
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Digitale Bildung → Programmieren & Coden",
+            "title": "Programmieren & Coden",
+            "full_path": "Meta→Digitale Bildung→Programmieren & Coden"
+          }
+        ],
+        "id": 111817,
+        "material_class_grades": [
+          {
+            "title": "5. Klasse"
+          },
+          {
+            "title": "6. Klasse"
+          }
+        ],
+        "title": "Arbeitsblätter zum Thema \"Spielzeug\" + Lösung & MP3 +",
+        "_score": 0.043255813
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Deutsch → Sprechen & Zuhören → Hörverstehen",
+            "title": "Hörverstehen",
+            "full_path": "Meta→Deutsch→Sprechen & Zuhören→Hörverstehen"
+          },
+          {
+            "full_title": "Meta → DaZ/DaF → Sprechen & Zuhören → Hörverstehen",
+            "title": "Hörverstehen",
+            "full_path": "Meta→DaZ/DaF→Sprechen & Zuhören→Hörverstehen"
+          }
+        ],
+        "id": 115670,
+        "material_class_grades": [
+          {
+            "title": "5. Klasse"
+          },
+          {
+            "title": "6. Klasse"
+          }
+        ],
+        "title": "Arbeitsblätter \"Spielzeuge\" + Lösung & MP3 +",
+        "_score": 0.041339397
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management → Persönlichkeitsentwicklung",
+            "title": "Persönlichkeitsentwicklung",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management→Persönlichkeitsentwicklung"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Bewerten & Beurteilen → Feedback",
+            "title": "Feedback",
+            "full_path": "Meta→Fachübergreifendes→Bewerten & Beurteilen→Feedback"
+          }
+        ],
+        "id": 74803,
+        "material_class_grades": [
+          {
+            "title": "1. Klasse"
+          },
+          {
+            "title": "2. Klasse"
+          }
+        ],
+        "title": "Lobkärtchen für die Grundschule - kostenlos!",
+        "_score": 0.036001287
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Jahreszeiten & Feste → Sommer",
+            "title": "Sommer",
+            "full_path": "Meta→Fachübergreifendes→Jahreszeiten & Feste→Sommer"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Ferien",
+            "title": "Ferien",
+            "full_path": "Meta→Fachübergreifendes→Ferien"
+          }
+        ],
+        "id": 176461,
+        "material_class_grades": [
+          {
+            "title": "1. Klasse"
+          },
+          {
+            "title": "2. Klasse"
+          }
+        ],
+        "title": "kostenlos - Feriengrüße Eisbärenklasse",
+        "_score": 0.030330881
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Englisch → Wortschatz",
+            "title": "Wortschatz",
+            "full_path": "Meta→Englisch→Wortschatz"
+          }
+        ],
+        "id": 466408,
+        "material_class_grades": [
+          {
+            "title": "3. Klasse"
+          },
+          {
+            "title": "4. Klasse"
+          }
+        ],
+        "title": "Lernspiele - Toys",
+        "_score": 0.024390243
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Englisch → Wortschatz",
+            "title": "Wortschatz",
+            "full_path": "Meta→Englisch→Wortschatz"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Jahreszeiten & Feste → Weihnachten",
+            "title": "Weihnachten",
+            "full_path": "Meta→Fachübergreifendes→Jahreszeiten & Feste→Weihnachten"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Jahreszeiten & Feste → Geburtstag",
+            "title": "Geburtstag",
+            "full_path": "Meta→Fachübergreifendes→Jahreszeiten & Feste→Geburtstag"
+          }
+        ],
+        "id": 471298,
+        "material_class_grades": [
+          {
+            "title": "3. Klasse"
+          },
+          {
+            "title": "4. Klasse"
+          }
+        ],
+        "title": "Bildkarten - Toys",
+        "_score": 0.023809524
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Englisch → Vertretungsstunden",
+            "title": "Vertretungsstunden",
+            "full_path": "Meta→Englisch→Vertretungsstunden"
+          }
+        ],
+        "id": 741302,
+        "material_class_grades": [
+          {
+            "title": "3. Klasse"
+          },
+          {
+            "title": "4. Klasse"
+          }
+        ],
+        "title": "fairy tales domino Spiel Englisch kostenlos / freebie",
+        "_score": 0.023255814
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management → Schulstart/Kennenlernen",
+            "title": "Schulstart/Kennenlernen",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management→Schulstart/Kennenlernen"
+          }
+        ],
+        "id": 415918,
+        "material_class_grades": [
+          {
+            "title": "5. Klasse"
+          },
+          {
+            "title": "6. Klasse"
+          }
+        ],
+        "title": "FREEBIE! Kennenlernspiel / Spiel zur Bewegung: Meine Hobbys (Flunkerspiel)",
+        "_score": 0.02173913
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → DaZ/DaF → Wortschatz",
+            "title": "Wortschatz",
+            "full_path": "Meta→DaZ/DaF→Wortschatz"
+          },
+          {
+            "full_title": "Meta → DaZ/DaF → Zusatzangabe – GER Kompetenzniveau → A1",
+            "title": "A1",
+            "full_path": "Meta→DaZ/DaF→Zusatzangabe – GER Kompetenzniveau→A1"
+          },
+          {
+            "full_title": "Meta → Kita → Sprache & Kommunikation",
+            "title": "Sprache & Kommunikation",
+            "full_path": "Meta→Kita→Sprache & Kommunikation"
+          },
+          {
+            "full_title": "Meta → DaZ/DaF → Sprechen & Zuhören → Aussprache & Intonation",
+            "title": "Aussprache & Intonation",
+            "full_path": "Meta→DaZ/DaF→Sprechen & Zuhören→Aussprache & Intonation"
+          }
+        ],
+        "id": 390023,
+        "material_class_grades": [
+          {
+            "title": "1. Klasse"
+          },
+          {
+            "title": "2. Klasse"
+          }
+        ],
+        "title": "Spielzeug - Spielsachen - Reine Bildkarten mit farbigen Artikelpunkten zur Sprachförderung (DIN A4)",
+        "_score": 0.02173913
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Ferien",
+            "title": "Ferien",
+            "full_path": "Meta→Fachübergreifendes→Ferien"
+          }
+        ],
+        "id": 180283,
+        "material_class_grades": [
+          {
+            "title": "1. Klasse"
+          },
+          {
+            "title": "2. Klasse"
+          }
+        ],
+        "title": "Pfauenklasse Klassentier Pfau Kostenlos Feriengrüße kostenlos",
+        "_score": 0.021276595
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Mathematik → Geometrie → Ebene Figuren (2D)",
+            "title": "Ebene Figuren (2D)",
+            "full_path": "Meta→Mathematik→Geometrie→Ebene Figuren (2D)"
+          }
+        ],
+        "id": 149971,
+        "material_class_grades": [
+          {
+            "title": "1. Klasse"
+          },
+          {
+            "title": "2. Klasse"
+          }
+        ],
+        "title": "Freebie: Domino Formen/Flächen",
+        "_score": 0.021276595
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Deutsch → Schreiben → Kreatives Schreiben",
+            "title": "Kreatives Schreiben",
+            "full_path": "Meta→Deutsch→Schreiben→Kreatives Schreiben"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Jahreszeiten & Feste → Weihnachten",
+            "title": "Weihnachten",
+            "full_path": "Meta→Fachübergreifendes→Jahreszeiten & Feste→Weihnachten"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Kollegium",
+            "title": "Kollegium",
+            "full_path": "Meta→Fachübergreifendes→Kollegium"
+          }
+        ],
+        "id": 92033,
+        "material_class_grades": [
+          {
+            "title": "5. Klasse"
+          },
+          {
+            "title": "6. Klasse"
+          }
+        ],
+        "title": "Weihnachten Grüße kostenlos",
+        "_score": 0.020833334
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Deutsch → Schreiben → Kreatives Schreiben",
+            "title": "Kreatives Schreiben",
+            "full_path": "Meta→Deutsch→Schreiben→Kreatives Schreiben"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Jahreszeiten & Feste → Weihnachten",
+            "title": "Weihnachten",
+            "full_path": "Meta→Fachübergreifendes→Jahreszeiten & Feste→Weihnachten"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Kollegium",
+            "title": "Kollegium",
+            "full_path": "Meta→Fachübergreifendes→Kollegium"
+          }
+        ],
+        "id": 92340,
+        "material_class_grades": [],
+        "title": "Grußkarten Weihnachten kostenlos",
+        "_score": 0.020408163
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Materialerstellung → Vorlagen",
+            "title": "Vorlagen",
+            "full_path": "Meta→Fachübergreifendes→Materialerstellung→Vorlagen"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Spiele, Rätsel & Co.",
+            "title": "Spiele, Rätsel & Co.",
+            "full_path": "Meta→Fachübergreifendes→Spiele, Rätsel & Co."
+          }
+        ],
+        "id": 421821,
+        "material_class_grades": [],
+        "title": "Vorlage Domino -  kostenlos",
+        "_score": 0.020408163
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Jahreszeiten & Feste → Weihnachten",
+            "title": "Weihnachten",
+            "full_path": "Meta→Fachübergreifendes→Jahreszeiten & Feste→Weihnachten"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management",
+            "title": "Classroom Management",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management"
+          }
+        ],
+        "id": 97421,
+        "material_class_grades": [
+          {
+            "title": "1. Klasse"
+          },
+          {
+            "title": "2. Klasse"
+          }
+        ],
+        "title": "Kostenlos! Weihnachten mit den Klassenmaskottchen",
+        "_score": 0.02
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Klassenraum verschönern und umgestalten",
+            "title": "Klassenraum verschönern und umgestalten",
+            "full_path": "Meta→Fachübergreifendes→Klassenraum verschönern und umgestalten"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Bewerten & Beurteilen → Noten & Zeugnisse",
+            "title": "Noten & Zeugnisse",
+            "full_path": "Meta→Fachübergreifendes→Bewerten & Beurteilen→Noten & Zeugnisse"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Lehr- & Lernstrategien",
+            "title": "Lehr- & Lernstrategien",
+            "full_path": "Meta→Fachübergreifendes→Lehr- & Lernstrategien"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management → Persönlichkeitsentwicklung",
+            "title": "Persönlichkeitsentwicklung",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management→Persönlichkeitsentwicklung"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management → Soziales Lernen",
+            "title": "Soziales Lernen",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management→Soziales Lernen"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management",
+            "title": "Classroom Management",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management"
+          }
+        ],
+        "id": 62886,
+        "material_class_grades": [],
+        "title": "Lobkärtchen / Lobkarten - Gratis Set",
+        "_score": 0.019607844
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Deutsch → Anfangsunterricht → Schreiben lernen → Schreibmotorik",
+            "title": "Schreibmotorik",
+            "full_path": "Meta→Deutsch→Anfangsunterricht→Schreiben lernen→Schreibmotorik"
+          }
+        ],
+        "id": 71802,
+        "material_class_grades": [
+          {
+            "title": "1. Klasse"
+          }
+        ],
+        "title": "Spurhaus - Vorlage kostenlos! 1. Klasse",
+        "_score": 0.01923077
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management → Persönlichkeitsentwicklung",
+            "title": "Persönlichkeitsentwicklung",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management→Persönlichkeitsentwicklung"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Jahreszeiten & Feste → Ostern",
+            "title": "Ostern",
+            "full_path": "Meta→Fachübergreifendes→Jahreszeiten & Feste→Ostern"
+          }
+        ],
+        "id": 64267,
+        "material_class_grades": [],
+        "title": "Grußkärtchen für die Osterferien - KOSTENLOS",
+        "_score": 0.01923077
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Klassenraum verschönern und umgestalten",
+            "title": "Klassenraum verschönern und umgestalten",
+            "full_path": "Meta→Fachübergreifendes→Klassenraum verschönern und umgestalten"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Jahreszeiten & Feste → Sommer",
+            "title": "Sommer",
+            "full_path": "Meta→Fachübergreifendes→Jahreszeiten & Feste→Sommer"
+          },
+          {
+            "full_title": "Meta → Mathematik → Anfangsunterricht",
+            "title": "Anfangsunterricht",
+            "full_path": "Meta→Mathematik→Anfangsunterricht"
+          }
+        ],
+        "id": 64937,
+        "material_class_grades": [
+          {
+            "title": "3. Klasse"
+          },
+          {
+            "title": "4. Klasse"
+          }
+        ],
+        "title": "Countdown Sommerferien KOSTENLOS",
+        "_score": 0.018867925
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Englisch → Wortschatz",
+            "title": "Wortschatz",
+            "full_path": "Meta→Englisch→Wortschatz"
+          },
+          {
+            "full_title": "Meta → Englisch → Wortschatz → Zuhause",
+            "title": "Zuhause",
+            "full_path": "Meta→Englisch→Wortschatz→Zuhause"
+          },
+          {
+            "full_title": "Meta → Englisch → Wortschatz → Hobbys & Sport",
+            "title": "Hobbys & Sport",
+            "full_path": "Meta→Englisch→Wortschatz→Hobbys & Sport"
+          }
+        ],
+        "id": 466389,
+        "material_class_grades": [
+          {
+            "title": "3. Klasse"
+          },
+          {
+            "title": "4. Klasse"
+          }
+        ],
+        "title": "Klappheft - Present full of toys",
+        "_score": 0.018867925
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → DaZ/DaF → Wortschatz",
+            "title": "Wortschatz",
+            "full_path": "Meta→DaZ/DaF→Wortschatz"
+          },
+          {
+            "full_title": "Meta → Deutsch → Sprechen & Zuhören → Hörverstehen",
+            "title": "Hörverstehen",
+            "full_path": "Meta→Deutsch→Sprechen & Zuhören→Hörverstehen"
+          },
+          {
+            "full_title": "Meta → DaZ/DaF → Sprechen & Zuhören → Hörverstehen",
+            "title": "Hörverstehen",
+            "full_path": "Meta→DaZ/DaF→Sprechen & Zuhören→Hörverstehen"
+          },
+          {
+            "full_title": "Meta → DaZ/DaF → Sprechen & Zuhören → Aussprache & Intonation",
+            "title": "Aussprache & Intonation",
+            "full_path": "Meta→DaZ/DaF→Sprechen & Zuhören→Aussprache & Intonation"
+          }
+        ],
+        "id": 893164,
+        "material_class_grades": [
+          {
+            "title": "1. Klasse"
+          }
+        ],
+        "title": "Bildlesespiel - Schnupperdownload - Ich habe ... Wer hat ... Spiele - Bildlesespiele ohne Text",
+        "_score": 0.018518519
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Klassenraum verschönern und umgestalten",
+            "title": "Klassenraum verschönern und umgestalten",
+            "full_path": "Meta→Fachübergreifendes→Klassenraum verschönern und umgestalten"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management → Persönlichkeitsentwicklung",
+            "title": "Persönlichkeitsentwicklung",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management→Persönlichkeitsentwicklung"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management → Motivation",
+            "title": "Motivation",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management→Motivation"
+          }
+        ],
+        "id": 57353,
+        "material_class_grades": [],
+        "title": "Motivation - Poster KOSTENLOS!",
+        "_score": 0.018518519
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Klassenraum verschönern und umgestalten",
+            "title": "Klassenraum verschönern und umgestalten",
+            "full_path": "Meta→Fachübergreifendes→Klassenraum verschönern und umgestalten"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management → Persönlichkeitsentwicklung",
+            "title": "Persönlichkeitsentwicklung",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management→Persönlichkeitsentwicklung"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management → Motivation",
+            "title": "Motivation",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management→Motivation"
+          }
+        ],
+        "id": 57359,
+        "material_class_grades": [],
+        "title": "Motivation Poster - Kostenlos!",
+        "_score": 0.018181818
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Kunst → Praxis → Basteln",
+            "title": "Basteln",
+            "full_path": "Meta→Kunst→Praxis→Basteln"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Materialerstellung → Grafiken",
+            "title": "Grafiken",
+            "full_path": "Meta→Fachübergreifendes→Materialerstellung→Grafiken"
+          }
+        ],
+        "id": 69311,
+        "material_class_grades": [],
+        "title": "Märchen Rahmen Cliparts kostenlos",
+        "_score": 0.018181818
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Klassenraum verschönern und umgestalten",
+            "title": "Klassenraum verschönern und umgestalten",
+            "full_path": "Meta→Fachübergreifendes→Klassenraum verschönern und umgestalten"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management → Persönlichkeitsentwicklung",
+            "title": "Persönlichkeitsentwicklung",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management→Persönlichkeitsentwicklung"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management → Motivation",
+            "title": "Motivation",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management→Motivation"
+          }
+        ],
+        "id": 57360,
+        "material_class_grades": [],
+        "title": "Motivation Poster - Kostenlos!",
+        "_score": 0.017857144
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management → Persönlichkeitsentwicklung",
+            "title": "Persönlichkeitsentwicklung",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management→Persönlichkeitsentwicklung"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Ferien",
+            "title": "Ferien",
+            "full_path": "Meta→Fachübergreifendes→Ferien"
+          }
+        ],
+        "id": 180269,
+        "material_class_grades": [
+          {
+            "title": "1. Klasse"
+          },
+          {
+            "title": "2. Klasse"
+          }
+        ],
+        "title": "Drachenklasse Feriengrüße kostenlos",
+        "_score": 0.017857144
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Sachunterricht → Körper & Gesundheit → Ernährung, Bewegung & Gesundheit",
+            "title": "Ernährung, Bewegung & Gesundheit",
+            "full_path": "Meta→Sachunterricht→Körper & Gesundheit→Ernährung, Bewegung & Gesundheit"
+          },
+          {
+            "full_title": "Meta → DaZ/DaF → Wortschatz → Essen",
+            "title": "Essen",
+            "full_path": "Meta→DaZ/DaF→Wortschatz→Essen"
+          }
+        ],
+        "id": 555007,
+        "material_class_grades": [
+          {
+            "title": "1. Klasse"
+          },
+          {
+            "title": "2. Klasse"
+          }
+        ],
+        "title": "FREEBIE Süßes und Salziges - Süßigkeiten Bildkarten Deutsch kostenlos gratis",
+        "_score": 0.01754386
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Klassenraum verschönern und umgestalten",
+            "title": "Klassenraum verschönern und umgestalten",
+            "full_path": "Meta→Fachübergreifendes→Klassenraum verschönern und umgestalten"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management → Persönlichkeitsentwicklung",
+            "title": "Persönlichkeitsentwicklung",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management→Persönlichkeitsentwicklung"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management → Motivation",
+            "title": "Motivation",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management→Motivation"
+          }
+        ],
+        "id": 57362,
+        "material_class_grades": [],
+        "title": "Motivation Poster - Kostenlos!",
+        "_score": 0.01754386
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management → Schulstart/Kennenlernen",
+            "title": "Schulstart/Kennenlernen",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management→Schulstart/Kennenlernen"
+          }
+        ],
+        "id": 125285,
+        "material_class_grades": [
+          {
+            "title": "1. Klasse"
+          }
+        ],
+        "title": "Freebie: 100 Punkte - 100 Dinge",
+        "_score": 0.01724138
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management → Schwierige Situationen",
+            "title": "Schwierige Situationen",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management→Schwierige Situationen"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Classroom Management → Rituale & Regeln",
+            "title": "Rituale & Regeln",
+            "full_path": "Meta→Fachübergreifendes→Classroom Management→Rituale & Regeln"
+          }
+        ],
+        "id": 85908,
+        "material_class_grades": [
+          {
+            "title": "1. Klasse"
+          },
+          {
+            "title": "2. Klasse"
+          }
+        ],
+        "title": "Klassenregeln kostenlos Grundschule",
+        "_score": 0.01724138
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → DaZ/DaF → Wortschatz",
+            "title": "Wortschatz",
+            "full_path": "Meta→DaZ/DaF→Wortschatz"
+          },
+          {
+            "full_title": "Meta → Deutsch → Sprache untersuchen → Wortschatz",
+            "title": "Wortschatz",
+            "full_path": "Meta→Deutsch→Sprache untersuchen→Wortschatz"
+          },
+          {
+            "full_title": "Meta → Religion → Ich & Du",
+            "title": "Ich & Du",
+            "full_path": "Meta→Religion→Ich & Du"
+          }
+        ],
+        "id": 134096,
+        "material_class_grades": [
+          {
+            "title": "1. Klasse"
+          },
+          {
+            "title": "2. Klasse"
+          }
+        ],
+        "title": "Gefühle Bildkarten kostenlos",
+        "_score": 0.016949153
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Deutsch → Schreiben → Briefe & E-Mails",
+            "title": "Briefe & E-Mails",
+            "full_path": "Meta→Deutsch→Schreiben→Briefe & E-Mails"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Materialerstellung → Vorlagen",
+            "title": "Vorlagen",
+            "full_path": "Meta→Fachübergreifendes→Materialerstellung→Vorlagen"
+          },
+          {
+            "full_title": "Meta → DaZ/DaF → Schreiben",
+            "title": "Schreiben",
+            "full_path": "Meta→DaZ/DaF→Schreiben"
+          }
+        ],
+        "id": 138714,
+        "material_class_grades": [
+          {
+            "title": "1. Klasse"
+          },
+          {
+            "title": "2. Klasse"
+          }
+        ],
+        "title": "Briefpapier Lamaklasse kostenlos!",
+        "_score": 0.016666668
+      },
+      {
+        "is_bundle": false,
+        "world": "de",
+        "material_categories": [
+          {
+            "full_title": "Meta",
+            "title": "Meta",
+            "full_path": "Meta"
+          },
+          {
+            "full_title": "Meta → Fachübergreifendes → Spiele, Rätsel & Co.",
+            "title": "Spiele, Rätsel & Co.",
+            "full_path": "Meta→Fachübergreifendes→Spiele, Rätsel & Co."
+          }
+        ],
+        "id": 156853,
+        "material_class_grades": [
+          {
+            "title": "2. Klasse"
+          },
+          {
+            "title": "3. Klasse"
+          }
+        ],
+        "title": "Würfeln und Malen - Monster Spiel",
+        "_score": 0.016666668
+      }
+    ],
+    "total": 100
+  },
+  "serve_metrics": {
+    "search_term": "spielzeug kostenlos",
+    "hits_count": 100,
+    "top_results_count": 12,
+    "category_intent_applied": false,
+    "grade_intent_applied": false,
+    "top_score_margin": 0.26,
+    "category_coverage": null,
+    "grade_coverage": null,
+    "intent_coverage": null,
+    "category_concentration": 0.05,
+    "grade_concentration": 0.18,
+    "bundle_share": 0,
+    "results_quality": {
+      "results_quality_label": "NOT_GOOD_RESULTS",
+      "reasons": [
+        "margin < 0.35"
+      ]
+    }
+  },
+  "intents_applied": null
+}
