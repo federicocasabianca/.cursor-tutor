@@ -1,0 +1,3 @@
+Original Query: wald
+Intent Type: no_intent
+Folder Name: wald

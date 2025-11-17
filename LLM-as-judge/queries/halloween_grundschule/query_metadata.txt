@@ -1,0 +1,3 @@
+Original Query: halloween grundschule
+Intent Type: combined_intent
+Folder Name: halloween_grundschule

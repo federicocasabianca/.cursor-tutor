@@ -1,0 +1,3 @@
+Original Query: weihnachten klasse 1
+Intent Type: combined_intent
+Folder Name: weihnachten_klasse_1

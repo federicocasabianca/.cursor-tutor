@@ -1,0 +1,3 @@
+Original Query: geometrische körper
+Intent Type: combined_intent
+Folder Name: geometrische_körper

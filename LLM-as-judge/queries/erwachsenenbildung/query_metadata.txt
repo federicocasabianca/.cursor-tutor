@@ -1,0 +1,3 @@
+Original Query: erwachsenenbildung
+Intent Type: grade_intent
+Folder Name: erwachsenenbildung

@@ -1,0 +1,3 @@
+Original Query: lesen
+Intent Type: category_intent
+Folder Name: lesen

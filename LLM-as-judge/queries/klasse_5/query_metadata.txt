@@ -1,0 +1,3 @@
+Original Query: klasse 5
+Intent Type: grade_intent
+Folder Name: klasse_5

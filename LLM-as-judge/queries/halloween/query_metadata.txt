@@ -1,0 +1,3 @@
+Original Query: halloween
+Intent Type: category_intent
+Folder Name: halloween

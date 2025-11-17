@@ -1,0 +1,3 @@
+Original Query: wortarten
+Intent Type: category_intent
+Folder Name: wortarten

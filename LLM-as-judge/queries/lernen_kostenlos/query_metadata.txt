@@ -1,0 +1,3 @@
+Original Query: lernen kostenlos
+Intent Type: combined_intent
+Folder Name: lernen_kostenlos

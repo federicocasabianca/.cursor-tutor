@@ -1,0 +1,3 @@
+Original Query: personenbeschreibung
+Intent Type: category_intent
+Folder Name: personenbeschreibung

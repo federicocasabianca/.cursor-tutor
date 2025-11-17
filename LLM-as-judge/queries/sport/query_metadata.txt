@@ -1,0 +1,3 @@
+Original Query: sport
+Intent Type: category_intent
+Folder Name: sport

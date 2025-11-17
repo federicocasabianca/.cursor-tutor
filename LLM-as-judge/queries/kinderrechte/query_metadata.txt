@@ -1,0 +1,3 @@
+Original Query: kinderrechte
+Intent Type: no_intent
+Folder Name: kinderrechte

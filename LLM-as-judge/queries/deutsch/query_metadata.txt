@@ -1,0 +1,3 @@
+Original Query: deutsch
+Intent Type: category_intent
+Folder Name: deutsch

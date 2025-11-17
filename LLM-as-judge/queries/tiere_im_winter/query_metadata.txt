@@ -1,0 +1,3 @@
+Original Query: tiere im winter
+Intent Type: category_intent
+Folder Name: tiere_im_winter

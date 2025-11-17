@@ -1,0 +1,3 @@
+Original Query: rituale regeln
+Intent Type: combined_intent
+Folder Name: rituale_regeln

@@ -1,0 +1,3 @@
+Original Query: gratis
+Intent Type: no_intent
+Folder Name: gratis

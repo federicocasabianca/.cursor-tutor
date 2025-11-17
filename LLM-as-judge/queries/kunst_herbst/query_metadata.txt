@@ -1,0 +1,3 @@
+Original Query: kunst herbst
+Intent Type: category_intent
+Folder Name: kunst_herbst

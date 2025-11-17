@@ -1,0 +1,3 @@
+Original Query: bildkarten i
+Intent Type: combined_intent
+Folder Name: bildkarten_i

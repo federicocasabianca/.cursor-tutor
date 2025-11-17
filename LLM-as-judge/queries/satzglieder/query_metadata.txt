@@ -1,0 +1,3 @@
+Original Query: satzglieder
+Intent Type: category_intent
+Folder Name: satzglieder

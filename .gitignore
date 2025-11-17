@@ -42,3 +42,6 @@ curriculum-generator/
 
 # Jira MCP server (local machine only)
 jira-mcp-server/
+
+# Large files (>100MB) - prevented by pre-commit hook
+# Files larger than 100MB will be blocked from commits

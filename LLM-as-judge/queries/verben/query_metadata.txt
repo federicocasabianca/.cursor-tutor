@@ -1,0 +1,3 @@
+Original Query: verben
+Intent Type: category_intent
+Folder Name: verben

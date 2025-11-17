@@ -1,0 +1,3 @@
+Original Query: gefühle
+Intent Type: category_intent
+Folder Name: gefühle

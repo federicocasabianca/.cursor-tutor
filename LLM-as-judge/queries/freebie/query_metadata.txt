@@ -1,0 +1,3 @@
+Original Query: freebie
+Intent Type: no_intent
+Folder Name: freebie

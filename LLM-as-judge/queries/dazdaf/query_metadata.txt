@@ -1,0 +1,3 @@
+Original Query: daz/daf
+Intent Type: category_intent
+Folder Name: dazdaf

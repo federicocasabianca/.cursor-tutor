@@ -1,0 +1,3 @@
+Original Query: herbst
+Intent Type: category_intent
+Folder Name: herbst

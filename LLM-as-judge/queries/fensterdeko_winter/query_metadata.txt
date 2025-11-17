@@ -1,0 +1,3 @@
+Original Query: fensterdeko winter
+Intent Type: combined_intent
+Folder Name: fensterdeko_winter

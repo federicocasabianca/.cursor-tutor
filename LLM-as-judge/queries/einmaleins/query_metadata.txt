@@ -1,0 +1,3 @@
+Original Query: einmaleins
+Intent Type: category_intent
+Folder Name: einmaleins

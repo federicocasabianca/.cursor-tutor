@@ -1,0 +1,3 @@
+Original Query: wörtliche rede
+Intent Type: no_intent
+Folder Name: wörtliche_rede

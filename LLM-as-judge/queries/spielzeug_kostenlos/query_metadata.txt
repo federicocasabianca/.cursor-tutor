@@ -1,0 +1,3 @@
+Original Query: spielzeug kostenlos
+Intent Type: combined_intent
+Folder Name: spielzeug_kostenlos

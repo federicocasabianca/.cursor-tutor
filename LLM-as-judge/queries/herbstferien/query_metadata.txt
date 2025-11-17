@@ -1,0 +1,3 @@
+Original Query: herbstferien
+Intent Type: no_intent
+Folder Name: herbstferien

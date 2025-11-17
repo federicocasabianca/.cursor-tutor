@@ -1,0 +1,3 @@
+Original Query: kostenlose materialien
+Intent Type: no_intent
+Folder Name: kostenlose_materialien

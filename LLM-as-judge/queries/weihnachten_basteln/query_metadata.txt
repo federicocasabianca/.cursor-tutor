@@ -1,0 +1,3 @@
+Original Query: weihnachten basteln
+Intent Type: category_intent
+Folder Name: weihnachten_basteln

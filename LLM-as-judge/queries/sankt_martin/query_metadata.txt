@@ -1,0 +1,3 @@
+Original Query: sankt martin
+Intent Type: no_intent
+Folder Name: sankt_martin

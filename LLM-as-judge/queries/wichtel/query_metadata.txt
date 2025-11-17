@@ -1,0 +1,3 @@
+Original Query: wichtel
+Intent Type: no_intent
+Folder Name: wichtel

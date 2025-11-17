@@ -1,0 +1,3 @@
+Original Query: weihnachten in anderen ländern
+Intent Type: combined_intent
+Folder Name: weihnachten_in_anderen_ländern

@@ -1,0 +1,3 @@
+Original Query: to be poster
+Intent Type: combined_intent
+Folder Name: to_be_poster

@@ -1,0 +1,3 @@
+Original Query: verliebte zahlen
+Intent Type: combined_intent
+Folder Name: verliebte_zahlen
