@@ -1,0 +1,3083 @@
+{
+    "items": {
+        "materials": [
+            {
+                "short_description": "NUMBERS flash cards / Bildkarten Englisch - kostenlos!KOSTENLOSE Zahlenmonster für deinen Englischunterricht in der Grundschule oder als Dekoration für Projekttage, im Kindergarten oder zu allen möglichen Anlässen, in denen deine Kids hübsche Monster wie diese gebrauchen können.&nbsp;Ich würd",
+                "cover_path": "",
+                "created_at": "2021-02-01 15:22:50",
+                "language": "de",
+                "cover_preview_id": 6646615,
+                "title": "FREEBIE numbers flash cards Englisch kostenlos",
+                "total_bundle_materials": null,
+                "has_fixed_price": false,
+                "world": "de",
+                "school_types": [
+                    {
+                        "is_interdisciplinary": false,
+                        "id": 2,
+                        "title": "Grundschule"
+                    }
+                ],
+                "price": 0,
+                "file_types": [
+                    "pdf"
+                ],
+                "learning_years": [
+                    {
+                        "tooltip": "A1",
+                        "id": 1,
+                        "position": 1,
+                        "title": "1. Lernjahr"
+                    }
+                ],
+                "is_shadow": false,
+                "author_featured": false,
+                "id": 272771,
+                "prices": [
+                    {
+                        "country": "DE",
+                        "is_original": true,
+                        "price": 0,
+                        "currency": "EUR",
+                        "id": 2107916,
+                        "current_price": 0,
+                        "sale_price": null
+                    }
+                ],
+                "slug": "freebie-numbers-flash-cards-englisch-kostenlos",
+                "material_types": [
+                    {
+                        "tooltip": "Powerpoints, Animationen und andere Materialien, die dafür gedacht sind, dass Lehrkräfte diese direkt im Unterricht als Präsentation einsetzen.",
+                        "id": 6,
+                        "title": "Präsentationen/Tafelbilder"
+                    },
+                    {
+                        "tooltip": "Poster für den Klassenraum",
+                        "id": 11,
+                        "title": "Poster"
+                    },
+                    {
+                        "tooltip": "Bildkarten, Flashcards",
+                        "id": 18,
+                        "title": "Bildkarten"
+                    }
+                ],
+                "bestseller_rating": 10.9449,
+                "is_active": true,
+                "title_updated_by_human": true,
+                "author": {
+                    "world": "de",
+                    "user_id": 10046,
+                    "id": 9956,
+                    "public_name": "Better Teaching Resources I Cindy Seidler",
+                    "slug": "better-teaching-resources-i-cindy-seidler"
+                },
+                "is_completed_by_author": true,
+                "average_rating": 0,
+                "total_pages": 13,
+                "bundle_price_without_discount": null,
+                "material_class_grades": [
+                    {
+                        "id": 1,
+                        "position": 1,
+                        "title": "1. Klasse"
+                    },
+                    {
+                        "id": 2,
+                        "position": 2,
+                        "title": "2. Klasse"
+                    }
+                ],
+                "is_standalone_interactive": false,
+                "seller_segments": [
+                    "Dragon"
+                ],
+                "material_files": [
+                    {
+                        "type": "material_file"
+                    }
+                ],
+                "is_bundle": false,
+                "engagement_score": 0,
+                "sale": null,
+                "has_bib_preview": false,
+                "is_in_yellow_list": false,
+                "material_categories": [
+                    {
+                        "has_children": false,
+                        "top_category_title": "Meta",
+                        "path_ids": null,
+                        "best_material_id": 0,
+                        "total_materials": 0,
+                        "top_category_id": 0,
+                        "title": "Meta",
+                        "path": null,
+                        "full_title": "Meta",
+                        "short_title": "Meta",
+                        "world": null,
+                        "full_path_ids": [
+                            "0"
+                        ],
+                        "parent_id": 0,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 0,
+                                "id": 0,
+                                "title": "Meta",
+                                "slug": null
+                            }
+                        ],
+                        "id": 0,
+                        "full_path": "Meta",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": false,
+                        "top_category_title": "Englisch",
+                        "path_ids": "468-494",
+                        "best_material_id": null,
+                        "total_materials": 3,
+                        "title": "Zahlen",
+                        "top_category_id": 468,
+                        "path": "Englisch→Wortschatz",
+                        "short_title": "",
+                        "full_title": "Meta → Englisch → Wortschatz → Zahlen",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "468",
+                            "494",
+                            "2481"
+                        ],
+                        "parent_id": 494,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 468,
+                                "id": 468,
+                                "title": "Englisch",
+                                "slug": "englisch"
+                            },
+                            {
+                                "material_category_id": 494,
+                                "id": 494,
+                                "title": "Wortschatz",
+                                "slug": "englisch/wortschatz"
+                            },
+                            {
+                                "material_category_id": 2481,
+                                "id": 2481,
+                                "title": "Zahlen",
+                                "slug": "englisch/wortschatz/zahlen"
+                            }
+                        ],
+                        "id": 2481,
+                        "full_path": "Meta→Englisch→Wortschatz→Zahlen",
+                        "is_terminal_node": true,
+                        "selected": false
+                    }
+                ],
+                "is_free": true,
+                "cc_status": "online_complete",
+                "custom_pages_total": 13,
+                "interactive_id": null,
+                "total_feedbacks": 0,
+                "description_updated_by_human": true,
+                "is_bundle_interactive": null,
+                "author_id": 10046,
+                "distribution_type": 1,
+                "status": "activated automatically",
+                "_score": 0.024390243,
+                "cover_material_file_path": {
+                    "plain": "https://vector.eduki.info/previews/de/6646615/0617b952-6499-11eb-b51e-172524204083.png",
+                    "watermarked": "https://vector.eduki.info/covers/de/6646615/0617b952-6499-11eb-b51e-172524204083.png"
+                },
+                "top_categories": [
+                    {
+                        "id": 0,
+                        "title": "Meta"
+                    },
+                    {
+                        "id": 468,
+                        "title": "Englisch"
+                    }
+                ],
+                "best_in_categories": []
+            },
+            {
+                "cover_path": "",
+                "language": "de",
+                "cover_preview_id": 2926947,
+                "has_fixed_price": false,
+                "price": 3.99,
+                "file_types": [
+                    "pdf"
+                ],
+                "learning_years": [],
+                "is_shadow": false,
+                "author_featured": true,
+                "id": 102892,
+                "slug": "sprichwoerter-und-redewendungen-im-deutschunterricht",
+                "bestseller_rating": 7.1938,
+                "title_updated_by_human": true,
+                "author": {
+                    "world": "de",
+                    "user_id": 466,
+                    "id": 449,
+                    "public_name": "abc shop",
+                    "slug": "abc-shop"
+                },
+                "is_completed_by_author": true,
+                "bundle_price_without_discount": null,
+                "material_class_grades": [
+                    {
+                        "id": 3,
+                        "position": 3,
+                        "title": "3. Klasse"
+                    },
+                    {
+                        "id": 4,
+                        "position": 4,
+                        "title": "4. Klasse"
+                    }
+                ],
+                "is_standalone_interactive": false,
+                "material_files": [
+                    {
+                        "type": "material_file"
+                    }
+                ],
+                "tags": [
+                    {
+                        "name": "Sprichwörter"
+                    },
+                    {
+                        "name": "Redewendungen"
+                    },
+                    {
+                        "name": "Vertretungsstunde"
+                    }
+                ],
+                "is_bundle": false,
+                "has_bib_preview": false,
+                "is_in_yellow_list": false,
+                "description_updated_by_human": true,
+                "author_id": 466,
+                "status": "activated automatically",
+                "short_description": "Sie erhalten ein Pdf-Dokument&nbsp;mit 34 Seiten.Sie erhalten Arbeitsblätter, mit denen die Kinder die Bedeutung von Sprichwörtern und Redewendungen kennen lernen.Dazu erhalten sie diverse Karteikarten mit Sprichwörtern und eine Definition als Tafelbild.Thematisch verwandt: Teekesselchen in der G",
+                "created_at": "2019-12-26 12:56:07",
+                "title": "Sprichwörter und Redewendungen im Deutschunterricht",
+                "total_bundle_materials": null,
+                "world": "de",
+                "school_types": [
+                    {
+                        "is_interdisciplinary": false,
+                        "id": 2,
+                        "title": "Grundschule"
+                    }
+                ],
+                "prices": [
+                    {
+                        "country": "DE",
+                        "is_original": true,
+                        "price": 3.99,
+                        "currency": "EUR",
+                        "id": 2023009,
+                        "current_price": 3.99,
+                        "sale_price": null
+                    }
+                ],
+                "material_types": [
+                    {
+                        "tooltip": "Arbeitsblätter zum Ausfüllen oder mit Arbeitsaufträgen",
+                        "id": 1,
+                        "title": "Arbeitsblätter"
+                    }
+                ],
+                "is_active": true,
+                "average_rating": 0,
+                "total_pages": 34,
+                "seller_segments": [
+                    "Bear"
+                ],
+                "engagement_score": 1.2852908703063e-16,
+                "sale": null,
+                "material_categories": [
+                    {
+                        "has_children": false,
+                        "top_category_title": "Meta",
+                        "path_ids": null,
+                        "best_material_id": 0,
+                        "total_materials": 0,
+                        "top_category_id": 0,
+                        "title": "Meta",
+                        "path": null,
+                        "full_title": "Meta",
+                        "short_title": "Meta",
+                        "world": null,
+                        "full_path_ids": [
+                            "0"
+                        ],
+                        "parent_id": 0,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 0,
+                                "id": 0,
+                                "title": "Meta",
+                                "slug": null
+                            }
+                        ],
+                        "id": 0,
+                        "full_path": "Meta",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": false,
+                        "top_category_title": "DaZ/DaF",
+                        "path_ids": "464-1920",
+                        "best_material_id": null,
+                        "total_materials": 5,
+                        "title": "Redewendungen",
+                        "top_category_id": 464,
+                        "path": "DaZ/DaF→Wortschatz",
+                        "short_title": "",
+                        "full_title": "Meta → DaZ/DaF → Wortschatz → Redewendungen",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "464",
+                            "1920",
+                            "2738"
+                        ],
+                        "parent_id": 1920,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 464,
+                                "id": 464,
+                                "title": "DaZ/DaF",
+                                "slug": "daz-daf"
+                            },
+                            {
+                                "material_category_id": 1920,
+                                "id": 1920,
+                                "title": "Wortschatz",
+                                "slug": "daz-daf/wortschatz"
+                            },
+                            {
+                                "material_category_id": 2738,
+                                "id": 2738,
+                                "title": "Redewendungen",
+                                "slug": "daz-daf/wortschatz/redewendungen"
+                            }
+                        ],
+                        "id": 2738,
+                        "full_path": "Meta→DaZ/DaF→Wortschatz→Redewendungen",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": false,
+                        "top_category_title": "Deutsch",
+                        "path_ids": "284-2924-1961",
+                        "best_material_id": null,
+                        "total_materials": 3,
+                        "title": "Redewendungen",
+                        "top_category_id": 284,
+                        "path": "Deutsch→Sprache untersuchen→Wortschatz",
+                        "short_title": "",
+                        "full_title": "Meta → Deutsch → Sprache untersuchen → Wortschatz → Redewendungen",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "284",
+                            "2924",
+                            "1961",
+                            "2741"
+                        ],
+                        "parent_id": 1961,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 284,
+                                "id": 284,
+                                "title": "Deutsch",
+                                "slug": "deutsch"
+                            },
+                            {
+                                "material_category_id": 1961,
+                                "id": 1961,
+                                "title": "Wortschatz",
+                                "slug": "deutsch/sprache-untersuchen/wortschatz"
+                            },
+                            {
+                                "material_category_id": 2741,
+                                "id": 2741,
+                                "title": "Redewendungen",
+                                "slug": "deutsch/sprache-untersuchen/wortschatz/redewendungen"
+                            },
+                            {
+                                "material_category_id": 2924,
+                                "id": 2924,
+                                "title": "Sprache untersuchen",
+                                "slug": "deutsch/sprache-untersuchen"
+                            }
+                        ],
+                        "id": 2741,
+                        "full_path": "Meta→Deutsch→Sprache untersuchen→Wortschatz→Redewendungen",
+                        "is_terminal_node": true,
+                        "selected": false
+                    }
+                ],
+                "is_free": false,
+                "cc_status": "online_complete",
+                "custom_pages_total": 34,
+                "interactive_id": null,
+                "total_feedbacks": 0,
+                "is_bundle_interactive": null,
+                "distribution_type": 1,
+                "_score": 0.024390243,
+                "cover_material_file_path": {
+                    "plain": "https://vector.eduki.info/previews/de/2926947/c66de1c8-27d6-11ea-820f-172522604994.png",
+                    "watermarked": "https://vector.eduki.info/covers/de/2926947/c66de1c8-27d6-11ea-820f-172522604994.png"
+                },
+                "top_categories": [
+                    {
+                        "id": 0,
+                        "title": "Meta"
+                    },
+                    {
+                        "id": 464,
+                        "title": "DaZ/DaF"
+                    },
+                    {
+                        "id": 284,
+                        "title": "Deutsch"
+                    }
+                ],
+                "best_in_categories": []
+            },
+            {
+                "short_description": "Das Dokument enthält einige Ideen zum Sprechen im Deutschunterricht für die 1. bis 4 Klasse.Es handelt sich um eine Ideensammlung.",
+                "cover_path": "",
+                "created_at": "2021-08-21 18:02:40",
+                "language": "de",
+                "cover_preview_id": 10104410,
+                "title": "Ideensammlung für den Deutschunterricht - Sprechen",
+                "total_bundle_materials": null,
+                "has_fixed_price": false,
+                "world": "de",
+                "school_types": [
+                    {
+                        "is_interdisciplinary": false,
+                        "id": 2,
+                        "title": "Grundschule"
+                    }
+                ],
+                "price": 2.99,
+                "file_types": [
+                    "pdf"
+                ],
+                "learning_years": [],
+                "is_shadow": false,
+                "author_featured": true,
+                "id": 407237,
+                "prices": [
+                    {
+                        "country": "DE",
+                        "is_original": true,
+                        "price": 2.99,
+                        "currency": "EUR",
+                        "id": 2165294,
+                        "current_price": 2.99,
+                        "sale_price": null
+                    }
+                ],
+                "slug": "ideensammlung-fuer-den-deutschunterricht---sprechen",
+                "material_types": [
+                    {
+                        "tooltip": "Diesen Filter NUR nehmen, wenn das Material in KEINE der anderen Kategorien reinpasst.",
+                        "id": 5,
+                        "title": "Anderer Materialtyp"
+                    }
+                ],
+                "bestseller_rating": 0.0005,
+                "is_active": true,
+                "title_updated_by_human": true,
+                "author": {
+                    "world": "de",
+                    "user_id": 323415,
+                    "id": 320376,
+                    "public_name": "te_tr_to",
+                    "slug": "te-tr-to"
+                },
+                "is_completed_by_author": true,
+                "average_rating": 0,
+                "total_pages": 8,
+                "bundle_price_without_discount": null,
+                "material_class_grades": [
+                    {
+                        "id": 2,
+                        "position": 2,
+                        "title": "2. Klasse"
+                    },
+                    {
+                        "id": 3,
+                        "position": 3,
+                        "title": "3. Klasse"
+                    }
+                ],
+                "is_standalone_interactive": false,
+                "seller_segments": [
+                    "Cub"
+                ],
+                "material_files": [
+                    {
+                        "type": "material_file"
+                    },
+                    {
+                        "type": "material_file"
+                    },
+                    {
+                        "type": "material_file"
+                    },
+                    {
+                        "type": "sources"
+                    }
+                ],
+                "is_bundle": false,
+                "engagement_score": 0,
+                "sale": null,
+                "has_bib_preview": false,
+                "is_in_yellow_list": false,
+                "material_categories": [
+                    {
+                        "has_children": false,
+                        "top_category_title": "Meta",
+                        "path_ids": null,
+                        "best_material_id": 0,
+                        "total_materials": 0,
+                        "top_category_id": 0,
+                        "title": "Meta",
+                        "path": null,
+                        "full_title": "Meta",
+                        "short_title": "Meta",
+                        "world": null,
+                        "full_path_ids": [
+                            "0"
+                        ],
+                        "parent_id": 0,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 0,
+                                "id": 0,
+                                "title": "Meta",
+                                "slug": null
+                            }
+                        ],
+                        "id": 0,
+                        "full_path": "Meta",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": true,
+                        "top_category_title": "Deutsch",
+                        "path_ids": "284",
+                        "best_material_id": 1277960,
+                        "total_materials": 33,
+                        "title": "Sprechen & Zuhören",
+                        "top_category_id": 284,
+                        "path": "Deutsch",
+                        "short_title": "",
+                        "full_title": "Meta → Deutsch → Sprechen & Zuhören",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "284",
+                            "291"
+                        ],
+                        "parent_id": 284,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 284,
+                                "id": 284,
+                                "title": "Deutsch",
+                                "slug": "deutsch"
+                            },
+                            {
+                                "material_category_id": 291,
+                                "id": 291,
+                                "title": "Sprechen & Zuhören",
+                                "slug": "deutsch/sprechen-zuhoeren"
+                            }
+                        ],
+                        "id": 291,
+                        "full_path": "Meta→Deutsch→Sprechen & Zuhören",
+                        "is_terminal_node": false,
+                        "selected": false
+                    }
+                ],
+                "is_free": false,
+                "cc_status": "online_complete",
+                "custom_pages_total": 8,
+                "interactive_id": null,
+                "total_feedbacks": 0,
+                "description_updated_by_human": true,
+                "is_bundle_interactive": null,
+                "author_id": 323415,
+                "distribution_type": 1,
+                "status": "activated automatically",
+                "_score": 0.023809524,
+                "cover_material_file_path": {
+                    "plain": "https://vector.eduki.info/previews/de/10104410/38cfc1c0-0299-11ec-97ec-168610828538.png",
+                    "watermarked": "https://vector.eduki.info/covers/de/10104410/38cfc1c0-0299-11ec-97ec-168610828538.png"
+                },
+                "top_categories": [
+                    {
+                        "id": 0,
+                        "title": "Meta"
+                    },
+                    {
+                        "id": 284,
+                        "title": "Deutsch"
+                    }
+                ],
+                "best_in_categories": []
+            },
+            {
+                "cover_path": "",
+                "language": "de",
+                "cover_preview_id": 19134908,
+                "has_fixed_price": false,
+                "price": 2.99,
+                "file_types": [
+                    "pdf"
+                ],
+                "learning_years": [
+                    {
+                        "tooltip": "A1",
+                        "id": 1,
+                        "position": 1,
+                        "title": "1. Lernjahr"
+                    }
+                ],
+                "is_shadow": false,
+                "author_featured": false,
+                "id": 748034,
+                "slug": "deutsch-wochentage-lernen-deutsch-als-fremdsprache",
+                "bestseller_rating": 0.0005,
+                "title_updated_by_human": true,
+                "author": {
+                    "world": "de",
+                    "user_id": 15,
+                    "id": 15,
+                    "public_name": "kreativ lernen",
+                    "slug": "kreativ-lernen"
+                },
+                "is_completed_by_author": true,
+                "bundle_price_without_discount": null,
+                "material_class_grades": [
+                    {
+                        "id": 1,
+                        "position": 1,
+                        "title": "1. Klasse"
+                    }
+                ],
+                "is_standalone_interactive": false,
+                "material_files": [
+                    {
+                        "type": "material_file"
+                    }
+                ],
+                "tags": [
+                    {
+                        "name": "Lerntablets"
+                    },
+                    {
+                        "name": "Deutsch"
+                    },
+                    {
+                        "name": "Deutsch als Fremdsprache"
+                    },
+                    {
+                        "name": "Anfangsunterricht"
+                    },
+                    {
+                        "name": "Deutsch als Zweitsprache"
+                    }
+                ],
+                "is_bundle": false,
+                "has_bib_preview": false,
+                "is_in_yellow_list": false,
+                "description_updated_by_human": true,
+                "author_id": 15,
+                "status": "activated automatically",
+                "short_description": "Lern die Wochentage auf DeutschWochentage spielerisch lernen und in die richtige Reihenfolge bringen. Heute ist Montag, welcher Tag war gestern? Welcher Tag ist morgen? Wenn morgen Montag ist, welcher Tag ist heute?  Die Wochentage spielerisch ordnen lernen und geschickt Fragen stellen (für DaF und",
+                "created_at": "2022-12-02 02:33:13",
+                "title": "Deutsch - Wochentage lernen - Deutsch als Fremdsprache",
+                "total_bundle_materials": null,
+                "world": "de",
+                "school_types": [
+                    {
+                        "is_interdisciplinary": false,
+                        "id": 2,
+                        "title": "Grundschule"
+                    }
+                ],
+                "prices": [
+                    {
+                        "country": "DE",
+                        "is_original": true,
+                        "price": 2.99,
+                        "currency": "EUR",
+                        "id": 2349501,
+                        "current_price": 2.99,
+                        "sale_price": null
+                    }
+                ],
+                "material_types": [
+                    {
+                        "tooltip": "Mandalas, Bastelanleitungen, Ausmalbilder...",
+                        "id": 16,
+                        "title": "Mal- und Bastelvorlagen"
+                    },
+                    {
+                        "tooltip": "Material, dass sich besonders gut für den Förderunterricht, die Arbeit in inklusiven Klassen oder die Arbeit an Förderschulen eignet",
+                        "id": 19,
+                        "title": "Fördermaterial/Inklusion"
+                    },
+                    {
+                        "tooltip": "Interaktive Dateien jeglicher Art (interaktive PDFs usw.)",
+                        "id": 134,
+                        "title": "Interaktives Material"
+                    }
+                ],
+                "is_active": true,
+                "average_rating": 0,
+                "total_pages": 7,
+                "seller_segments": [],
+                "engagement_score": 0,
+                "sale": null,
+                "material_categories": [
+                    {
+                        "has_children": false,
+                        "top_category_title": "Meta",
+                        "path_ids": null,
+                        "best_material_id": 0,
+                        "total_materials": 0,
+                        "top_category_id": 0,
+                        "title": "Meta",
+                        "path": null,
+                        "full_title": "Meta",
+                        "short_title": "Meta",
+                        "world": null,
+                        "full_path_ids": [
+                            "0"
+                        ],
+                        "parent_id": 0,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 0,
+                                "id": 0,
+                                "title": "Meta",
+                                "slug": null
+                            }
+                        ],
+                        "id": 0,
+                        "full_path": "Meta",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": true,
+                        "top_category_title": "Deutsch",
+                        "path_ids": null,
+                        "best_material_id": 211423,
+                        "total_materials": 317,
+                        "title": "Deutsch",
+                        "top_category_id": 284,
+                        "path": null,
+                        "short_title": "Deutsch",
+                        "full_title": "Meta → Deutsch",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "284"
+                        ],
+                        "parent_id": 0,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 284,
+                                "id": 284,
+                                "title": "Deutsch",
+                                "slug": "deutsch"
+                            }
+                        ],
+                        "id": 284,
+                        "full_path": "Meta→Deutsch",
+                        "is_terminal_node": false,
+                        "selected": false
+                    },
+                    {
+                        "has_children": false,
+                        "top_category_title": "Sachunterricht",
+                        "path_ids": "1769-1832",
+                        "best_material_id": null,
+                        "total_materials": 23,
+                        "title": "Kalender & Zeit",
+                        "top_category_id": 1769,
+                        "path": "Sachunterricht→Zeit & Geschichte",
+                        "short_title": "",
+                        "full_title": "Meta → Sachunterricht → Zeit & Geschichte → Kalender & Zeit",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "1769",
+                            "1832",
+                            "1835"
+                        ],
+                        "parent_id": 1832,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 1769,
+                                "id": 1769,
+                                "title": "Sachunterricht",
+                                "slug": "sachunterricht"
+                            },
+                            {
+                                "material_category_id": 1832,
+                                "id": 1832,
+                                "title": "Zeit & Geschichte",
+                                "slug": "sachunterricht/zeit-geschichte"
+                            },
+                            {
+                                "material_category_id": 1835,
+                                "id": 1835,
+                                "title": "Kalender & Zeit",
+                                "slug": "sachunterricht/zeit-geschichte/kalender-zeit"
+                            }
+                        ],
+                        "id": 1835,
+                        "full_path": "Meta→Sachunterricht→Zeit & Geschichte→Kalender & Zeit",
+                        "is_terminal_node": true,
+                        "selected": false
+                    }
+                ],
+                "is_free": false,
+                "cc_status": "online_complete",
+                "custom_pages_total": 7,
+                "interactive_id": null,
+                "total_feedbacks": 0,
+                "is_bundle_interactive": null,
+                "distribution_type": 1,
+                "_score": 0.023255814,
+                "cover_material_file_path": {
+                    "plain": "https://vector.eduki.info/previews/de/19134908/034e3312-6ab3-4179-ae69-7cefcc357755.png",
+                    "watermarked": "https://vector.eduki.info/covers/de/19134908/034e3312-6ab3-4179-ae69-7cefcc357755.png"
+                },
+                "top_categories": [
+                    {
+                        "id": 0,
+                        "title": "Meta"
+                    },
+                    {
+                        "id": 284,
+                        "title": "Deutsch"
+                    },
+                    {
+                        "id": 1769,
+                        "title": "Sachunterricht"
+                    }
+                ],
+                "best_in_categories": []
+            },
+            {
+                "short_description": "Lesefächer sind ein bewährtes Übungsformat der Montessoripädagogik. Sie bieten den Kindern die Möglichkeit, eigenständig und effektiv das lautsynthetisierende Erlesen von Wörtern zu üben. Dieses Material ist im \"Komplettpaket - Freiarbeitsmaterial Grundschule Klasse 1-4\" enthalten.Das verwe",
+                "cover_path": "",
+                "created_at": "2016-07-31 06:56:56",
+                "language": "de",
+                "cover_preview_id": 58371,
+                "title": "105 Lesefächer - einsilbige Wörter - Grundwortschatz Deutsch - Lesen lernen",
+                "total_bundle_materials": null,
+                "has_fixed_price": false,
+                "world": "de",
+                "school_types": [
+                    {
+                        "is_interdisciplinary": false,
+                        "id": 2,
+                        "title": "Grundschule"
+                    }
+                ],
+                "price": 2.99,
+                "file_types": [
+                    "pdf"
+                ],
+                "learning_years": [],
+                "is_shadow": false,
+                "author_featured": false,
+                "id": 3385,
+                "prices": [
+                    {
+                        "country": "DE",
+                        "is_original": true,
+                        "price": 2.99,
+                        "currency": "EUR",
+                        "id": 1958154,
+                        "current_price": 2.99,
+                        "sale_price": null
+                    }
+                ],
+                "slug": "105-lesefacher-einsilbige-worter-grundwortschatz-deutsch-lesen-lernen",
+                "material_types": [
+                    {
+                        "tooltip": "Materialien mit einem spielerischen Element – z.B. Rätsel, Quizze, Memorys, Dominos, etc.",
+                        "id": 10,
+                        "title": "Spiele"
+                    }
+                ],
+                "bestseller_rating": 0.1309,
+                "is_active": true,
+                "title_updated_by_human": true,
+                "author": {
+                    "world": "de",
+                    "user_id": 320,
+                    "id": 302,
+                    "public_name": "Bianka Blöcker",
+                    "slug": "bianka-bloecker"
+                },
+                "is_completed_by_author": true,
+                "average_rating": 0,
+                "total_pages": 20,
+                "bundle_price_without_discount": null,
+                "material_class_grades": [
+                    {
+                        "id": 1,
+                        "position": 1,
+                        "title": "1. Klasse"
+                    },
+                    {
+                        "id": 2,
+                        "position": 2,
+                        "title": "2. Klasse"
+                    }
+                ],
+                "is_standalone_interactive": false,
+                "seller_segments": [],
+                "material_files": [
+                    {
+                        "type": "material_file"
+                    },
+                    {
+                        "type": "material_file"
+                    }
+                ],
+                "is_bundle": false,
+                "engagement_score": 0,
+                "sale": null,
+                "has_bib_preview": false,
+                "is_in_yellow_list": false,
+                "material_categories": [
+                    {
+                        "has_children": false,
+                        "top_category_title": "Meta",
+                        "path_ids": null,
+                        "best_material_id": 0,
+                        "total_materials": 0,
+                        "top_category_id": 0,
+                        "title": "Meta",
+                        "path": null,
+                        "full_title": "Meta",
+                        "short_title": "Meta",
+                        "world": null,
+                        "full_path_ids": [
+                            "0"
+                        ],
+                        "parent_id": 0,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 0,
+                                "id": 0,
+                                "title": "Meta",
+                                "slug": null
+                            }
+                        ],
+                        "id": 0,
+                        "full_path": "Meta",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": true,
+                        "top_category_title": "Deutsch",
+                        "path_ids": "284-3070",
+                        "best_material_id": null,
+                        "total_materials": 104,
+                        "title": "Lesen lernen",
+                        "top_category_id": 284,
+                        "path": "Deutsch→Anfangsunterricht",
+                        "short_title": "",
+                        "full_title": "Meta → Deutsch → Anfangsunterricht → Lesen lernen",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "284",
+                            "3070",
+                            "286"
+                        ],
+                        "parent_id": 3070,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 284,
+                                "id": 284,
+                                "title": "Deutsch",
+                                "slug": "deutsch"
+                            },
+                            {
+                                "material_category_id": 286,
+                                "id": 286,
+                                "title": "Lesen lernen",
+                                "slug": "deutsch/anfangsunterricht/lesen-lernen"
+                            },
+                            {
+                                "material_category_id": 3070,
+                                "id": 3070,
+                                "title": "Anfangsunterricht",
+                                "slug": "deutsch/anfangsunterricht"
+                            }
+                        ],
+                        "id": 286,
+                        "full_path": "Meta→Deutsch→Anfangsunterricht→Lesen lernen",
+                        "is_terminal_node": false,
+                        "selected": false
+                    },
+                    {
+                        "has_children": false,
+                        "top_category_title": "DaZ/DaF",
+                        "path_ids": "464-465",
+                        "best_material_id": null,
+                        "total_materials": 120,
+                        "title": "Lesetraining",
+                        "top_category_id": 464,
+                        "path": "DaZ/DaF→Lesen",
+                        "short_title": "",
+                        "full_title": "Meta → DaZ/DaF → Lesen → Lesetraining",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "464",
+                            "465",
+                            "2447"
+                        ],
+                        "parent_id": 465,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 464,
+                                "id": 464,
+                                "title": "DaZ/DaF",
+                                "slug": "daz-daf"
+                            },
+                            {
+                                "material_category_id": 465,
+                                "id": 465,
+                                "title": "Lesen",
+                                "slug": "daz-daf/lesen"
+                            },
+                            {
+                                "material_category_id": 2447,
+                                "id": 2447,
+                                "title": "Lesetraining",
+                                "slug": "daz-daf/lesen/lesetraining"
+                            }
+                        ],
+                        "id": 2447,
+                        "full_path": "Meta→DaZ/DaF→Lesen→Lesetraining",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": false,
+                        "top_category_title": "DaZ/DaF",
+                        "path_ids": "464-465",
+                        "best_material_id": null,
+                        "total_materials": 29,
+                        "title": "Alphabetisierung",
+                        "top_category_id": 464,
+                        "path": "DaZ/DaF→Lesen",
+                        "short_title": "",
+                        "full_title": "Meta → DaZ/DaF → Lesen → Alphabetisierung",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "464",
+                            "465",
+                            "2462"
+                        ],
+                        "parent_id": 465,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 464,
+                                "id": 464,
+                                "title": "DaZ/DaF",
+                                "slug": "daz-daf"
+                            },
+                            {
+                                "material_category_id": 465,
+                                "id": 465,
+                                "title": "Lesen",
+                                "slug": "daz-daf/lesen"
+                            },
+                            {
+                                "material_category_id": 2462,
+                                "id": 2462,
+                                "title": "Alphabetisierung",
+                                "slug": "daz-daf/lesen/alphabetisierung"
+                            }
+                        ],
+                        "id": 2462,
+                        "full_path": "Meta→DaZ/DaF→Lesen→Alphabetisierung",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": false,
+                        "top_category_title": "Deutsch",
+                        "path_ids": "284-3070-286",
+                        "best_material_id": null,
+                        "total_materials": 68,
+                        "title": "Silben & Wörter",
+                        "top_category_id": 284,
+                        "path": "Deutsch→Anfangsunterricht→Lesen lernen",
+                        "short_title": "",
+                        "full_title": "Meta → Deutsch → Anfangsunterricht → Lesen lernen → Silben & Wörter",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "284",
+                            "3070",
+                            "286",
+                            "2755"
+                        ],
+                        "parent_id": 286,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 284,
+                                "id": 284,
+                                "title": "Deutsch",
+                                "slug": "deutsch"
+                            },
+                            {
+                                "material_category_id": 286,
+                                "id": 286,
+                                "title": "Lesen lernen",
+                                "slug": "deutsch/anfangsunterricht/lesen-lernen"
+                            },
+                            {
+                                "material_category_id": 2755,
+                                "id": 2755,
+                                "title": "Silben & Wörter",
+                                "slug": "deutsch/anfangsunterricht/lesen-lernen/silben-woerter"
+                            },
+                            {
+                                "material_category_id": 3070,
+                                "id": 3070,
+                                "title": "Anfangsunterricht",
+                                "slug": "deutsch/anfangsunterricht"
+                            }
+                        ],
+                        "id": 2755,
+                        "full_path": "Meta→Deutsch→Anfangsunterricht→Lesen lernen→Silben & Wörter",
+                        "is_terminal_node": true,
+                        "selected": false
+                    }
+                ],
+                "is_free": false,
+                "cc_status": "online_complete",
+                "custom_pages_total": null,
+                "interactive_id": null,
+                "total_feedbacks": 0,
+                "description_updated_by_human": true,
+                "is_bundle_interactive": null,
+                "author_id": 320,
+                "distribution_type": 1,
+                "status": null,
+                "_score": 0.022727273,
+                "cover_material_file_path": {
+                    "plain": "https://vector.eduki.info/previews/de/58371/eda67bbabee5c617343e8492fd162605824085.png",
+                    "watermarked": "https://vector.eduki.info/covers/de/58371/eda67bbabee5c617343e8492fd162605824085.png"
+                },
+                "top_categories": [
+                    {
+                        "id": 0,
+                        "title": "Meta"
+                    },
+                    {
+                        "id": 284,
+                        "title": "Deutsch"
+                    },
+                    {
+                        "id": 464,
+                        "title": "DaZ/DaF"
+                    }
+                ],
+                "best_in_categories": []
+            },
+            {
+                "cover_path": "",
+                "language": "de",
+                "cover_preview_id": 28600284,
+                "has_fixed_price": false,
+                "price": 2.99,
+                "file_types": [
+                    "pdf"
+                ],
+                "learning_years": [],
+                "is_shadow": false,
+                "author_featured": false,
+                "id": 574573,
+                "slug": "sommer-merkspiel-deutsch-anfangsunterricht-deutsch-als-zweitsprache-wortschatz",
+                "bestseller_rating": 0.0005,
+                "title_updated_by_human": true,
+                "author": {
+                    "world": "de",
+                    "user_id": 10046,
+                    "id": 9956,
+                    "public_name": "Better Teaching Resources I Cindy Seidler",
+                    "slug": "better-teaching-resources-i-cindy-seidler"
+                },
+                "is_completed_by_author": true,
+                "bundle_price_without_discount": null,
+                "material_class_grades": [
+                    {
+                        "id": 1,
+                        "position": 1,
+                        "title": "1. Klasse"
+                    },
+                    {
+                        "id": 2,
+                        "position": 2,
+                        "title": "2. Klasse"
+                    }
+                ],
+                "is_standalone_interactive": false,
+                "material_files": [
+                    {
+                        "type": "material_file"
+                    }
+                ],
+                "tags": [
+                    {
+                        "name": "DEUTSCH - 2. Klasse"
+                    },
+                    {
+                        "name": "DEUTSCH - Grundschule"
+                    },
+                    {
+                        "name": "DEUTSCH - Wortschatz"
+                    },
+                    {
+                        "name": "DEUTSCH - 1. Klasse"
+                    },
+                    {
+                        "name": "DEUTSCH - Sommer"
+                    },
+                    {
+                        "name": "Sommer"
+                    },
+                    {
+                        "name": "Deutsch - Anfangsunterricht"
+                    },
+                    {
+                        "name": "eduki.de"
+                    },
+                    {
+                        "name": "eduki"
+                    },
+                    {
+                        "name": "pdf"
+                    },
+                    {
+                        "name": "Deutsch"
+                    },
+                    {
+                        "name": "Grundschule"
+                    },
+                    {
+                        "name": "DAZ Unterricht"
+                    }
+                ],
+                "is_bundle": false,
+                "has_bib_preview": false,
+                "is_in_yellow_list": false,
+                "description_updated_by_human": true,
+                "author_id": 10046,
+                "status": "activated automatically",
+                "short_description": "Sommer Merkspiel deutsch in der Grundschule (Erstleser) und DAZ mit Kindern / AnfangsunterrichtMit diesen leichten Leseübungen und Zuordnungs - / Sortierspielen üben die Kinder der ersten und zweiten Klasse den Wortschatz - ideal für Deutsch als Zweitsprache mit Kindern oder Erstleser im Anfangsu",
+                "created_at": "2022-03-22 17:43:49",
+                "title": "Sommer Merkspiel Deutsch Anfangsunterricht Deutsch als Zweitsprache Wortschatz",
+                "total_bundle_materials": null,
+                "world": "de",
+                "school_types": [
+                    {
+                        "is_interdisciplinary": false,
+                        "id": 2,
+                        "title": "Grundschule"
+                    }
+                ],
+                "prices": [
+                    {
+                        "country": "DE",
+                        "is_original": true,
+                        "price": 2.99,
+                        "currency": "EUR",
+                        "id": 2245986,
+                        "current_price": 2.99,
+                        "sale_price": null
+                    }
+                ],
+                "material_types": [
+                    {
+                        "tooltip": "Materialien mit einem spielerischen Element – z.B. Rätsel, Quizze, Memorys, Dominos, etc.",
+                        "id": 10,
+                        "title": "Spiele"
+                    },
+                    {
+                        "tooltip": "Wenn dein Material Aufgaben-Karten (nicht Arbeitsblätter) enthält, bitte auswählen.",
+                        "id": 132,
+                        "title": "Aufgabenkarten"
+                    }
+                ],
+                "is_active": true,
+                "average_rating": 0,
+                "total_pages": 6,
+                "seller_segments": [
+                    "Dragon"
+                ],
+                "engagement_score": 0,
+                "sale": null,
+                "material_categories": [
+                    {
+                        "has_children": false,
+                        "top_category_title": "Meta",
+                        "path_ids": null,
+                        "best_material_id": 0,
+                        "total_materials": 0,
+                        "top_category_id": 0,
+                        "title": "Meta",
+                        "path": null,
+                        "full_title": "Meta",
+                        "short_title": "Meta",
+                        "world": null,
+                        "full_path_ids": [
+                            "0"
+                        ],
+                        "parent_id": 0,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 0,
+                                "id": 0,
+                                "title": "Meta",
+                                "slug": null
+                            }
+                        ],
+                        "id": 0,
+                        "full_path": "Meta",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": false,
+                        "top_category_title": "DaZ/DaF",
+                        "path_ids": "464-1920",
+                        "best_material_id": null,
+                        "total_materials": 40,
+                        "title": "Zeit & Kalender",
+                        "top_category_id": 464,
+                        "path": "DaZ/DaF→Wortschatz",
+                        "short_title": "",
+                        "full_title": "Meta → DaZ/DaF → Wortschatz → Zeit & Kalender",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "464",
+                            "1920",
+                            "2736"
+                        ],
+                        "parent_id": 1920,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 464,
+                                "id": 464,
+                                "title": "DaZ/DaF",
+                                "slug": "daz-daf"
+                            },
+                            {
+                                "material_category_id": 1920,
+                                "id": 1920,
+                                "title": "Wortschatz",
+                                "slug": "daz-daf/wortschatz"
+                            },
+                            {
+                                "material_category_id": 2736,
+                                "id": 2736,
+                                "title": "Zeit & Kalender",
+                                "slug": "daz-daf/wortschatz/uhr-jahreszeiten"
+                            }
+                        ],
+                        "id": 2736,
+                        "full_path": "Meta→DaZ/DaF→Wortschatz→Zeit & Kalender",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": false,
+                        "top_category_title": "Deutsch",
+                        "path_ids": "284-3070-286",
+                        "best_material_id": null,
+                        "total_materials": 68,
+                        "title": "Silben & Wörter",
+                        "top_category_id": 284,
+                        "path": "Deutsch→Anfangsunterricht→Lesen lernen",
+                        "short_title": "",
+                        "full_title": "Meta → Deutsch → Anfangsunterricht → Lesen lernen → Silben & Wörter",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "284",
+                            "3070",
+                            "286",
+                            "2755"
+                        ],
+                        "parent_id": 286,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 284,
+                                "id": 284,
+                                "title": "Deutsch",
+                                "slug": "deutsch"
+                            },
+                            {
+                                "material_category_id": 286,
+                                "id": 286,
+                                "title": "Lesen lernen",
+                                "slug": "deutsch/anfangsunterricht/lesen-lernen"
+                            },
+                            {
+                                "material_category_id": 2755,
+                                "id": 2755,
+                                "title": "Silben & Wörter",
+                                "slug": "deutsch/anfangsunterricht/lesen-lernen/silben-woerter"
+                            },
+                            {
+                                "material_category_id": 3070,
+                                "id": 3070,
+                                "title": "Anfangsunterricht",
+                                "slug": "deutsch/anfangsunterricht"
+                            }
+                        ],
+                        "id": 2755,
+                        "full_path": "Meta→Deutsch→Anfangsunterricht→Lesen lernen→Silben & Wörter",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": false,
+                        "top_category_title": "Fachübergreifendes",
+                        "path_ids": "1876-2381",
+                        "best_material_id": null,
+                        "total_materials": 38,
+                        "title": "Sommer",
+                        "top_category_id": 1876,
+                        "path": "Fachübergreifendes→Jahreszeiten & Feste",
+                        "short_title": "",
+                        "full_title": "Meta → Fachübergreifendes → Jahreszeiten & Feste → Sommer",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "1876",
+                            "2381",
+                            "2905"
+                        ],
+                        "parent_id": 2381,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 1876,
+                                "id": 1876,
+                                "title": "Fachübergreifendes",
+                                "slug": "fachuebergreifendes"
+                            },
+                            {
+                                "material_category_id": 2381,
+                                "id": 2381,
+                                "title": "Jahreszeiten & Feste",
+                                "slug": "fachuebergreifendes/jahreszeiten-feste"
+                            },
+                            {
+                                "material_category_id": 2905,
+                                "id": 2905,
+                                "title": "Sommer",
+                                "slug": "fachuebergreifendes/jahreszeiten-feste/sommer"
+                            }
+                        ],
+                        "id": 2905,
+                        "full_path": "Meta→Fachübergreifendes→Jahreszeiten & Feste→Sommer",
+                        "is_terminal_node": true,
+                        "selected": false
+                    }
+                ],
+                "is_free": false,
+                "cc_status": "online_complete",
+                "custom_pages_total": 6,
+                "interactive_id": null,
+                "total_feedbacks": 0,
+                "is_bundle_interactive": null,
+                "distribution_type": 1,
+                "_score": 0.022222223,
+                "cover_material_file_path": {
+                    "plain": "https://vector.eduki.info/previews/de/28600284/364845e2-668e-4c07-8958-0ecf5991b573.png",
+                    "watermarked": "https://vector.eduki.info/covers/de/28600284/364845e2-668e-4c07-8958-0ecf5991b573.png"
+                },
+                "top_categories": [
+                    {
+                        "id": 0,
+                        "title": "Meta"
+                    },
+                    {
+                        "id": 464,
+                        "title": "DaZ/DaF"
+                    },
+                    {
+                        "id": 284,
+                        "title": "Deutsch"
+                    },
+                    {
+                        "id": 1876,
+                        "title": "Fachübergreifendes"
+                    }
+                ],
+                "best_in_categories": []
+            },
+            {
+                "cover_path": "",
+                "language": "de",
+                "cover_preview_id": 7814602,
+                "has_fixed_price": false,
+                "price": 2.99,
+                "file_types": [
+                    "pdf"
+                ],
+                "learning_years": [],
+                "is_shadow": false,
+                "author_featured": false,
+                "id": 42794,
+                "slug": "reimwoerter-bilden-im-deutschunterricht-der-ersten-und-zweiten-klasse",
+                "bestseller_rating": 0.0006,
+                "title_updated_by_human": true,
+                "author": {
+                    "world": "de",
+                    "user_id": 77784,
+                    "id": 77460,
+                    "public_name": "allerlei_fuer_die_schule",
+                    "slug": "allerlei-fuer-die-schule"
+                },
+                "is_completed_by_author": true,
+                "bundle_price_without_discount": null,
+                "material_class_grades": [
+                    {
+                        "id": 1,
+                        "position": 1,
+                        "title": "1. Klasse"
+                    },
+                    {
+                        "id": 2,
+                        "position": 2,
+                        "title": "2. Klasse"
+                    }
+                ],
+                "is_standalone_interactive": false,
+                "material_files": [
+                    {
+                        "type": "material_file"
+                    }
+                ],
+                "tags": [
+                    {
+                        "name": "Deutsch"
+                    },
+                    {
+                        "name": "Reimwörter"
+                    },
+                    {
+                        "name": "updated by author"
+                    },
+                    {
+                        "name": "Reimen"
+                    },
+                    {
+                        "name": "Anfangsunterricht"
+                    },
+                    {
+                        "name": "Phonologische Bewusstheit"
+                    }
+                ],
+                "is_bundle": false,
+                "has_bib_preview": false,
+                "is_in_yellow_list": false,
+                "description_updated_by_human": true,
+                "author_id": 77784,
+                "status": "activated by author",
+                "short_description": "Die Datei enthält Kärtchen, mit deren Hilfe Reimwörter gebildet werden können, bei denen sich jeweils nur die Wortanfänge unterscheiden. So können auf motivierende Art und Weise auch Einsichten in die Rechtschreibung gewonnen werden.Ideal geeignet ist das Material für den Deutschunterricht im",
+                "created_at": "2018-10-02 17:21:54",
+                "title": "Reimwörter bilden im Deutschunterricht der ersten und zweiten Klasse",
+                "total_bundle_materials": null,
+                "world": "de",
+                "school_types": [
+                    {
+                        "is_interdisciplinary": false,
+                        "id": 2,
+                        "title": "Grundschule"
+                    }
+                ],
+                "prices": [
+                    {
+                        "country": "DE",
+                        "is_original": true,
+                        "price": 2.99,
+                        "currency": "EUR",
+                        "id": 1992925,
+                        "current_price": 2.99,
+                        "sale_price": null
+                    }
+                ],
+                "material_types": [
+                    {
+                        "tooltip": "Materialien mit einem spielerischen Element – z.B. Rätsel, Quizze, Memorys, Dominos, etc.",
+                        "id": 10,
+                        "title": "Spiele"
+                    },
+                    {
+                        "tooltip": "Material, dass sich besonders gut für den Förderunterricht, die Arbeit in inklusiven Klassen oder die Arbeit an Förderschulen eignet",
+                        "id": 19,
+                        "title": "Fördermaterial/Inklusion"
+                    }
+                ],
+                "is_active": true,
+                "average_rating": 0,
+                "total_pages": 8,
+                "seller_segments": [],
+                "engagement_score": 0,
+                "sale": null,
+                "material_categories": [
+                    {
+                        "has_children": false,
+                        "top_category_title": "Meta",
+                        "path_ids": null,
+                        "best_material_id": 0,
+                        "total_materials": 0,
+                        "top_category_id": 0,
+                        "title": "Meta",
+                        "path": null,
+                        "full_title": "Meta",
+                        "short_title": "Meta",
+                        "world": null,
+                        "full_path_ids": [
+                            "0"
+                        ],
+                        "parent_id": 0,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 0,
+                                "id": 0,
+                                "title": "Meta",
+                                "slug": null
+                            }
+                        ],
+                        "id": 0,
+                        "full_path": "Meta",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": true,
+                        "top_category_title": "Deutsch",
+                        "path_ids": "284-2924",
+                        "best_material_id": null,
+                        "total_materials": 51,
+                        "title": "Wortschatz",
+                        "top_category_id": 284,
+                        "path": "Deutsch→Sprache untersuchen",
+                        "short_title": "",
+                        "full_title": "Meta → Deutsch → Sprache untersuchen → Wortschatz",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "284",
+                            "2924",
+                            "1961"
+                        ],
+                        "parent_id": 2924,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 284,
+                                "id": 284,
+                                "title": "Deutsch",
+                                "slug": "deutsch"
+                            },
+                            {
+                                "material_category_id": 1961,
+                                "id": 1961,
+                                "title": "Wortschatz",
+                                "slug": "deutsch/sprache-untersuchen/wortschatz"
+                            },
+                            {
+                                "material_category_id": 2924,
+                                "id": 2924,
+                                "title": "Sprache untersuchen",
+                                "slug": "deutsch/sprache-untersuchen"
+                            }
+                        ],
+                        "id": 1961,
+                        "full_path": "Meta→Deutsch→Sprache untersuchen→Wortschatz",
+                        "is_terminal_node": false,
+                        "selected": false
+                    }
+                ],
+                "is_free": false,
+                "cc_status": "online_complete",
+                "custom_pages_total": null,
+                "interactive_id": null,
+                "total_feedbacks": 0,
+                "is_bundle_interactive": null,
+                "distribution_type": 1,
+                "_score": 0.02173913,
+                "cover_material_file_path": {
+                    "plain": "https://vector.eduki.info/previews/de/7814602/b95a25e4-9aeb-11eb-b7cd-165399874619.png",
+                    "watermarked": "https://vector.eduki.info/covers/de/7814602/b95a25e4-9aeb-11eb-b7cd-165399874619.png"
+                },
+                "top_categories": [
+                    {
+                        "id": 0,
+                        "title": "Meta"
+                    },
+                    {
+                        "id": 284,
+                        "title": "Deutsch"
+                    }
+                ],
+                "best_in_categories": []
+            },
+            {
+                "cover_path": "",
+                "language": "de",
+                "cover_preview_id": 9801420,
+                "has_fixed_price": false,
+                "price": 2.99,
+                "file_types": [
+                    "pdf"
+                ],
+                "learning_years": [],
+                "is_shadow": false,
+                "author_featured": true,
+                "id": 394734,
+                "slug": "ideensammlung-fuer-den-deutschunterricht---verfassen-von-texten",
+                "bestseller_rating": 0.0005,
+                "title_updated_by_human": true,
+                "author": {
+                    "world": "de",
+                    "user_id": 323415,
+                    "id": 320376,
+                    "public_name": "te_tr_to",
+                    "slug": "te-tr-to"
+                },
+                "is_completed_by_author": true,
+                "bundle_price_without_discount": null,
+                "material_class_grades": [
+                    {
+                        "id": 2,
+                        "position": 2,
+                        "title": "2. Klasse"
+                    },
+                    {
+                        "id": 3,
+                        "position": 3,
+                        "title": "3. Klasse"
+                    }
+                ],
+                "is_standalone_interactive": false,
+                "material_files": [
+                    {
+                        "type": "material_file"
+                    },
+                    {
+                        "type": "material_file"
+                    },
+                    {
+                        "type": "material_file"
+                    },
+                    {
+                        "type": "sources"
+                    }
+                ],
+                "tags": [
+                    {
+                        "name": "Erste Klasse"
+                    },
+                    {
+                        "name": "zweite Klasse"
+                    },
+                    {
+                        "name": "dritte Klasse"
+                    },
+                    {
+                        "name": "Vierte Klasse"
+                    },
+                    {
+                        "name": "Deutsch"
+                    },
+                    {
+                        "name": "verfassen von texten"
+                    },
+                    {
+                        "name": "Kreatives Schreiben"
+                    },
+                    {
+                        "name": "Schreibanlässe"
+                    },
+                    {
+                        "name": "spielerisch Lernen"
+                    }
+                ],
+                "is_bundle": false,
+                "has_bib_preview": false,
+                "is_in_yellow_list": false,
+                "description_updated_by_human": true,
+                "author_id": 323415,
+                "status": "activated automatically",
+                "short_description": "Das Dokument enthält einige Ideen zum Verfassen von Texten im Deutschunterricht für die 1. bis 4. Klasse.Es handelt sich um eine Ideensammlung.",
+                "created_at": "2021-07-26 13:49:32",
+                "title": "Ideensammlung für den Deutschunterricht - Verfassen von Texten",
+                "total_bundle_materials": null,
+                "world": "de",
+                "school_types": [
+                    {
+                        "is_interdisciplinary": false,
+                        "id": 2,
+                        "title": "Grundschule"
+                    }
+                ],
+                "prices": [
+                    {
+                        "country": "DE",
+                        "is_original": true,
+                        "price": 2.99,
+                        "currency": "EUR",
+                        "id": 2158951,
+                        "current_price": 2.99,
+                        "sale_price": null
+                    }
+                ],
+                "material_types": [
+                    {
+                        "tooltip": "Diesen Filter NUR nehmen, wenn das Material in KEINE der anderen Kategorien reinpasst.",
+                        "id": 5,
+                        "title": "Anderer Materialtyp"
+                    }
+                ],
+                "is_active": true,
+                "average_rating": 0,
+                "total_pages": 8,
+                "seller_segments": [
+                    "Cub"
+                ],
+                "engagement_score": 0,
+                "sale": null,
+                "material_categories": [
+                    {
+                        "has_children": false,
+                        "top_category_title": "Meta",
+                        "path_ids": null,
+                        "best_material_id": 0,
+                        "total_materials": 0,
+                        "top_category_id": 0,
+                        "title": "Meta",
+                        "path": null,
+                        "full_title": "Meta",
+                        "short_title": "Meta",
+                        "world": null,
+                        "full_path_ids": [
+                            "0"
+                        ],
+                        "parent_id": 0,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 0,
+                                "id": 0,
+                                "title": "Meta",
+                                "slug": null
+                            }
+                        ],
+                        "id": 0,
+                        "full_path": "Meta",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": false,
+                        "top_category_title": "Deutsch",
+                        "path_ids": "284-285",
+                        "best_material_id": null,
+                        "total_materials": 32,
+                        "title": "Kreatives Schreiben",
+                        "top_category_id": 284,
+                        "path": "Deutsch→Schreiben",
+                        "short_title": "",
+                        "full_title": "Meta → Deutsch → Schreiben → Kreatives Schreiben",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "284",
+                            "285",
+                            "462"
+                        ],
+                        "parent_id": 285,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 284,
+                                "id": 284,
+                                "title": "Deutsch",
+                                "slug": "deutsch"
+                            },
+                            {
+                                "material_category_id": 285,
+                                "id": 285,
+                                "title": "Schreiben",
+                                "slug": "deutsch/schreiben"
+                            },
+                            {
+                                "material_category_id": 462,
+                                "id": 462,
+                                "title": "Kreatives Schreiben",
+                                "slug": "deutsch/schreiben/kreatives-schreiben"
+                            }
+                        ],
+                        "id": 462,
+                        "full_path": "Meta→Deutsch→Schreiben→Kreatives Schreiben",
+                        "is_terminal_node": true,
+                        "selected": false
+                    }
+                ],
+                "is_free": false,
+                "cc_status": "online_complete",
+                "custom_pages_total": 8,
+                "interactive_id": null,
+                "total_feedbacks": 0,
+                "is_bundle_interactive": null,
+                "distribution_type": 1,
+                "_score": 0.021276595,
+                "cover_material_file_path": {
+                    "plain": "https://vector.eduki.info/previews/de/9801420/8c4845d0-ee07-11eb-b694-168610828262.png",
+                    "watermarked": "https://vector.eduki.info/covers/de/9801420/8c4845d0-ee07-11eb-b694-168610828262.png"
+                },
+                "top_categories": [
+                    {
+                        "id": 0,
+                        "title": "Meta"
+                    },
+                    {
+                        "id": 284,
+                        "title": "Deutsch"
+                    }
+                ],
+                "best_in_categories": []
+            },
+            {
+                "short_description": "Lesefächer sind ein bewährtes Übungsformat der Montessoripädagogik. Sie bieten den Kindern die Möglichkeit, eigenständig und effektiv das lautsynthetisierende Erlesen von Wörtern zu üben.  Dieses Material ist auch im \"Komplettpaket - Freiarbeitsmaterial Grundschule Klasse 1-4\" enthalten.   ",
+                "cover_path": "",
+                "created_at": "2016-07-31 07:04:52",
+                "language": "de",
+                "cover_preview_id": 58391,
+                "title": "48 Lesefächer - zweisilbige Wörter -Grundwortschatz Deutsch - Lesen lernen",
+                "total_bundle_materials": null,
+                "has_fixed_price": false,
+                "world": "de",
+                "school_types": [
+                    {
+                        "is_interdisciplinary": false,
+                        "id": 2,
+                        "title": "Grundschule"
+                    }
+                ],
+                "price": 1.99,
+                "file_types": [
+                    "pdf"
+                ],
+                "learning_years": [],
+                "is_shadow": false,
+                "author_featured": false,
+                "id": 3386,
+                "prices": [
+                    {
+                        "country": "DE",
+                        "is_original": true,
+                        "price": 1.99,
+                        "currency": "EUR",
+                        "id": 1958155,
+                        "current_price": 1.99,
+                        "sale_price": null
+                    }
+                ],
+                "slug": "48-lesefacher-zweisilbige-worter-grundwortschatz-deutsch-lesen-lernen",
+                "material_types": [
+                    {
+                        "tooltip": "Materialien mit einem spielerischen Element – z.B. Rätsel, Quizze, Memorys, Dominos, etc.",
+                        "id": 10,
+                        "title": "Spiele"
+                    }
+                ],
+                "bestseller_rating": 0.646,
+                "is_active": true,
+                "title_updated_by_human": true,
+                "author": {
+                    "world": "de",
+                    "user_id": 320,
+                    "id": 302,
+                    "public_name": "Bianka Blöcker",
+                    "slug": "bianka-bloecker"
+                },
+                "is_completed_by_author": true,
+                "average_rating": 0,
+                "total_pages": 52,
+                "bundle_price_without_discount": null,
+                "material_class_grades": [
+                    {
+                        "id": 1,
+                        "position": 1,
+                        "title": "1. Klasse"
+                    },
+                    {
+                        "id": 2,
+                        "position": 2,
+                        "title": "2. Klasse"
+                    }
+                ],
+                "is_standalone_interactive": false,
+                "seller_segments": [],
+                "material_files": [
+                    {
+                        "type": "material_file"
+                    },
+                    {
+                        "type": "material_file"
+                    }
+                ],
+                "is_bundle": false,
+                "engagement_score": 2.5977431457335e-57,
+                "sale": null,
+                "has_bib_preview": false,
+                "is_in_yellow_list": false,
+                "material_categories": [
+                    {
+                        "has_children": false,
+                        "top_category_title": "Meta",
+                        "path_ids": null,
+                        "best_material_id": 0,
+                        "total_materials": 0,
+                        "top_category_id": 0,
+                        "title": "Meta",
+                        "path": null,
+                        "full_title": "Meta",
+                        "short_title": "Meta",
+                        "world": null,
+                        "full_path_ids": [
+                            "0"
+                        ],
+                        "parent_id": 0,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 0,
+                                "id": 0,
+                                "title": "Meta",
+                                "slug": null
+                            }
+                        ],
+                        "id": 0,
+                        "full_path": "Meta",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": true,
+                        "top_category_title": "Deutsch",
+                        "path_ids": "284-3070",
+                        "best_material_id": null,
+                        "total_materials": 104,
+                        "title": "Lesen lernen",
+                        "top_category_id": 284,
+                        "path": "Deutsch→Anfangsunterricht",
+                        "short_title": "",
+                        "full_title": "Meta → Deutsch → Anfangsunterricht → Lesen lernen",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "284",
+                            "3070",
+                            "286"
+                        ],
+                        "parent_id": 3070,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 284,
+                                "id": 284,
+                                "title": "Deutsch",
+                                "slug": "deutsch"
+                            },
+                            {
+                                "material_category_id": 286,
+                                "id": 286,
+                                "title": "Lesen lernen",
+                                "slug": "deutsch/anfangsunterricht/lesen-lernen"
+                            },
+                            {
+                                "material_category_id": 3070,
+                                "id": 3070,
+                                "title": "Anfangsunterricht",
+                                "slug": "deutsch/anfangsunterricht"
+                            }
+                        ],
+                        "id": 286,
+                        "full_path": "Meta→Deutsch→Anfangsunterricht→Lesen lernen",
+                        "is_terminal_node": false,
+                        "selected": false
+                    },
+                    {
+                        "has_children": false,
+                        "top_category_title": "DaZ/DaF",
+                        "path_ids": "464-465",
+                        "best_material_id": null,
+                        "total_materials": 29,
+                        "title": "Alphabetisierung",
+                        "top_category_id": 464,
+                        "path": "DaZ/DaF→Lesen",
+                        "short_title": "",
+                        "full_title": "Meta → DaZ/DaF → Lesen → Alphabetisierung",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "464",
+                            "465",
+                            "2462"
+                        ],
+                        "parent_id": 465,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 464,
+                                "id": 464,
+                                "title": "DaZ/DaF",
+                                "slug": "daz-daf"
+                            },
+                            {
+                                "material_category_id": 465,
+                                "id": 465,
+                                "title": "Lesen",
+                                "slug": "daz-daf/lesen"
+                            },
+                            {
+                                "material_category_id": 2462,
+                                "id": 2462,
+                                "title": "Alphabetisierung",
+                                "slug": "daz-daf/lesen/alphabetisierung"
+                            }
+                        ],
+                        "id": 2462,
+                        "full_path": "Meta→DaZ/DaF→Lesen→Alphabetisierung",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": false,
+                        "top_category_title": "Deutsch",
+                        "path_ids": "284-3070-286",
+                        "best_material_id": null,
+                        "total_materials": 68,
+                        "title": "Silben & Wörter",
+                        "top_category_id": 284,
+                        "path": "Deutsch→Anfangsunterricht→Lesen lernen",
+                        "short_title": "",
+                        "full_title": "Meta → Deutsch → Anfangsunterricht → Lesen lernen → Silben & Wörter",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "284",
+                            "3070",
+                            "286",
+                            "2755"
+                        ],
+                        "parent_id": 286,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 284,
+                                "id": 284,
+                                "title": "Deutsch",
+                                "slug": "deutsch"
+                            },
+                            {
+                                "material_category_id": 286,
+                                "id": 286,
+                                "title": "Lesen lernen",
+                                "slug": "deutsch/anfangsunterricht/lesen-lernen"
+                            },
+                            {
+                                "material_category_id": 2755,
+                                "id": 2755,
+                                "title": "Silben & Wörter",
+                                "slug": "deutsch/anfangsunterricht/lesen-lernen/silben-woerter"
+                            },
+                            {
+                                "material_category_id": 3070,
+                                "id": 3070,
+                                "title": "Anfangsunterricht",
+                                "slug": "deutsch/anfangsunterricht"
+                            }
+                        ],
+                        "id": 2755,
+                        "full_path": "Meta→Deutsch→Anfangsunterricht→Lesen lernen→Silben & Wörter",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": true,
+                        "top_category_title": "Deutsch",
+                        "path_ids": "284",
+                        "best_material_id": 924476,
+                        "total_materials": 342,
+                        "title": "Anfangsunterricht",
+                        "top_category_id": 284,
+                        "path": "Deutsch",
+                        "short_title": "",
+                        "full_title": "Meta → Deutsch → Anfangsunterricht",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "284",
+                            "3070"
+                        ],
+                        "parent_id": 284,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 284,
+                                "id": 284,
+                                "title": "Deutsch",
+                                "slug": "deutsch"
+                            },
+                            {
+                                "material_category_id": 3070,
+                                "id": 3070,
+                                "title": "Anfangsunterricht",
+                                "slug": "deutsch/anfangsunterricht"
+                            }
+                        ],
+                        "id": 3070,
+                        "full_path": "Meta→Deutsch→Anfangsunterricht",
+                        "is_terminal_node": false,
+                        "selected": false
+                    }
+                ],
+                "is_free": false,
+                "cc_status": "online_complete",
+                "custom_pages_total": null,
+                "interactive_id": null,
+                "total_feedbacks": 0,
+                "description_updated_by_human": true,
+                "is_bundle_interactive": null,
+                "author_id": 320,
+                "distribution_type": 1,
+                "status": null,
+                "_score": 0.020833334,
+                "cover_material_file_path": {
+                    "plain": "https://vector.eduki.info/previews/de/58391/d5f5bf355cd32f3144233ef4df162605823390.png",
+                    "watermarked": "https://vector.eduki.info/covers/de/58391/d5f5bf355cd32f3144233ef4df162605823390.png"
+                },
+                "top_categories": [
+                    {
+                        "id": 0,
+                        "title": "Meta"
+                    },
+                    {
+                        "id": 284,
+                        "title": "Deutsch"
+                    },
+                    {
+                        "id": 464,
+                        "title": "DaZ/DaF"
+                    }
+                ],
+                "best_in_categories": []
+            },
+            {
+                "short_description": "Klassenarbeit zu den Wortarten. Ich habe sie in Klasse 5/6 geschrieben. In pdf. und power point Format. Bearbeitbar. ",
+                "cover_path": "",
+                "created_at": "2022-11-06 20:01:39",
+                "language": "de",
+                "cover_preview_id": 18916554,
+                "title": "Klassenarbeit I Arbeit I Deutsch I Wortarten",
+                "total_bundle_materials": null,
+                "has_fixed_price": false,
+                "world": "de",
+                "school_types": [
+                    {
+                        "is_interdisciplinary": false,
+                        "id": 2,
+                        "title": "Grundschule"
+                    }
+                ],
+                "price": 2.99,
+                "file_types": [
+                    "pdf",
+                    "pptx"
+                ],
+                "learning_years": [],
+                "is_shadow": false,
+                "author_featured": false,
+                "id": 735539,
+                "prices": [
+                    {
+                        "country": "DE",
+                        "is_original": true,
+                        "price": 2.99,
+                        "currency": "EUR",
+                        "id": 2337006,
+                        "current_price": 2.99,
+                        "sale_price": null
+                    }
+                ],
+                "slug": "klassenarbeit-i-arbeit-i-deutsch-i-wortarten",
+                "material_types": [
+                    {
+                        "tooltip": "Arbeitsblätter zum Ausfüllen oder mit Arbeitsaufträgen",
+                        "id": 1,
+                        "title": "Arbeitsblätter"
+                    },
+                    {
+                        "tooltip": "Hier nur Materialien einordnen, die sich vom Umfang (1 Klassenstunde & mehr) und der formalen Struktur (Name, Klasse, etc.) als Klassenarbeit eignen. Kürzere Leistungsüberprüfungen unter „Tests“ einordnen.",
+                        "id": 13,
+                        "title": "Klassenarbeiten"
+                    }
+                ],
+                "bestseller_rating": 47.0558,
+                "is_active": true,
+                "title_updated_by_human": true,
+                "author": {
+                    "world": "de",
+                    "user_id": 496901,
+                    "id": 493667,
+                    "public_name": "teach.for.fun",
+                    "slug": "teach-for-fun"
+                },
+                "is_completed_by_author": true,
+                "average_rating": 0,
+                "total_pages": 4,
+                "bundle_price_without_discount": null,
+                "material_class_grades": [
+                    {
+                        "id": 4,
+                        "position": 4,
+                        "title": "4. Klasse"
+                    },
+                    {
+                        "id": 5,
+                        "position": 5,
+                        "title": "5. Klasse"
+                    }
+                ],
+                "is_standalone_interactive": false,
+                "seller_segments": [
+                    "Bear"
+                ],
+                "material_files": [
+                    {
+                        "type": "material_file"
+                    },
+                    {
+                        "type": "material_file"
+                    },
+                    {
+                        "type": "sources"
+                    }
+                ],
+                "is_bundle": false,
+                "engagement_score": 9.9024286193685e-6,
+                "sale": null,
+                "has_bib_preview": false,
+                "is_in_yellow_list": false,
+                "material_categories": [
+                    {
+                        "has_children": false,
+                        "top_category_title": "Meta",
+                        "path_ids": null,
+                        "best_material_id": 0,
+                        "total_materials": 0,
+                        "top_category_id": 0,
+                        "title": "Meta",
+                        "path": null,
+                        "full_title": "Meta",
+                        "short_title": "Meta",
+                        "world": null,
+                        "full_path_ids": [
+                            "0"
+                        ],
+                        "parent_id": 0,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 0,
+                                "id": 0,
+                                "title": "Meta",
+                                "slug": null
+                            }
+                        ],
+                        "id": 0,
+                        "full_path": "Meta",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": true,
+                        "top_category_title": "Deutsch",
+                        "path_ids": "284-2924-334",
+                        "best_material_id": null,
+                        "total_materials": 29,
+                        "title": "Wortarten",
+                        "top_category_id": 284,
+                        "path": "Deutsch→Sprache untersuchen→Grammatik",
+                        "short_title": "",
+                        "full_title": "Meta → Deutsch → Sprache untersuchen → Grammatik → Wortarten",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "284",
+                            "2924",
+                            "334",
+                            "335"
+                        ],
+                        "parent_id": 334,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 284,
+                                "id": 284,
+                                "title": "Deutsch",
+                                "slug": "deutsch"
+                            },
+                            {
+                                "material_category_id": 334,
+                                "id": 334,
+                                "title": "Grammatik",
+                                "slug": "deutsch/sprache-untersuchen/grammatik"
+                            },
+                            {
+                                "material_category_id": 335,
+                                "id": 335,
+                                "title": "Wortarten",
+                                "slug": "deutsch/sprache-untersuchen/grammatik/wortarten"
+                            },
+                            {
+                                "material_category_id": 2924,
+                                "id": 2924,
+                                "title": "Sprache untersuchen",
+                                "slug": "deutsch/sprache-untersuchen"
+                            }
+                        ],
+                        "id": 335,
+                        "full_path": "Meta→Deutsch→Sprache untersuchen→Grammatik→Wortarten",
+                        "is_terminal_node": false,
+                        "selected": false
+                    }
+                ],
+                "is_free": false,
+                "cc_status": "online_complete",
+                "custom_pages_total": 4,
+                "interactive_id": null,
+                "total_feedbacks": 0,
+                "description_updated_by_human": true,
+                "is_bundle_interactive": null,
+                "author_id": 496901,
+                "distribution_type": 1,
+                "status": "activated by admin",
+                "_score": 0.020408163,
+                "cover_material_file_path": {
+                    "plain": "https://vector.eduki.info/previews/de/18916554/6b436a1f-7595-436e-a040-172521686620.png",
+                    "watermarked": "https://vector.eduki.info/covers/de/18916554/6b436a1f-7595-436e-a040-172521686620.png"
+                },
+                "top_categories": [
+                    {
+                        "id": 0,
+                        "title": "Meta"
+                    },
+                    {
+                        "id": 284,
+                        "title": "Deutsch"
+                    }
+                ],
+                "best_in_categories": []
+            },
+            {
+                "cover_path": "",
+                "language": "de",
+                "cover_preview_id": 8247764,
+                "has_fixed_price": false,
+                "price": 3.99,
+                "file_types": [
+                    "pdf"
+                ],
+                "learning_years": [],
+                "is_shadow": false,
+                "author_featured": false,
+                "id": 329246,
+                "slug": "das-kann-ich-schon-lernstandserhebung-deutsch-klasse-1",
+                "bestseller_rating": 13.3689,
+                "title_updated_by_human": true,
+                "author": {
+                    "world": "de",
+                    "user_id": 127651,
+                    "id": 126746,
+                    "public_name": "nekoneko",
+                    "slug": "nekoneko"
+                },
+                "is_completed_by_author": true,
+                "bundle_price_without_discount": null,
+                "material_class_grades": [
+                    {
+                        "id": 1,
+                        "position": 1,
+                        "title": "1. Klasse"
+                    }
+                ],
+                "is_standalone_interactive": false,
+                "material_files": [
+                    {
+                        "type": "material_file"
+                    },
+                    {
+                        "type": "material_file"
+                    },
+                    {
+                        "type": "material_file"
+                    },
+                    {
+                        "type": "material_file"
+                    }
+                ],
+                "tags": [
+                    {
+                        "name": "Lernstandserhebung"
+                    },
+                    {
+                        "name": "Anfangsunterricht"
+                    },
+                    {
+                        "name": "Erstlesen"
+                    },
+                    {
+                        "name": "Schreiben"
+                    },
+                    {
+                        "name": "Deutsch"
+                    },
+                    {
+                        "name": "1. Klasse"
+                    },
+                    {
+                        "name": "Einschulung"
+                    },
+                    {
+                        "name": "Schulstart"
+                    },
+                    {
+                        "name": "Beurteilung"
+                    },
+                    {
+                        "name": "Kompetenzen"
+                    }
+                ],
+                "is_bundle": false,
+                "has_bib_preview": false,
+                "is_in_yellow_list": false,
+                "description_updated_by_human": true,
+                "author_id": 127651,
+                "status": "activated automatically",
+                "short_description": "Diese drei Lernstandserhebungen dienen zur Abklärung der Lese- und Schreibkompetenzen der neuen Schulkinder im Anfangsunterricht der 1. Klasse.In das erste leere Feld schreiben die Kinder ein von der Lehrperson diktiertes (lautgetreues) Wort.Der Schwierigkeitsgrad steigt kontinuierlich an, damit ma",
+                "created_at": "2021-05-10 18:33:02",
+                "title": "Das kann ich schon! Lernstandserhebung Deutsch | Klasse 1",
+                "total_bundle_materials": null,
+                "world": "de",
+                "school_types": [
+                    {
+                        "is_interdisciplinary": false,
+                        "id": 2,
+                        "title": "Grundschule"
+                    }
+                ],
+                "prices": [
+                    {
+                        "country": "DE",
+                        "is_original": true,
+                        "price": 3.99,
+                        "currency": "EUR",
+                        "id": 2136104,
+                        "current_price": 3.99,
+                        "sale_price": null
+                    }
+                ],
+                "material_types": [
+                    {
+                        "tooltip": "Arbeitsblätter zum Ausfüllen oder mit Arbeitsaufträgen",
+                        "id": 1,
+                        "title": "Arbeitsblätter"
+                    },
+                    {
+                        "tooltip": "Test für die Schüler*innen",
+                        "id": 9,
+                        "title": "Test"
+                    }
+                ],
+                "is_active": true,
+                "average_rating": 0,
+                "total_pages": 14,
+                "seller_segments": [],
+                "engagement_score": 8.2010137663605e-17,
+                "sale": null,
+                "material_categories": [
+                    {
+                        "has_children": false,
+                        "top_category_title": "Meta",
+                        "path_ids": null,
+                        "best_material_id": 0,
+                        "total_materials": 0,
+                        "top_category_id": 0,
+                        "title": "Meta",
+                        "path": null,
+                        "full_title": "Meta",
+                        "short_title": "Meta",
+                        "world": null,
+                        "full_path_ids": [
+                            "0"
+                        ],
+                        "parent_id": 0,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 0,
+                                "id": 0,
+                                "title": "Meta",
+                                "slug": null
+                            }
+                        ],
+                        "id": 0,
+                        "full_path": "Meta",
+                        "is_terminal_node": true,
+                        "selected": false
+                    },
+                    {
+                        "has_children": true,
+                        "top_category_title": "Deutsch",
+                        "path_ids": "284-3070",
+                        "best_material_id": null,
+                        "total_materials": 104,
+                        "title": "Lesen lernen",
+                        "top_category_id": 284,
+                        "path": "Deutsch→Anfangsunterricht",
+                        "short_title": "",
+                        "full_title": "Meta → Deutsch → Anfangsunterricht → Lesen lernen",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "284",
+                            "3070",
+                            "286"
+                        ],
+                        "parent_id": 3070,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 284,
+                                "id": 284,
+                                "title": "Deutsch",
+                                "slug": "deutsch"
+                            },
+                            {
+                                "material_category_id": 286,
+                                "id": 286,
+                                "title": "Lesen lernen",
+                                "slug": "deutsch/anfangsunterricht/lesen-lernen"
+                            },
+                            {
+                                "material_category_id": 3070,
+                                "id": 3070,
+                                "title": "Anfangsunterricht",
+                                "slug": "deutsch/anfangsunterricht"
+                            }
+                        ],
+                        "id": 286,
+                        "full_path": "Meta→Deutsch→Anfangsunterricht→Lesen lernen",
+                        "is_terminal_node": false,
+                        "selected": false
+                    },
+                    {
+                        "has_children": true,
+                        "top_category_title": "Deutsch",
+                        "path_ids": "284-3070",
+                        "best_material_id": null,
+                        "total_materials": 70,
+                        "title": "Schreiben lernen",
+                        "top_category_id": 284,
+                        "path": "Deutsch→Anfangsunterricht",
+                        "short_title": "",
+                        "full_title": "Meta → Deutsch → Anfangsunterricht → Schreiben lernen",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "284",
+                            "3070",
+                            "2548"
+                        ],
+                        "parent_id": 3070,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 284,
+                                "id": 284,
+                                "title": "Deutsch",
+                                "slug": "deutsch"
+                            },
+                            {
+                                "material_category_id": 2548,
+                                "id": 2548,
+                                "title": "Schreiben lernen",
+                                "slug": "deutsch/anfangsunterricht/schreiben-lernen"
+                            },
+                            {
+                                "material_category_id": 3070,
+                                "id": 3070,
+                                "title": "Anfangsunterricht",
+                                "slug": "deutsch/anfangsunterricht"
+                            }
+                        ],
+                        "id": 2548,
+                        "full_path": "Meta→Deutsch→Anfangsunterricht→Schreiben lernen",
+                        "is_terminal_node": false,
+                        "selected": false
+                    },
+                    {
+                        "has_children": true,
+                        "top_category_title": "Fachübergreifendes",
+                        "path_ids": "1876",
+                        "best_material_id": 1697572,
+                        "total_materials": 76,
+                        "title": "Bewerten & Beurteilen",
+                        "top_category_id": 1876,
+                        "path": "Fachübergreifendes",
+                        "short_title": "",
+                        "full_title": "Meta → Fachübergreifendes → Bewerten & Beurteilen",
+                        "world": "de",
+                        "full_path_ids": [
+                            "0",
+                            "1876",
+                            "3263"
+                        ],
+                        "parent_id": 1876,
+                        "full_path_with_landing_pages": [
+                            {
+                                "material_category_id": 1876,
+                                "id": 1876,
+                                "title": "Fachübergreifendes",
+                                "slug": "fachuebergreifendes"
+                            },
+                            {
+                                "material_category_id": 3263,
+                                "id": 3263,
+                                "title": "Bewerten & Beurteilen",
+                                "slug": "fachuebergreifendes/bewerten-beurteilen"
+                            }
+                        ],
+                        "id": 3263,
+                        "full_path": "Meta→Fachübergreifendes→Bewerten & Beurteilen",
+                        "is_terminal_node": false,
+                        "selected": false
+                    }
+                ],
+                "is_free": false,
+                "cc_status": "online_complete",
+                "custom_pages_total": 14,
+                "interactive_id": null,
+                "total_feedbacks": 0,
+                "is_bundle_interactive": null,
+                "distribution_type": 1,
+                "_score": 0.02,
+                "cover_material_file_path": {
+                    "plain": "https://vector.eduki.info/previews/de/8247764/65a53f8c-b1ad-11eb-8f09-172502476699.png",
+                    "watermarked": "https://vector.eduki.info/covers/de/8247764/65a53f8c-b1ad-11eb-8f09-172502476699.png"
+                },
+                "top_categories": [
+                    {
+                        "id": 0,
+                        "title": "Meta"
+                    },
+                    {
+                        "id": 284,
+                        "title": "Deutsch"
+                    },
+                    {
+                        "id": 1876,
+                        "title": "Fachübergreifendes"
+                    }
+                ],
+                "best_in_categories": []
+            }
+        ],
+        "total": 11
+    },
+    "suggestions": {
+        "spell_check": "learning german word"
+    },
+    "filters": {
+        "taxonomy_filters": [
+            {
+                "id": 284,
+                "total": 14,
+                "title": "Deutsch"
+            },
+            {
+                "id": 464,
+                "total": 5,
+                "title": "DaZ/DaF"
+            },
+            {
+                "id": 1876,
+                "total": 2,
+                "title": "Fachübergreifendes"
+            },
+            {
+                "id": 468,
+                "total": 1,
+                "title": "Englisch"
+            },
+            {
+                "id": 1769,
+                "total": 1,
+                "title": "Sachunterricht"
+            }
+        ],
+        "taxonomy_parents": [],
+        "bundle": [
+            {
+                "id": 0,
+                "total": 11,
+                "title": "Einzelmaterial"
+            }
+        ],
+        "class_grades": [
+            {
+                "id": 1,
+                "total": 7,
+                "title": "1. Klasse"
+            },
+            {
+                "id": 2,
+                "total": 7,
+                "title": "2. Klasse"
+            },
+            {
+                "id": 3,
+                "total": 3,
+                "title": "3. Klasse"
+            },
+            {
+                "id": 4,
+                "total": 2,
+                "title": "4. Klasse"
+            },
+            {
+                "id": 5,
+                "total": 1,
+                "title": "5. Klasse"
+            }
+        ],
+        "learning_years": [
+            {
+                "id": 1,
+                "total": 2,
+                "title": "1. Lernjahr"
+            }
+        ],
+        "material_types": [
+            {
+                "id": 10,
+                "total": 4,
+                "title": "Spiele"
+            },
+            {
+                "id": 1,
+                "total": 3,
+                "title": "Arbeitsblätter"
+            },
+            {
+                "id": 5,
+                "total": 2,
+                "title": "Anderer Materialtyp"
+            },
+            {
+                "id": 19,
+                "total": 2,
+                "title": "Fördermaterial/Inklusion"
+            },
+            {
+                "id": 6,
+                "total": 1,
+                "title": "Präsentationen/Tafelbilder"
+            },
+            {
+                "id": 9,
+                "total": 1,
+                "title": "Test"
+            },
+            {
+                "id": 11,
+                "total": 1,
+                "title": "Poster"
+            },
+            {
+                "id": 13,
+                "total": 1,
+                "title": "Klassenarbeiten"
+            },
+            {
+                "id": 16,
+                "total": 1,
+                "title": "Mal- und Bastelvorlagen"
+            },
+            {
+                "id": 18,
+                "total": 1,
+                "title": "Bildkarten"
+            },
+            {
+                "id": 132,
+                "total": 1,
+                "title": "Aufgabenkarten"
+            },
+            {
+                "id": 134,
+                "total": 1,
+                "title": "Interaktives Material"
+            }
+        ],
+        "school_types": [
+            {
+                "id": 2,
+                "total": 11,
+                "title": "Grundschule"
+            }
+        ],
+        "file_types": [
+            {
+                "id": "pdf",
+                "title": "pdf",
+                "total": 11
+            },
+            {
+                "id": "pptx",
+                "title": "pptx",
+                "total": 1
+            }
+        ],
+        "formats": [
+            {
+                "id": 0,
+                "title": "Interactive",
+                "total": 0
+            },
+            {
+                "id": 1,
+                "title": "Download",
+                "total": 11
+            },
+            {
+                "id": 2,
+                "title": "Downloads & Interactive",
+                "total": 0
+            }
+        ],
+        "interactive_types": [],
+        "price": [
+            {
+                "id": "3",
+                "title": "kostenlos",
+                "total": 1
+            },
+            {
+                "id": "0",
+                "title": "<2EUR",
+                "total": 2
+            },
+            {
+                "id": "4",
+                "title": "0EUR+",
+                "total": 10
+            },
+            {
+                "id": "1",
+                "title": "2EUR — 5EUR",
+                "total": 9
+            },
+            {
+                "id": "2",
+                "title": "5EUR+",
+                "total": 0
+            }
+        ],
+        "price_sales": [
+            {
+                "id": 1,
+                "title": "SALE",
+                "total": 0
+            }
+        ],
+        "total_pages": [
+            {
+                "id": "0",
+                "title": "<5 Seiten",
+                "total": 1
+            },
+            {
+                "id": "1",
+                "title": "5 — 20 Seiten",
+                "total": 8
+            },
+            {
+                "id": "2",
+                "title": "20+ Seiten",
+                "total": 3
+            }
+        ]
+    },
+    "auto_suggest": {
+        "modified_query": "learning german words",
+        "original_query": "learning german words",
+        "auto_applied_filters": []
+    },
+    "serve_metrics": {
+        "search_term": "learning german words",
+        "hits_count": 11,
+        "top_results_count": 11,
+        "category_intent_applied": false,
+        "grade_intent_applied": false,
+        "top_score_margin": 0.09,
+        "category_coverage": null,
+        "grade_coverage": null,
+        "intent_coverage": null,
+        "category_concentration": 0.07,
+        "grade_concentration": 0.28,
+        "bundle_share": 0,
+        "results_quality": {
+            "results_quality_label": "NOT_GOOD_RESULTS",
+            "reasons": [
+                "margin < 0.35"
+            ]
+        }
+    },
+    "intents_applied": null
+}

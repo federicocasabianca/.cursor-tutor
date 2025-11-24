@@ -6,6 +6,13 @@ import os
 import re
 from pathlib import Path
 
+INTENT_GROUPS = {
+    'no_intent': 'no-intent',
+    'category_intent': 'categories',
+    'grade_intent': 'grade-level',
+    'combined_intent': 'combined',
+}
+
 def extract_queries_from_markdown(md_file_path):
     """Extract query names from markdown table."""
     queries = []
@@ -33,6 +40,8 @@ def create_folders():
     base_dir = Path(__file__).parent
     queries_dir = base_dir / 'queries'
     queries_dir.mkdir(exist_ok=True)
+    for group in INTENT_GROUPS.values():
+        (queries_dir / group).mkdir(exist_ok=True)
     
     # Intent files to process
     intent_files = [
@@ -60,7 +69,10 @@ def create_folders():
         
         for query in queries:
             folder_name = sanitize_folder_name(query)
-            query_dir = queries_dir / folder_name
+            group_dir_name = INTENT_GROUPS.get(intent_type, intent_type)
+            group_dir = queries_dir / group_dir_name
+            group_dir.mkdir(exist_ok=True)
+            query_dir = group_dir / folder_name
             query_dir.mkdir(exist_ok=True)
             
             # Create a metadata file with the original query name
