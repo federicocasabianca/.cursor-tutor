@@ -15,7 +15,7 @@ The script processes all ZIP files in the `taxonomy/` directory and classifies q
 ```bash
 cd /Users/federico.casabianca/.cursor-tutor/material_type_dataset
 source venv/bin/activate
-python extract_golden_queries.py
+python scripts/extract_golden_queries.py
 ```
 
 ## Intent Classification Logic

@@ -4,10 +4,13 @@ import pandas as pd
 import re
 from pathlib import Path
 
+# Resolve project root as the directory above this script (../)
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
 # ---------- CONFIG ----------
-taxonomy_dir = Path("/Users/federico.casabianca/.cursor-tutor/material_type_dataset/taxonomy")
+taxonomy_dir = PROJECT_ROOT / "data" / "taxonomy"
 zip_files = list(taxonomy_dir.glob("*.zip"))  # All ZIP files
-cat_path = Path("/Users/federico.casabianca/.cursor-tutor/material_type_dataset/taxonomy/taxonomy_categories.csv")
+cat_path = taxonomy_dir / "taxonomy_categories.csv"
 freq_threshold = 100  # only include queries with frequency > X
 # ----------------------------
 

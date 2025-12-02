@@ -4,15 +4,18 @@ import pandas as pd
 from pathlib import Path
 from collections import defaultdict
 
+# Resolve project root as the directory above this script (../)
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
 # ---------- CONFIG ----------
-taxonomy_dir = Path("/Users/federico.casabianca/.cursor-tutor/material_type_dataset/taxonomy")
+taxonomy_dir = PROJECT_ROOT / "data" / "taxonomy"
 zip_files = list(taxonomy_dir.glob("*.zip"))  # All ZIP files
 cat_path = taxonomy_dir / "taxonomy_categories.csv"
 grade_path = taxonomy_dir / "taxonomy_grade_levels.csv"
 material_path = taxonomy_dir / "taxonomy_material_type.csv"
 freq_threshold = 100  # only include queries with frequency > X
 top_n = 20  # Get top 20 queries per bucket
-output_file = Path("/Users/federico.casabianca/.cursor-tutor/material_type_dataset/golden_queries.json")
+output_file = PROJECT_ROOT / "data" / "golden_queries.json"
 # ----------------------------
 
 def normalize(text):

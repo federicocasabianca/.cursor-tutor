@@ -30,6 +30,9 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Sequence, Set, Tuple
 
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+
 TAXONOMY_FILES = (
     "taxonomy_grade_levels.csv",
     "taxonomy_schooltypes.csv",
@@ -49,7 +52,7 @@ def parse_args() -> argparse.Namespace:
             "across all JSON lines contained in ZIP archives."
         )
     )
-    default_taxonomy_dir = Path(__file__).resolve().parent / "taxonomy"
+    default_taxonomy_dir = PROJECT_ROOT / "data" / "taxonomy"
     parser.add_argument(
         "--taxonomy-dir",
         type=Path,
