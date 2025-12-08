@@ -3,6 +3,14 @@
 **Period:** [Start date] - [End date]
 **Channel:** in_app_feedback
 
+**Channel context:** This Slack channel is fed only by specific in‑app feedback events and is therefore **heavily skewed towards negative sentiment**:
+
+- **FEEDBACK_TYPE: Account Deletion Request**
+- **Negative feedback:** users selecting the `:(` emoji in the in‑app feedback widget
+- **Positive feedback:** users selecting the `:)` emoji in the in‑app feedback widget (typically a minority of events)
+
+As a result, **most messages in this channel are either account deletion requests or negative feedback**, and the statistics below should not be interpreted as representative of overall user sentiment.
+
 ## Total Messages
 
 **Total feedback messages:** [Number] messages (excluding channel join/leave events and team member messages)
@@ -19,18 +27,6 @@ Based on language analysis of feedback:
 - **France (FR):** [Number] messages (French language)
 - **Greece (GR):** [Number] messages (Greek language)
 - **Other:** [Number] messages ([Languages])
-
----
-
-## Positive Quotes
-
-[Add positive feedback quotes here with user IDs and translations]
-
-*Example format:*
-1. **User [ID] ([Country]):** "[Original quote]" ([Translation])
-   - [Brief context or explanation]
-
-*Note: If limited positive feedback, add a note about the overall sentiment.*
 
 ---
 
@@ -67,16 +63,7 @@ Based on language analysis of feedback:
 
 ## Summary Statistics
 
-- **Total Feedback Messages:** [Number]
-- **Positive Feedback:** [Number] messages ([Percentage]%)
-- **Bug Reports:** [Number] messages ([Percentage]%)
-- **Feature Requests:** [Number] messages ([Percentage]%)
-- **Account Deletion Requests:** [Number] messages ([Percentage]%)
-
-**Primary Concerns:**
-1. [Top concern]
-2. [Second concern]
-3. [Third concern]
-4. [Fourth concern]
-5. [Fifth concern]
+- **Total Feedback Messages (all types):** [Number]
+- **Account Deletion Messages (FEEDBACK_TYPE = Account Deletion Request):** [Number] messages ([Percentage]%)
+- **Other Messages (all remaining feedback types combined):** [Number] messages ([Percentage]%)
 

@@ -3,6 +3,14 @@
 **Period:** October 1, 2025 - October 31, 2025
 **Channel:** in_app_feedback
 
+**Channel context:** The `in_app_feedback` Slack channel does **not** contain a balanced sample of all user feedback. It primarily aggregates:
+
+- **FEEDBACK_TYPE: Account Deletion Request**
+- **Negative feedback:** users selecting the `:(` emoji in the in‑app feedback widget
+- **Positive feedback:** users selecting the `:)` emoji in the in‑app feedback widget (a minority of events)
+
+This means that **most messages visible in this channel are either account deletion requests or negative feedback**, so the analysis below reflects a **negatively skewed subset** of overall user sentiment.
+
 ## Total Messages
 
 **Total feedback messages:** 47 messages (excluding channel join/leave events and team member messages)
@@ -19,21 +27,6 @@ Based on language analysis of feedback:
 - **France (FR):** 2 messages (French language)
 - **Greece (GR):** 2 messages (Greek language)
 - **Other:** 1 message (Turkish, Russian, Dutch, English)
-
----
-
-## Positive Quotes
-
-1. **User 4129648 (IT):** "Molto interessante" ("Very interesting")
-   - Brief positive feedback about the platform
-
-2. **User 3210204 (DE):** "Ich wollte den blauen Lehrerkalender kaufen, habe statt dessen den grauen erwischt ;-(" ("I wanted to buy the blue teacher calendar, but instead got the gray one ;-(")
-   - Light-hearted feedback with a slight disappointment
-
-3. **User 3559299 (GR):** "Μπράβο σας ότι καλύτερο" ("Bravo, you are the best")
-   - Very positive feedback from a Greek user
-
-*Note: Limited positive feedback this month. Overall sentiment is more focused on issues and feature requests rather than positive reinforcement.*
 
 ---
 
@@ -146,16 +139,7 @@ Based on language analysis of feedback:
 
 ## Summary Statistics
 
-- **Total Feedback Messages:** 47
-- **Positive Feedback:** 3 messages (6%)
-- **Bug Reports:** 32 messages (68%)
-- **Feature Requests:** 9 messages (19%)
-- **Account Deletion Requests:** 3 messages (6%)
-
-**Primary Concerns:**
-1. Materials not appearing in "My Materials" after purchase (most critical issue affecting multiple users)
-2. Payment/download failures (users charged but can't access materials)
-3. App stability (crashes and technical issues)
-4. Search functionality problems
-5. Login/authentication issues requiring repeated re-authentication
+- **Total Feedback Messages (all types):** 47
+- **Account Deletion Messages (FEEDBACK_TYPE = Account Deletion Request):** 3 messages (6%)
+- **Other Messages (all remaining feedback types combined):** 44 messages (94%)
 
