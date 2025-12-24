@@ -45,3 +45,25 @@ jira-mcp-server/
 
 # Large files (>100MB) - prevented by pre-commit hook
 # Files larger than 100MB will be blocked from commits
+
+# Sensitive business data and initiatives
+@initiatives/
+product_data/
+in_app_feedback/
+query-assistant/
+
+# Proprietary datasets and analysis
+material_type_dataset/
+LLM-as-judge/
+
+# Query assistant (may contain sensitive queries)
+query-assistant/
+
+# Bearer tokens and credentials
+bearer_token.txt
+**/bearer_token.txt
+
+# Any sensitive or confidential files
+*sensitive*
+*confidential*
+*private*
