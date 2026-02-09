@@ -47,7 +47,7 @@ jira-mcp-server/
 # Files larger than 100MB will be blocked from commits
 
 # Sensitive business data and initiatives
-@initiatives/
+initiatives/
 product_data/
 in_app_feedback/
 query-assistant/

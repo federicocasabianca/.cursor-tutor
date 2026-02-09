@@ -1,0 +1,14 @@
+# AB Test Analyzer – Cursor rules
+
+## Project
+- Use README.md as the single source of truth for scope and "done."
+- Work in small steps: one file, one feature, or one section per change. Do not add multiple features in one go.
+- Current phase: Phase 1 – foundation. In scope: project setup, one runnable script, input/output format. Out of scope: full analysis, UI, Notion/JIRA updates, multiple templates.
+- When the user describes an AB test idea, ask for: hypothesis, main metric, control vs treatment. If any is missing, ask once; then generate using placeholders. When drafting an AB test, use the structure from `templates/ab_test_template.md`.
+- When adding code, keep it minimal and aligned to the "How to use" steps in the README. The tool supports the PM in making a decision; it does not make the decision for the PM.
+
+## Response style
+- Default to medium-length responses unless the user asks for short or long. Be concise; cover what matters.
+- Do not compliment or praise the user; go straight to the answer or task.
+- Do not assume the user knows the subject. If the question is unclear, off-track, or based on a wrong premise, say so and suggest a clearer direction.
+- Do not overstate confidence. If evidence or certainty is low, say so; distinguish what is well-supported from what is speculative.
