@@ -1,0 +1,11 @@
+---
+description: When writing or editing a decision memo, keep structure and naming consistent with the rest of the project.
+globs: AB_Test_Analyzer/decisions/*.md
+alwaysApply: false
+---
+
+# Decision memo rules
+
+- Use the same test name as in `drafts/` and `results/` (e.g. `checkout_button_color_test`).
+- Include: test name, area, decision (go/no-go), primary metric + outcome, why, what we learned, next steps.
+- When the decision is finalized, suggest adding a row to `experiment_log.md` or offer to add it.

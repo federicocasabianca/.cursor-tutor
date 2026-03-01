@@ -1,0 +1,229 @@
+Intro
+
+Throughout the entire series (Part 1, Part 2, and Part 3) we have created a structure with a repeatable system that allows us to iterate the results quickly from A/B test.
+
+Although this is cool and it is a good start, we can do more. The main two questions I ask myself every day when I’m faced with a task are:
+
+
+
+
+
+Is it something where I can add any value or requires me to be in the loop?
+
+
+
+If the answer is no, then I ask, Would the AI be able to do it for me?
+
+That’s how we can keep exploring the edges of AI and understand what is possible and where it breaks.
+
+Recap
+
+In this project we have only one file that Cursor reads automatically: .cursorrules. There is no extra set up. If the file is there, every time you chat with the AI, it will be used as part of the context.
+
+What is in it?
+
+Two parts:
+
+Project: What the project is, what’s in scope, where things go. README is the source of truth. We define the phase (e.g. Phase 1 – Foundation) and what’s in and out of scope:
+
+
+
+
+
+When you draft an AB test, it uses the configured template.
+
+
+
+When you write a decision memo: it places it under decisions/<test_name>.md and it keeps the same name as in drafts and results.
+
+
+
+When a decision is done, it suggests adding a row to experiment_log.md
+
+Code stays minimal and aligned to README. 
+
+Response Style: how the assistant should answer. Medium-length by default. No fluff; go straight to the answer. If something is unclear or off-track, say so. If we're not sure, say so; don't overstate confidence.
+
+How we got here
+
+We didn’t write it all at once. We added bits as the workflow grew: first phase and scope, then the template for drafting tests, then where decision memos go, then the experiment log step. So the file is a living doc — you add a line when you want the assistant to do something the same way every time.
+
+Why it matters
+
+Before, we had to repeat scope, templates, and conventions in every chat. With .cursorrules, that’s in one place. Every conversation in this project gets the same baseline. That sets you up for the next step: when one file isn’t enough, or you want rules that apply only when certain files are open, you add .cursor/rules/ and use the .mdc format (see the MDC section).
+
+
+
+MDC files - Keep scaling your system
+
+So far we’ve used a single .cursorrules file. For many projects that’s enough. But one file can become long and mixed. Splitting lets you keep “draft an AB test” rules in one place and “write a decision memo” in another, and (with MDC) apply them only when the relevant files are open. The difference: from “one big rule file” to “organized, optionally scoped rules.”
+
+That’s where project-level rules in .cursor/rules/ come in: they’re the same idea as .cursorrules, but with:
+
+
+
+
+
+Multiple files (e.g. one per concern: “drafts,” “decisions,” “code”).
+
+
+
+Optional scope (e.g. “only when this file pattern is open”).
+
+Example: create decision-memo.mdc at AB_Test_Analyzer/.cursor/rules/decision-memo.mdc:
+
+
+
+
+
+Example content for AB_Test_Analyzer/.cursor/rules/decision-memo.mdc:
+
+---
+description: When writing or editing a decision memo, keep structure and naming consistent with the rest of the project.
+globs: AB_Test_Analyzer/decisions/*.md
+alwaysApply: false
+---
+
+# Decision memo rules
+
+- Use the same test name as in `drafts/` and `results/` (e.g. `checkout_button_color_test`).
+- Include: test name, area, decision (go/no-go), primary metric + outcome, why, what we learned, next steps.
+- When the decision is finalized, suggest adding a row to `experiment_log.md` or offer to add it.
+
+
+When you open the file in Cursor, you can configure the scope manually using the following dropdown:
+
+
+
+
+
+So far, I have used MDC only for specific files and Apply Intelligently, where you let the AI infer when to use it.
+
+How to see the MDC in action
+
+Create a new file like decisions/mdc_test_example.md (or use the existing AB_Test_Analyzer/decisions/checkout_button_color_test.md). 
+
+Keep that file open or in the chat context. Start a new chat (or continue in one where that file is referenced) so Cursor loads the MDC.
+
+
+
+
+
+The AI agent has read the rules files and generates the following output:
+
+
+
+
+
+The model should keep the existing structure and naming. The experiment_log.md should be updated when we explicitly say that the decision has been done.
+
+
+
+
+
+What you get
+
+A path to scale: from one single file to a clear path to splitting into rules and MDC when needed.
+
+
+
+MCP - Model Context Protocol
+
+MCP (Model Context Protocol) is an open protocol that lets an AI assistant use external tools and resources during a conversation. In Cursor, you connect to MCP servers (e.g. Statsig, Notion, Jira). 
+
+Each server exposes tools (actions the model can call, like "get experiment details" or "update a page") and optionally resources (read-only data the model can fetch). 
+
+The model sees the list of available tools and their parameters; when you ask something in chat, it can decide to call one or more tools, use the results, and answer or do the next step.
+
+
+
+
+
+Configuring an MCP server
+
+You need two things: a config file that tells Cursor how to run or reach the MCP server, and credentials or access on the third-party side (Statsig, Notion, etc.). The config is the same kind of file for every server; what you do in the third-party tool depends on the tool.
+
+Where the config lives
+
+.cursor/mcp.json in the project root. Good when you want the same MCP setup for everyone on the repo (e.g. "this project uses Statsig MCP"). Credentials should not go in this file if the repo is shared — use env vars or a global config for secrets.
+
+What goes in mcp.json
+
+The file has a single object with a key mcpServers. Each server has a name (e.g. statsig, notion) and a config that tells Cursor how to start or connect to it.
+
+Local server (command/stdio) — Cursor runs a command (e.g. npx or python); the process speaks MCP over stdio. You need the server package or script installed.
+
+{
+  "mcpServers": {
+      "statsig": {
+        "command": "npx mcp-remote https://api.statsig.com/v1/mcp --header statsig-api-key:your-api-key-here",
+        "env": {
+          "AUTH_TOKEN": "your-api-key-here"
+        }
+      }
+  }
+}
+
+
+
+
+
+command — The executable (e.g. npx, python).
+
+
+
+env — Environment variables the server needs. Use this for API keys or secrets; avoid committing real keys if the file is in the repo.
+
+Remote server (HTTP) — Some MCP servers run elsewhere and expose an HTTP endpoint. In that case the config uses a URL and possibly headers for auth (exact shape depends on Cursor’s version; check the docs for your server).
+
+What to do on the third-party tool
+
+Each tool is different, but the idea is the same: the MCP server will call that tool’s API on your behalf, so the API must allow your credentials to do what you need.
+
+In Statsig, create an API key in the Statsig console (or your org’s settings) with permissions to read and, if you want updates from Cursor, write experiments. Put that key in the env block (e.g. STATSIG_API_KEY) in mcp.json. The exact key name depends on the Statsig MCP server you use.
+
+
+
+
+
+To summarize: in Cursor you define how to run the MCP server and what env to pass; in the third-party tool you create the key/token and permissions. The MCP server’s docs will say which env vars it needs and what permissions the key must have.
+
+Apply and restart
+
+
+
+
+
+Save mcp.json (in the project or in your user directory, depending on where you put it).
+
+
+
+Restart Cursor fully — MCP servers are loaded at startup, so a full restart is needed for new or changed config to take effect.
+
+
+
+After restart, the new server should appear in Cursor’s MCP/tools list, and the model will be able to call its tools when you chat.
+
+Try these once MCP is configured
+
+Once you restart Cursor, you can check whether the MCP is online. Go to Cursor > Preferences > Cursor Settings:
+
+Select the Tools & MCP and you will see the list of installed MCP Servers:
+
+
+
+
+
+ Then you can open a chat and ask the following:
+
+
+
+
+
+You’ve got rules and live data. Next step: use MCP and MDC together. One question in chat can get you a decision memo and an updated log, without re-explaining how you work or jumping to the dashboard. We’ll cover that next.
+
+
+
+Conclusion
+
+So far you have project rules (.cursorrules and MDC), live data via MCP, and one integration (e.g. Statsig) so you can ask in chat instead of switching context. In the next article we’ll put it together—combine MCP and MDC in a single flow—and use skills to turn repeated actions into one-step commands so you don’t have to spell everything out each time.

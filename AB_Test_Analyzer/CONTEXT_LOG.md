@@ -48,3 +48,25 @@ Context log for the AB Test Analyzer project. Each section is one conversation s
 ### Key files referenced
 
 - `CONTEXT_LOG.md`, `docs/part3_commands.md`, `templates/experiment_log_template.md`, `.cursor/commands/save-context.md`, `.cursor/commands/clear.md`, `.cursor/commands/compact.md`
+
+---
+
+## 2026-02-21 · part3_decisions_experiment_log_conclusion
+
+### Summary
+
+- **Decisions folder + experiment log in README and .cursorrules:** README now describes project structure: drafts/, results/, decisions/ (one file per test, same name; memo with test name, area, decision, primary metric + outcome, why, learnings, next steps), and experiment_log.md (one table at project root: test name, area, decision, primary metric, outcome; add one row per test). .cursorrules: when drafting a decision memo, create/update decisions/<test_name>.md; when a decision is finalized, suggest adding a row to experiment_log.md or offer to add it.
+- **Artifacts in place:** decisions/checkout_button_color_test.md, experiment_log.md (one row for checkout button test).
+- **Part 3 conclusion drafted:** Long pause; we covered three things for long-term analyzing (results in one place + draft, decisions stored per test, experiment log to look back). Part 4 tease: cursor rules, MDC files, MCP, connecting to tools like Notion or Statsig.
+
+### Decisions
+
+- None.
+
+### Next steps
+
+- Finalize and publish Part 3 article. Part 4: cursor rules, MDC files, MCP, one integration (Notion or Statsig).
+
+### Key files referenced
+
+- `README.md`, `.cursorrules`, `decisions/checkout_button_color_test.md`, `experiment_log.md`

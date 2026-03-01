@@ -6,6 +6,7 @@
 - Current phase: Phase 1 – foundation. In scope: project setup, one runnable script, input/output format. Out of scope: full analysis, UI, Notion/JIRA updates, multiple templates.
 - When the user describes an AB test idea, ask for: hypothesis, main metric, control vs treatment. If any is missing, ask once; then generate using placeholders. When drafting an AB test, use the structure from `templates/ab_test_template.md`.
 - When drafting a decision memo for a test, create or update `decisions/<test_name>.md` with: test name, area, decision (go/no-go), primary metric + outcome, why, what we learned, next steps. Use the same test name as in `drafts/` and `results/`.
+- When the user has written or finalized a decision for a test, suggest adding a row to `experiment_log.md` (test name, area, decision, primary metric, outcome) or offer to add it.
 - When adding code, keep it minimal and aligned to the "How to use" steps in the README. The tool supports the PM in making a decision; it does not make the decision for the PM.
 
 ## Response style

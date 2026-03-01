@@ -17,8 +17,9 @@ This tool helps you:
 - **drafts/** — One file per test (same name). Test definition in Markdown (hypothesis, metrics, variants).
 - **results/** — One file per test (same name). Results in CSV or a short summary in Markdown.
 - **decisions/** — One file per test (same name). Decision memo with: test name, area, decision (go/no-go), primary metric + outcome, why, what we learned, next steps.
+- **experiment_log.md** — One file at the project root. Table with: test name, area, decision (go/no-go), primary metric, outcome. Add one row per test when you close a decision. Use it to see all tests at a glance or ask things like "What experiments on checkout had a go?"
 
-Same name across drafts, results, and decisions so each test stays linked. You can extend this structure (e.g. experiment log, more folders) and keep iterating.
+Same name across drafts, results, and decisions so each test stays linked. You can extend this structure and keep iterating.
 
 ## How to use
 
