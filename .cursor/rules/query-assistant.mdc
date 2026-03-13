@@ -1,0 +1,17 @@
+---
+description: When generating a query in query-assistant, follow sources → schemas → environments → joins and write to the requested output path.
+globs: query-assistant/**/*
+alwaysApply: false
+---
+
+# Query generation workflow
+
+When the user asks to generate a query (or you are editing `query-assistant/queries/generate-query.md`):
+
+1. **Resolve Source(s)** from the request using `query-assistant/sources.md`. Load only the schema files listed for that source (from `query-assistant/schema/*.json`).
+2. **Joins**: For any multi-table query, use only the relationships in `query-assistant/joins.md`. Do not invent join keys.
+3. **Syntax**: Read `query-assistant/environments.md` for the target environment (BigQuery vs Clickhouse) and use the correct table names, date functions, and array syntax.
+4. **A/B test**: If the request is for A/B test analysis, use `query-assistant/rules/ab-test.mdc` and `query-assistant/rules/ab-test-columns.md` for segment columns and syntax.
+5. **Output**: Write the generated SQL to the path in the request (e.g. `query-assistant/output/<name>.sql`). If no path is given, use `query-assistant/output/` with a descriptive filename. Create the file so the user can run it.
+
+Use only columns that exist in the loaded schema(s). Prefer the request’s Environment over defaults when specified.

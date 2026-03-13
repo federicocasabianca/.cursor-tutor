@@ -1,0 +1,12 @@
+---
+description: When writing or editing an initiative brief, keep structure and naming consistent.
+globs: drafts/**/*.md, initiatives/**/*.md
+alwaysApply: false
+---
+
+# Initiative brief rules
+
+- Follow the template structure in templates/initiative_brief.md.
+- Always include: Problem, Goal, Success Metrics, Scope, Risks, Timeline.
+- Use the same initiative name across drafts/, decisions/, and initiative_log.md.
+- When the brief is finalized, suggest creating a decision memo and adding a row to initiative_log.md.

@@ -1,107 +1,31 @@
 # Generate Query
 
-## User Prompt
-Check the click through rate of the 'recommendation' material cards.
+## How to use this file
 
-## Expected Query Output
-- Common filters `world = 'de' AND session_id is not null AND user_id is not null`
-- Filter by Before change `date between '2026-01-01' AND '2026-01-22'`
-- Filter by After change `date between '2026-01-23' AND CURRENT_DATE()`
-- Click event: `type='click' AND item_id is not null AND internal_path = 'recommendations'`
-- Return: 
--- Total click events coming from `internal_path='recommendation'` BEFORE and AFTER the change
--- % of clicks vs the total unique sessions BEFORE and AFTER the change
--- Group by the page_url field
+1. Fill the **Current request** section below (Instruction, Expected output, Source(s), Environment, Output path).
+2. Ask the AI to generate the query. It will: resolve Source(s) from [sources.md](../sources.md), load the listed schema files, use [environments.md](../environments.md) for syntax and [joins.md](../joins.md) for table joins, then write the SQL to the path you set.
+3. For **A/B test** requests, the AI will also use [rules/ab-test.mdc](../rules/ab-test.mdc) and [rules/ab-test-columns.md](../rules/ab-test-columns.md).
+4. Replace the "Current request" and "Generated SQL" blocks when you start a new query.
 
-## Environment
-Target: BigQuery
-Project: `gtm-eduki-com`
-Dataset: `QE`
 ---
 
-## BigQuery SQL
+## Current request
 
-```sql
--- Recommendation material cards: CTR by page (Home Page, Personalization)
--- Filters: world='de', session_id not null, user_id not null
--- Periods: Before (2026-01-01 to 2026-01-22), After (2026-01-23 to CURRENT_DATE)
--- Click event: type='click' AND item_id IS NOT NULL AND internal_path = 'recommendations'
---
--- Home Page: total_sessions = pageView + page_url='https://eduki.com/de'
--- Personalization: total_sessions = pageView + page_url='https://eduki.com/de/empfehlungen'
--- CTR = click_sessions / total_sessions (click_sessions = sessions with recommendation click on that page)
+**Instruction**  
+I want to pull the most frequent search queries during a period of time.
 
-WITH base_events AS (
-  SELECT
-    session_id,
-    type,
-    page_url,
-    date,
-    CASE
-      WHEN date BETWEEN '2026-01-01' AND '2026-01-22' THEN 'BEFORE'
-      WHEN date >= '2026-01-23' AND date <= CURRENT_DATE() THEN 'AFTER'
-    END AS period
-  FROM `gtm-eduki-com.QE.events`
-  WHERE world = 'de'
-    AND session_id IS NOT NULL
-    AND user_id IS NOT NULL
-    AND (
-      (date BETWEEN '2026-01-01' AND '2026-01-22')
-      OR (date >= '2026-01-23' AND date <= CURRENT_DATE())
-    )
-),
+**Expected output**
+- Common filters: world = 'de' AND session_id IS NOT NULL AND user_id IS NOT NULL
+- Date range: date between '2026-02-22' and '2026-02-23' 
+- Purchased Material: type = 'pageView' and page_url LIKE 'https://eduki.com/de/suchergebnisse?query=%' AND query != ''
+- Please don't consider the case sensitive cases. For instance 'Herbst' should be counted as 'herbst'.
+- Return: a list of the most frequent queries with the query (lowercase) and frequency.
 
--- Total sessions per page (pageView)
--- Home Page: page_url = 'https://eduki.com/de'
--- Personalization: page_url = 'https://eduki.com/de/empfehlungen'
-page_sessions AS (
-  SELECT session_id, period, 'Home Page' AS page_name
-  FROM base_events
-  WHERE type = 'pageView' AND page_url = 'https://eduki.com/de'
-  UNION DISTINCT
-  SELECT session_id, period, 'Personalization' AS page_name
-  FROM base_events
-  WHERE type = 'pageView' AND page_url = 'https://eduki.com/de/empfehlungen'
-),
+**Source(s)**  
+QE
 
--- Click sessions per page (recommendation clicks scoped to page)
--- Same click definition: type='click', item_id not null, internal_path='recommendations'
-click_sessions AS (
-  SELECT session_id, period, 'Home Page' AS page_name
-  FROM base_events
-  WHERE type = 'click'
-    AND item_id IS NOT NULL
-    AND internal_path = 'recommendations'
-    AND page_url = 'https://eduki.com/de'
-  UNION DISTINCT
-  SELECT session_id, period, 'Personalization' AS page_name
-  FROM base_events
-  WHERE type = 'click'
-    AND item_id IS NOT NULL
-    AND internal_path = 'recommendations'
-    AND page_url = 'https://eduki.com/de/empfehlungen'
-),
+**Environment**  
+BigQuery 
 
--- Aggregates: total sessions and click sessions per page, per period
-totals AS (
-  SELECT
-    p.period,
-    p.page_name,
-    COUNT(DISTINCT p.session_id) AS total_sessions,
-    COUNT(DISTINCT c.session_id) AS click_sessions
-  FROM page_sessions p
-  LEFT JOIN click_sessions c
-    ON p.session_id = c.session_id AND p.period = c.period AND p.page_name = c.page_name
-  GROUP BY p.period, p.page_name
-)
-
--- Output: CTR (total count + %) for BEFORE and AFTER
-SELECT
-  page_name,
-  period,
-  total_sessions,
-  click_sessions,
-  ROUND(100.0 * click_sessions / NULLIF(total_sessions, 0), 2) AS ctr_pct
-FROM totals
-ORDER BY page_name, period;
-```
+**Output path**  
+`query-assistant/output/frequent_searches.sql`

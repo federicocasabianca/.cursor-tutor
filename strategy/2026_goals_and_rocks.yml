@@ -1,0 +1,142 @@
+# 2026 Annual Goals and Company Priorities (Rocks)
+# Reusable structure: reference this from quarter-specific initiative docs.
+# Hierarchy: Annual Goal → Company Priority (Rock) → Buyer Stream Priority → Initiative (Work) + Leading Indicators
+
+year: 2026
+
+annual_goals:
+  - id: g1
+    name: "Reach 50M in GMV"
+    description: "23% YoY growth. With a focus on repeat buyers in DE."
+    primary_metrics:
+      - GMV
+      - repeat_purchase_rate_DE
+  - id: g2
+    name: "Take 333k new buyers"
+    description: "No stagnation. With a focus on free → paid conversion."
+    primary_metrics:
+      - new_buyers
+      - free_to_paid_conversion
+  - id: g3
+    name: "Put quality first"
+    description: "Measured by the increase average score of downloaded materials."
+    primary_metrics:
+      - avg_material_score
+
+company_priorities:
+  - id: p1
+    name: "Put Quality First"
+    links:
+      - "https://www.notion.so/eduki/Put-quality-first-WIP-3123dba214ff80e9abb1d3a70adf40ca?source=copy_link"
+    supports_goals:
+      - g1
+      - g3
+  - id: p2
+    name: "Turn into Cyborgs"
+    links:
+      - "https://www.notion.so/eduki/Turn-into-Cyborgs-3193dba214ff804b9b46fa36caf89442?source=copy_link"
+    supports_goals:
+      - g1
+      - g2
+      - g3
+  - id: p3
+    name: "Build the context into our tools"
+    links:
+      - "https://www.notion.so/eduki/Build-the-context-into-our-tools-3193dba214ff80c5afc6d9d220d95cc2?source=copy_link"
+    supports_goals:
+      - g1
+      - g2
+
+quarters:
+  - id: q2_2026
+    label: "Q2 2026"
+    buyer_streams:
+      - id: bs_explore_discover
+        name: "Explore & Discover (searching buyers overall)"
+        priorities:
+          - id: bsp1
+            label: "Help searching buyers find the right material faster with higher confidence"
+            company_priority: p1
+            supports_goals:
+              - g1
+              - g3
+        initiatives:
+          - id: i_ltr_v1_2
+            name: "LTR v1.2 A/B test"
+            maturity: "Shaping"
+            doc: "initiatives/explore_discover/LTR_v1.2/"
+            company_priority: p1
+            buyer_stream_priority: bsp1
+            supports_goals:
+              - g1
+              - g3
+            leading_indicators:
+              product_metrics:
+                - CTR
+                - NDCG@10
+                - AOV
+              business_signals:
+                - repeat_purchase_rate_DE
+                - GMV
+          - id: i_smart_search_prod
+            name: "Smart Search in production"
+            maturity: "Building"
+            doc: "initiatives/explore_discover/smart_search/"
+            company_priority: p3
+            buyer_stream_priority: bsp1
+            supports_goals:
+              - g1
+              - g2
+            leading_indicators:
+              product_metrics:
+                - CTR
+                - search_to_purchase_conversion
+              business_signals:
+                - GMV
+                - new_buyers
+          - id: i_next_search_token
+            name: "Predict next search token"
+            maturity: "Building"
+            doc: "initiatives/explore_discover/next_search_token/"
+            company_priority: p3
+            buyer_stream_priority: bsp1
+            supports_goals:
+              - g1
+              - g2
+            leading_indicators:
+              product_metrics:
+                - avg_query_length
+                - CTR
+              business_signals:
+                - GMV
+                - repeat_purchase_rate_DE
+          - id: i_search_context_capture
+            name: "Search as context capture"
+            maturity: "Shaping"
+            doc: "initiatives/explore_discover/search_context_capture/"
+            company_priority: p3
+            buyer_stream_priority: bsp1
+            supports_goals:
+              - g1
+              - g2
+            leading_indicators:
+              product_metrics:
+                - cross_device_search_continuity
+                - search_to_purchase_conversion
+              business_signals:
+                - GMV
+                - new_buyers
+          - id: i_previous_searches_cross_device
+            name: "Previous Searches cross-device"
+            maturity: "Shaping"
+            doc: "initiatives/explore_discover/previous_searches_cross_device/"
+            company_priority: p3
+            buyer_stream_priority: bsp1
+            supports_goals:
+              - g1
+              - g2
+            leading_indicators:
+              product_metrics:
+                - cross_device_search_continuity
+              business_signals:
+                - repeat_purchase_rate_DE

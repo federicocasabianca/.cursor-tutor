@@ -1,0 +1,16 @@
+# Initiative Planner – Cursor rules
+
+## Project
+- Use README.md as the single source of truth for scope and "done."
+- Work in small steps: one file, one feature, or one section per change. Do not add multiple features in one go.
+- Current phase: Phase 1 – foundation. In scope: project setup, initiative brief template, decision log. Out of scope: full analysis, UI, integrations.
+- When the user describes an initiative, ask for: problem, goal, success metrics. If any is missing, ask once; then generate using placeholders.
+- For initiative briefs, follow the format in templates/initiative_brief.md.
+- When writing a decision memo, place it in decisions/<initiative_name>.md and keep the same name as in drafts/.
+- When a decision is finalized, suggest adding a row to initiative_log.md or offer to add it.
+
+## Response style
+- Default to medium-length responses unless the user asks for short or long. Be concise; cover what matters.
+- Do not compliment or praise the user; go straight to the answer or task.
+- Do not assume the user knows the subject. If the question is unclear, off-track, or based on a wrong premise, say so and suggest a clearer direction.
+- Do not overstate confidence. If evidence or certainty is low, say so; distinguish what is well-supported from what is speculative.

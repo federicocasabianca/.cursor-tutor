@@ -1,148 +1,57 @@
 # Query Assistant
 
-A comprehensive query generation system that supports multiple database environments including BigQuery and Clickhouse with Metabase.
+Generate SQL for BigQuery or Clickhouse (Metabase) from a short request: you choose **Source(s)** and **Environment**; the AI loads the right schemas and syntax and writes the query to an **output folder**.
 
-## Overview
+## Quick start (3 steps)
 
-The Query Assistant helps generate SQL queries for different database environments with environment-specific syntax and conventions. It provides templates, rules, and examples to ensure consistent and correct query generation.
+1. **Choose Source(s)** from [sources.md](sources.md) (e.g. QE, LMP, or QE+LMP).
+2. **Fill the request** in [queries/generate-query.md](queries/generate-query.md): Instruction, Expected output, Source(s), Environment, and **Output path** (e.g. `query-assistant/output/my-query.sql`).
+3. **Ask the AI** to generate the query. It will load the schemas for your source(s), apply [environments.md](environments.md) for syntax and [joins.md](joins.md) for joins, then write the SQL to the path you set.
 
-## Supported Environments
+Generated queries are written to **`query-assistant/output/`** (or the path you specify in the request).
 
-### BigQuery
-- **Target**: BigQuery
-- **Project**: `gtm-eduki-com` (or your project name)
-- **Dataset**: `QE` (or your dataset name)
-- **Syntax**: Uses BigQuery SQL syntax with backticks for table names
+## How the AI generates a query
 
-### Clickhouse with Metabase
-- **Target**: Clickhouse with Metabase
-- **Project**: not applicable
-- **Dataset**: not applicable
-- **Syntax**: Uses Clickhouse SQL syntax with standard table names
+1. Read **Source(s)** from the request and resolve them in [sources.md](sources.md).
+2. **Load** the schema file(s) listed for that source (from `schema/*.json`).
+3. For multi-table queries, use **only** the relationships in [joins.md](joins.md).
+4. Read [environments.md](environments.md) for the target environment (BigQuery vs Clickhouse) and apply the correct syntax.
+5. For **A/B test** requests, also use [rules/ab-test.mdc](rules/ab-test.mdc) and [rules/ab-test-columns.md](rules/ab-test-columns.md).
+6. **Write** the generated SQL to the path given in the request (default: under `query-assistant/output/`).
 
-## Project Structure
+## Project structure
 
 ```
 query-assistant/
-├── README.md                 # This file
-├── environments.md           # Environment documentation
+├── README.md                 # This file + quick start
+├── sources.md                # Source definitions and schema file list
+├── joins.md                  # Table join map (single source of truth)
+├── environments.md           # Environment syntax (BigQuery vs Clickhouse)
 ├── queries/
-│   └── generate-query.md     # Query generation template
-├── templates/
-│   ├── bq-query-template.sql        # BigQuery template
-│   ├── clickhouse-query-template.sql # Clickhouse template
-│   └── ...                          # Other templates
+│   └── generate-query.md     # Request form + generated SQL
+├── output/                   # Generated queries (or path you set per request)
+├── schema/                   # Per-table schema JSON (qe_events, lmp_*, …)
 ├── rules/
-│   ├── filters.mdc           # Filter rules for all environments
-│   └── ab-test.mdc           # A/B test rules for all environments
-├── examples/
-│   ├── search-frequency-query.md    # Basic example
-│   └── multi-environment-example.md # Multi-environment example
-└── schema/
-    └── qe_events.schema.json # Schema definitions
+│   ├── filters.mdc          # Time/search/table rules
+│   ├── ab-test.mdc          # A/B test syntax by environment
+│   ├── ab-test-columns.md    # Columns to pull for A/B test analysis
+│   ├── order-data.mdc       # Order/purchase joins
+│   └── ...
+└── templates/                # Example SQL by domain (reference)
 ```
 
-## Usage
+## Supported environments
 
-### 1. Define Your Query
+- **BigQuery**: backticks for tables, `DATE_SUB(CURRENT_DATE(), INTERVAL X DAY)`, `UNNEST()` for arrays. Project/dataset from [sources.md](sources.md).
+- **Clickhouse with Metabase**: `QE.events`-style names, `today() - INTERVAL X DAY`, `indexOf` / `arrayElement` for arrays. See [environments.md](environments.md) for full conventions.
 
-Create a query specification in the `queries/` directory or use the existing `generate-query.md` template:
+## Adding a source or join
 
-```markdown
-# Generate Query
-
-## User Prompt
-Your query description here
-
-## Expected Query Output
-Expected output description
-
-## Environment
-Target: BigQuery  # or "Clickhouse with Metabase"
-Project: `your-project`
-Dataset: `your-dataset`
-```
-
-### 2. Environment-Specific Rules
-
-The system automatically applies environment-specific rules:
-
-- **Date functions**: BigQuery uses `DATE_SUB(CURRENT_DATE(), INTERVAL X DAY)`, Clickhouse uses `today() - INTERVAL X DAY`
-- **Table names**: BigQuery uses backticks (`project.dataset.table`), Clickhouse uses standard names (`table_name`)
-- **Array handling**: BigQuery uses `UNNEST()`, Clickhouse uses `hasAny()`
-- **String functions**: BigQuery uses `LOWER()`, Clickhouse uses `lower()`
-
-### 3. Query Generation
-
-The agent will:
-1. Read the environment specification
-2. Apply environment-specific rules and syntax
-3. Generate a query compatible with the target system
-4. Use appropriate templates and conventions
-
-## Examples
-
-### BigQuery Example
-```sql
-SELECT
-  query,
-  COUNT(*) as frequency
-FROM
-  `gtm-eduki-com.QE.events`
-WHERE
-  type = 'appearedInSearch'
-  AND DATE(date) >= DATE_SUB(CURRENT_DATE(), INTERVAL 180 DAY)
-  AND world = 'es'
-GROUP BY
-  query
-ORDER BY
-  frequency DESC
-```
-
-### Clickhouse Example
-```sql
-SELECT
-  query,
-  COUNT(*) as frequency
-FROM
-  QE.events
-WHERE
-  type = 'appearedInSearch'
-  AND date >= today() - INTERVAL 180 DAY
-  AND world = 'es'
-GROUP BY
-  query
-ORDER BY
-  frequency DESC
-```
-
-## Rules and Conventions
-
-### Filters (`rules/filters.mdc`)
-- Time filter syntax for different environments
-- Search query handling
-- Table naming conventions
-
-### A/B Testing (`rules/ab-test.mdc`)
-- Array handling for different environments
-- Segment filtering syntax
-- Environment-specific array operations
-
-## Adding New Environments
-
-To add a new environment:
-
-1. **Update `environments.md`** with the new environment's syntax and conventions
-2. **Create a template** in `templates/` directory
-3. **Update rules** in `rules/` directory to handle the new environment
-4. **Add examples** in `examples/` directory
-5. **Update `generate-query.md`** to include the new environment option
+- **New source**: Add a row in [sources.md](sources.md) (name, environment, project/schema, list of `schema/*.json` files). If it joins to others, add rows in [joins.md](joins.md).
+- **New join**: Add one row in [joins.md](joins.md): left table.column → right table.column.
 
 ## Contributing
 
-When contributing to this project:
-
-1. Follow the existing structure and conventions
-2. Update documentation for any new features
-3. Add examples for new functionality
-4. Test queries in the target environment before committing
+1. Keep schema files and join map up to date when tables change.
+2. Add or adjust rules in `rules/` when you introduce new patterns (e.g. a new analysis type).
+3. Test generated queries in the target environment before committing.

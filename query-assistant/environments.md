@@ -253,6 +253,11 @@ Dataset: [your dataset name or not applicable]
 - **BigQuery**: `project.schema.table` format with backticks
 - **Clickhouse**: `schema.table` format without backticks
 
+### Additional tables (User Segments, Personalisations, Free downloads)
+- **User Segments** (current and history): `Segments.lcs_history` — BigQuery: `` `gtm-eduki-com.Segments.lcs_history` ``; Clickhouse: `Segments.lcs_history`. Joins on `user_id` to `QE.events.user_id` and `lmp.users.id`.
+- **Personalisations** (category/grade preferences): `lmp.personalisations` — BigQuery: `` `gtm-eduki-com.lmp.personalisations` ``; Clickhouse: `lmp.personalisations`. Joins on `user_id` to `QE.events.user_id`, `lmp.users.id`, and `Segments.lcs_history.user_id`.
+- **Free downloads** (acl_free): `lmp.acl_free` — BigQuery: `` `gtm-eduki-com.lmp.acl_free` ``; Clickhouse: `lmp.acl_free`. Contains free material downloads. Joins: `material_id` → `lmp.materials.id`; `user_id` → `lmp.users.id`, `QE.events.user_id`. See [joins.md](joins.md) for the full join map.
+
 ## Usage Instructions
 
 When generating queries, the agent should:
